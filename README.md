@@ -1,5 +1,4 @@
 # ArTech
-# ArTech
 
 ## Sobre o Projeto
 
