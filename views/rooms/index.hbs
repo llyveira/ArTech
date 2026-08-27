@@ -1,20 +1,43 @@
 <link rel="stylesheet" href="/stylesheets/rooms.css" />
 
 <div class="rooms-page">
+<div class="rooms-body">
 
-  <!-- Topbar -->
-  <header class="rooms-topbar">
-    <div class="rooms-brand">
+  <!-- Sidebar: dashboard -->
+  <aside class="rooms-sidebar">
+    <div class="sidebar-brand">
       <div class="rooms-brand-badge">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 21L21 3M21 3H12M21 3V12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <div>
-        <div class="rooms-brand-name">ArTech</div>
-        <div class="rooms-brand-sub">NUARTE · Reserva de Salas</div>
+        <div class="sidebar-brand-name">ArTech</div>
+        <div class="sidebar-brand-sub">NUARTE · Reserva de Salas</div>
       </div>
     </div>
+
+    <div class="sidebar-title">Painel</div>
+
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">5</div>
+      <div class="sidebar-stat-label">Salas cadastradas</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">4</div>
+      <div class="sidebar-stat-label">Livres hoje</div>
+    </div>
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">3</div>
+      <div class="sidebar-stat-label">Suas reservas</div>
+    </div>
+  </aside>
+
+  <div class="rooms-main">
+
+  <!-- Topbar -->
+  <header class="rooms-topbar">
+    <div></div>
     <div class="rooms-topbar-actions">
       <a href="/materials" class="rooms-nav-link">Materiais</a>
       <a href="/rooms" class="rooms-nav-link active">Salas</a>
@@ -29,20 +52,6 @@
       <div class="rooms-hero-eyebrow">Espaços do NUARTE</div>
       <h1>Reserve o espaço certo para você</h1>
       <p>Consulte a disponibilidade das salas, solicite sua reserva e acompanhe tudo em um só lugar.</p>
-    </div>
-    <div class="rooms-hero-stats">
-      <div class="rooms-stat">
-        <div class="rooms-stat-value">5</div>
-        <div class="rooms-stat-label">Salas cadastradas</div>
-      </div>
-      <div class="rooms-stat">
-        <div class="rooms-stat-value">4</div>
-        <div class="rooms-stat-label">Livres hoje</div>
-      </div>
-      <div class="rooms-stat">
-        <div class="rooms-stat-value">3</div>
-        <div class="rooms-stat-label">Suas reservas</div>
-      </div>
     </div>
   </section>
 
@@ -209,6 +218,11 @@
     </div>
   </section>
 
+  </div>
+  <!-- /rooms-main -->
+
+</div>
+<!-- /rooms-body -->
 </div>
 
 <script>
