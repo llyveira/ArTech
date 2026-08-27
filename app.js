@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var classesRouter = require('./routes/classes');
 var eventsRouter = require('./routes/events');
 var materialsRouter = require('./routes/materials');
+var roomsRouter = require('./routes/rooms');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/users', usersRouter);
 app.use('/classes', classesRouter);
 app.use('/events', eventsRouter);
 app.use('/materials', materialsRouter);
+app.use('/rooms', roomsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,2 +1,147 @@
-<h1>{{title}}</h1>
-<p>Página de Materiais</p>
+<div class="materials-page">
+
+    <!-- Cabeçalho da Página -->
+    <header class="materials-header">
+        <div class="header-info">
+            <h1>Materiais do NUARTE</h1>
+            <p>Gerencie os materiais cadastrados no NUARTE.</p>
+        </div>
+
+        <div class="header-actions">
+            <div class="search-box">
+                <input type="text" name="search" class="search-input" placeholder="Pesquisar materiais...">
+            </div>
+            <a href="#" class="btn btn-primary" id="btnNovoMaterial">
+                + Novo Material
+            </a>
+        </div>
+    </header>
+
+    <!-- Parte da Barra Horizontal com Botão de Filtro -->
+    <section class="materials-toolbar">
+        <div class="filters-group">
+
+            <!-- Botão Seletor de Categorias -->
+            <div class="filter-dropdown-container">
+                <button type="button" class="btn btn-filter-trigger" id="btnFilterCategory">
+                    <span>Categorias</span>
+                    <i class="icon-arrow-down">▼</i>
+                </button>
+
+                <!-- Painel de opções que abre ao clicar no botão -->
+                <div class="filter-dropdown-menu" id="dropdownCategoryMenu" hidden>
+                    <ul class="filter-options-list">
+                        <li>
+                            <button type="button" class="filter-option active" data-category="all">
+                                Todas as Categorias
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-category="figurinos">
+                                Figurinos
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-category="tecidos">
+                                Tecidos
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-category="aderecos">
+                                Adereços
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-category="cenografico">
+                                Material Cenográfico
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-category="livros">
+                                Livros
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Botão Seletor de Situação/Status -->
+            <div class="filter-dropdown-container">
+                <button type="button" class="btn btn-filter-trigger" id="btnFilterStatus">
+                    <span>Status</span>
+                    <i class="icon-arrow-down">▼</i>
+                </button>
+
+                <div class="filter-dropdown-menu" id="dropdownStatusMenu" hidden>
+                    <ul class="filter-options-list">
+                        <li>
+                            <button type="button" class="filter-option" data-status="disponivel">
+                                Disponível
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="filter-option" data-status="emprestado">
+                                Emprestado
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" id="btnLimparFiltros">
+                Limpar Filtros
+            </button>
+        </div>
+
+        <!-- Ações de Reserva e de Vizualização -->
+        <div class="user-reservations-group">
+            <a href="#" class="btn btn-outline">
+                Minhas reservas
+            </a>
+            <a href="#" class="btn btn-outline">
+                Visualizar reservas
+            </a>
+            <button type="button" class="btn btn-toggle" id="btnTabela">
+                Ver em tabela
+            </button>
+        </div>
+    </section>
+
+
+    <!-- Área dos Materiais -->
+    <main class="materials-content">
+
+        <!-- Cabeçalho da Lista -->
+        <div class="content-header">
+            <h2>Lista de Materiais</h2>
+            <span class="results-badge" id="totalMaterials">0 materiais encontrados</span>
+        </div>
+
+        <!-- Parte da Vizualição em Cards -->
+        <section class="materials-cards-grid" id="materialsCards">
+            
+        </section>
+
+
+        <!-- Parte da Visualização em Tabela -->
+        <section class="materials-table-container" id="materialsTable" hidden>
+            <table class="materials-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Foto / Ícone</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Situação</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
