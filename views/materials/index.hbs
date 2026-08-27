@@ -1,149 +1,93 @@
-<div class="materials-page">
+<section class="panel controls">
+    <button class="select" type="button">Minhas reservas</button>
+    <button class="select" type="button">Reservas solicitadas</button>
+    <button class="select" type="button">Ver em tabela</button>
+    <button class="select" type="button">Categoria <span>▾</span></button>
+    <button class="btn-muted" type="button">Limpar Filtro</button>
+</section>
 
-    <!-- Cabeçalho da Página -->
-    <header class="materials-header">
-        <div class="header-info">
-            <h1>Materiais do NUARTE</h1>
-            <p>Gerencie os materiais cadastrados no NUARTE.</p>
-        </div>
+<section class="panel">
+    <div class="panel-head">
+        <h2>Lista de Materiais</h2>
+        <span class="badge">4 materiais encontrados</span>
+    </div>
 
-        <div class="header-actions">
-            <div class="search-box">
-                <input type="text" name="search" class="search-input" placeholder="Pesquisar materiais...">
+    <div class="grid">
+        <article class="card">
+            <div class="card-media">
+                <img src="figurino.jpg" alt="Figurino de Cena" loading="lazy" />
+                <span class="tag tag-available">Disponível</span>
             </div>
-            <a href="#" class="btn btn-primary" id="btnNovoMaterial">
-                + Novo Material
-            </a>
-        </div>
-    </header>
-
-    <!-- Parte da Barra Horizontal com Botão de Filtro -->
-    <section class="materials-toolbar">
-        <div class="filters-group">
-
-            <!-- Botão Seletor de Categorias -->
-            <div class="filter-dropdown-container">
-                <button type="button" class="btn btn-filter-trigger" id="btnFilterCategory">
-                    <span>Categorias</span>
-                    <i class="icon-arrow-down">▼</i>
-                </button>
-
-                <!-- Painel de opções que abre ao clicar no botão -->
-                <div class="filter-dropdown-menu" id="dropdownCategoryMenu" hidden>
-                    <ul class="filter-options-list">
-                        <li>
-                            <button type="button" class="filter-option active" data-category="all">
-                                Todas as Categorias
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-category="figurinos">
-                                Figurinos
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-category="tecidos">
-                                Tecidos
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-category="aderecos">
-                                Adereços
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-category="cenografico">
-                                Material Cenográfico
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-category="livros">
-                                Livros
-                            </button>
-                        </li>
-                    </ul>
+            <div class="card-body">
+                <h3>Figurino de Cena</h3>
+                <span class="category">Figurinos</span>
+                <p class="description">Conjunto de trajes utilizados em apresentações teatrais e saraus do núcleo.</p>
+                <div class="card-actions">
+                    <button class="btn-outline" type="button">Visualizar</button>
+                    <button class="btn-outline" type="button">Editar</button>
+                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
                 </div>
             </div>
+        </article>
 
-            <!-- Botão Seletor de Situação/Status -->
-            <div class="filter-dropdown-container">
-                <button type="button" class="btn btn-filter-trigger" id="btnFilterStatus">
-                    <span>Status</span>
-                    <i class="icon-arrow-down">▼</i>
-                </button>
-
-                <div class="filter-dropdown-menu" id="dropdownStatusMenu" hidden>
-                    <ul class="filter-options-list">
-                        <li>
-                            <button type="button" class="filter-option" data-status="disponivel">
-                                Disponível
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="filter-option" data-status="emprestado">
-                                Emprestado
-                            </button>
-                        </li>
-                    </ul>
+        <article class="card">
+            <div class="card-media">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBmIg2YbWIgrqXtrNZtKtDR9Sni8X0sNgezfIuKFhNA&s=10" alt="Chapéu de Palha" loading="lazy" />
+                <span class="tag tag-borrowed">Emprestado</span>
+            </div>
+            <div class="card-body">
+                <h3>Adereços Teatrais</h3>
+                <span class="category">Adereços</span>
+                <p class="description">Peças complementares de figurino, como chapéus, máscaras e acessórios de cena.
+                </p>
+                <div class="card-actions">
+                    <button class="btn-outline" type="button">Visualizar</button>
+                    <button class="btn-outline" type="button">Editar</button>
+                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
                 </div>
             </div>
+        </article>
 
-            <button type="button" class="btn btn-secondary" id="btnLimparFiltros">
-                Limpar Filtros
-            </button>
-        </div>
+        <article class="card">
+            <div class="card-media">
+                <img src="cenario.jpg" alt="Cenário Modular" loading="lazy" />
+                <span class="tag tag-available">Disponível</span>
+            </div>
+            <div class="card-body">
+                <h3>Cenário Modular</h3>
+                <span class="category">Material Cenográfico</span>
+                <p class="description">Estrutura desmontável utilizada como fundo de palco em exposições e
+                    apresentações.</p>
+                <div class="card-actions">
+                    <button class="btn-outline" type="button">Visualizar</button>
+                    <button class="btn-outline" type="button">Editar</button>
+                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
+                </div>
+            </div>
+        </article>
 
-        <!-- Ações de Reserva e de Vizualização -->
-        <div class="user-reservations-group">
-            <p><a href="/rooms">Ir para página de Reservas</a></p>
-            
-            <a href="#" class="btn btn-outline">
-                Minhas reservas
-            </a>
-            <a href="#" class="btn btn-outline">
-                Visualizar reservas
-            </a>
-            <button type="button" class="btn btn-toggle" id="btnTabela">
-                Ver em tabela
-            </button>
-        </div>
-    </section>
+        <article class="card">
+            <div class="card-media">
+                <img src="img/violao.jpg" alt="Violão Acústico" loading="lazy" />
+                <span class="tag tag-borrowed">Emprestado</span>
+            </div>
+            <div class="card-body">
+                <h3>Violão Acústico</h3>
+                <span class="category">Instrumentos Musicais</span>
+                <p class="description">Instrumento de cordas utilizado em saraus e apresentações musicais do núcleo.</p>
+                <div class="card-actions">
+                    <button class="btn-outline" type="button">Visualizar</button>
+                    <button class="btn-outline" type="button">Editar</button>
+                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
+                </div>
+            </div>
+        </article>
+    </div>
 
-
-    <!-- Área dos Materiais -->
-    <main class="materials-content">
-
-        <!-- Cabeçalho da Lista -->
-        <div class="content-header">
-            <h2>Lista de Materiais</h2>
-            <span class="results-badge" id="totalMaterials">0 materiais encontrados</span>
-        </div>
-
-        <!-- Parte da Vizualição em Cards -->
-        <section class="materials-cards-grid" id="materialsCards">
-            
-        </section>
-
-
-        <!-- Parte da Visualização em Tabela -->
-        <section class="materials-table-container" id="materialsTable" hidden>
-            <table class="materials-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Foto / Ícone</th>
-                        <th>Nome</th>
-                        <th>Categoria</th>
-                        <th>Situação</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </section>
-
-    </main>
-
-</div>
+    <nav class="pagination">
+        <button class="page-nav" type="button" disabled>‹ Anterior</button>
+        <button class="page current" type="button">1</button>
+        <button class="page" type="button">2</button>
+        <button class="page-nav" type="button">Próxima ›</button>
+    </nav>
+</section>

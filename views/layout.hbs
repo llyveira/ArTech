@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{title}} | Artech</title>
+  <meta name="description"
+    content="Painel para consultar o acervo de materiais do NUARTE do IFRN: figurinos, adereços, material cenográfico e equipamentos." />
+  <link rel="stylesheet" href="stylesheets/style.css" />
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a href="/events">
+        <div class="brand">
+          <div class="brand-logo">
+            <img src="images/artech-logo.jpg" alt="Logo Artech" />
+          </div>
+          <p class="brand-sub">Instituto Federal<br />Rio Grande do Norte</p>
+          <p class="brand-name">NUARTE</p>
+        </div>
+      </a>
+
+      <nav class="nav">
+        <a href="#">Dashboard</a>
+        <a href="/events" class="active">Eventos</a>
+        <a href="#">Categorias</a>
+        <a href="#">Relatórios</a>
+        <a href="#">Usuários</a>
+        <a href="/materials">Materiais</a>
+        <a href="/rooms">Reserva de Sala</a>
+        <a href="#">Configurações</a>
+      </nav>
+
+      <div class="user-card">
+        <span class="avatar">MI</span>
+        <div>
+          <p class="user-name">Maria Isabelly</p>
+          <p class="user-role">PRO · NUARTE</p>
+        </div>
+      </div>
+    </aside>
+
+    <div class="content">
+      <header class="topbar">
+        <div>
+          <h1>{{title}}</h1>
+          <p class="subtitle">{{subtitle}}</p>
+        </div>
+        <div class="topbar-actions">
+          <input class="search" type="search" placeholder="Pesquisar materiais..." aria-label="Pesquisar materiais" />
+          <button class="btn-primary" type="button">+ Novo Material</button>
+        </div>
+      </header>
+
+      <main class="main">
+        {{!-- Não deletar --}}
+        {{{body}}}
+      </main>
+
+      <footer class="footer">
+        © 2026 NUARTE · Instituto Federal do Rio Grande do Norte — Campus Santa Cruz. Projeto <a href="#">Artech</a>.
+      </footer>
+    </div>
+  </div>
+
+  <button class="help" type="button" aria-label="Ajuda">?</button>
+</body>
+
 </html>
