@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('events/index', {title: 'Eventos do NUARTE', subtitle:'Gerencie os eventos realizados pelo NUARTE.'});
 });
 
 module.exports = router;

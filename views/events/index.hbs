@@ -1,0 +1,102 @@
+    
+    <!-- Cabeçalho Principal -->
+    <header class="page-header">
+      <div class="header-title">
+        <h1>{{title}}</h1>
+        <p>{{subtitle}}</p>
+      </div>
+      <div class="header-actions">
+        <input type="search" placeholder="Pesquisar eventos...">
+        <button type="button">+ Novo Evento</button>
+      </div>
+    </header>
+
+    <!-- Filtros de Busca -->
+    <select name="categoria">
+        <option value="" disabled selected>Categoria</option>
+        <option value="oficinas-artisticas">Oficinas artísticas</option>
+        <option value="apresentacoes-culturais">Apresentações culturais</option>
+        <option value="ensaios">Ensaios</option>
+        <option value="exposicoes">Exposições</option>
+        <option value="reunioes">Reuniões</option>
+        <option value="projetos-culturais">Projetos culturais</option>
+        <option value="aulas-musicais">Aulas e atividades musicais</option>
+        <option value="palestras">Palestras</option>
+    </select>
+
+
+    {{!-- <input type="date" name="data" id="filtro-data"> --}}
+    <select name="data">
+        <option value="" disabled selected>Data</option>
+        <option value="hoje">Hoje</option>
+        <option value="esta-semana">Esta Semana</option>
+        <option value="este-mes">Este Mês</option>
+        <option value="proximos-30-dias">Próximos 30 dias</option>
+        <option value="2026">Ano de 2026</option>
+    </select>    
+
+    <select name="local">
+        <option value="" disabled selected>Local</option>
+        <option value="nuarte">NUARTE</option>
+        <option value="biblioteca-ifrn">Biblioteca IFRN</option>
+        <option value="espaco-cultural">Espaço Cultural</option>
+        <option value="auditorio-ifrn">Auditório IFRN</option>
+    </select>
+
+      <select name="status">
+        <option value="" disabled selected>Status</option>
+        <option value="lotado">Lotado</option>
+        <option value="disponivel">Disponível</option>
+      </select>
+
+        {{!-- Botao de limpar filtros --}}
+        <button type="button" class="btn-limpar" onclick="limparFiltros()">Limpar Filtros</button>
+      </section>
+
+    <!-- Seção da Lista de Eventos -->
+        <div class="section-header">
+            <h2>Lista de Eventos</h2>
+            <span class="badge-count"> 0 eventos encontrados</span>
+         </div>
+
+      <!-- Grid de Cards de Eventos -->
+      <div class="events-grid">
+        {{#each eventos}}
+          <article class="event-card">
+            <div class="card-image-wrapper">
+              <img src="{{this.imagem}}" alt="{{this.titulo}}">
+              <span class="status-tag {{this.statusClass}}">{{this.status}}</span>
+            </div>
+
+            <div class="card-body">
+              <h3>{{this.titulo}}</h3>
+              
+              <ul class="event-details">
+                <li>📅 {{this.data}}</li>
+                <li>⏰ {{this.horario}}</li>
+                <li>📍 {{this.local}}</li>
+                <li>👤 Responsável: {{this.responsavel}}</li>
+                <li>👥 Vagas: {{this.vagas}}</li>
+                <li>📞 Contato: {{this.contato}}</li>
+              </ul>
+
+              <div class="card-actions">
+                <a href="/eventos/{{this.id}}" class="btn-visualizar">Visualizar</a>
+                <a href="/eventos/{{this.id}}/editar" class="btn-editar">Editar</a>
+                <button type="button" class="btn-excluir">Excluir</button>
+              </div>
+            </div>
+          </article>
+        {{else}}
+          <p>Nenhum evento encontrado.</p>
+        {{/each}}
+      </div>
+
+      <!-- Paginação -->
+      <div class="pagination">
+        <button disabled>&lt; Anterior</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>Próxima &gt;</button>
+      </div>
+    </section>
