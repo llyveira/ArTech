@@ -1,0 +1,225 @@
+<link rel="stylesheet" href="/stylesheets/rooms.css" />
+
+<div class="rooms-page">
+
+  <!-- Topbar -->
+  <header class="rooms-topbar">
+    <div class="rooms-brand">
+      <div class="rooms-brand-badge">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 21L21 3M21 3H12M21 3V12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="rooms-brand-name">ArTech</div>
+        <div class="rooms-brand-sub">NUARTE · Reserva de Salas</div>
+      </div>
+    </div>
+    <div class="rooms-topbar-actions">
+      <a href="/materials" class="rooms-nav-link">Materiais</a>
+      <a href="/rooms" class="rooms-nav-link active">Salas</a>
+      <a href="#" class="rooms-nav-link">Eventos</a>
+      <div class="rooms-avatar">JS</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="rooms-hero">
+    <div class="rooms-hero-text">
+      <div class="rooms-hero-eyebrow">Espaços do NUARTE</div>
+      <h1>Reserve o espaço certo para você</h1>
+      <p>Consulte a disponibilidade das salas, solicite sua reserva e acompanhe tudo em um só lugar.</p>
+    </div>
+    <div class="rooms-hero-stats">
+      <div class="rooms-stat">
+        <div class="rooms-stat-value">5</div>
+        <div class="rooms-stat-label">Salas cadastradas</div>
+      </div>
+      <div class="rooms-stat">
+        <div class="rooms-stat-value">4</div>
+        <div class="rooms-stat-label">Livres hoje</div>
+      </div>
+      <div class="rooms-stat">
+        <div class="rooms-stat-value">3</div>
+        <div class="rooms-stat-label">Suas reservas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toolbar -->
+  <section class="rooms-toolbar">
+    <div class="rooms-tabs">
+      <button type="button" class="rooms-tab active" data-tab="salas">Salas disponíveis</button>
+      <button type="button" class="rooms-tab" data-tab="reservas">Minhas reservas</button>
+    </div>
+
+    <div class="rooms-search-filters">
+      <div class="rooms-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="Buscar sala..." />
+      </div>
+      <button type="button" class="rooms-filter">Tipo de sala <span class="arrow">▼</span></button>
+      <button type="button" class="rooms-filter">Capacidade <span class="arrow">▼</span></button>
+    </div>
+  </section>
+
+  <!-- Painel: Salas disponíveis -->
+  <section class="rooms-panel" id="panel-salas">
+    <div class="rooms-section">
+      <div class="rooms-section-head">
+        <h2>Salas do NUARTE</h2>
+        <span class="rooms-section-count">5 salas encontradas</span>
+      </div>
+
+      <div class="rooms-grid">
+
+        <!-- Card 1 -->
+        <article class="room-card">
+          <div class="room-card-top">
+            <span class="room-badge livre">Livre agora</span>
+          </div>
+          <div>
+            <div class="room-title">Sala de Música</div>
+            <div class="room-meta"> Bloco NUARTE</div>
+            <div class="room-meta"> Até 10 pessoas</div>
+          </div>
+          <div class="room-week">
+            <div class="room-day"><div class="room-day-label">Seg</div><div class="room-day-dot fechado[]"></div></div>
+            <div class="room-day"><div class="room-day-label">Ter</div><div class="room-day-dot livre"></div></div>
+            <div class="room-day"><div class="room-day-label">Qua</div><div class="room-day-dot ocupado"></div></div>
+            <div class="room-day"><div class="room-day-label">Qui</div><div class="room-day-dot livre"></div></div>
+            <div class="room-day"><div class="room-day-label">Sex</div><div class="room-day-dot livre"></div></div>
+          </div>
+          <div class="room-card-actions">
+            <a href="#" class="btn btn-outline">Ver detalhes</a>
+            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="room-card">
+          <div class="room-card-top">
+            <span class="room-badge ocupada">Ocupada</span>
+          </div>
+          <div>
+            <div class="room-title">Auditório</div>
+            <div class="room-meta"> Bloco A</div>
+            <div class="room-meta"> Até 40 pessoas</div>
+          </div>
+          <div class="room-card-actions">
+            <a href="#" class="btn btn-outline">Ver detalhes</a>
+            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="room-card">
+          <div class="room-card-top">
+            <span class="room-badge livre">Livre agora</span>
+          </div>
+          <div>
+            <div class="room-title">Lab. de Cenografia</div>
+            <div class="room-meta"> Bloco NUARTE</div>
+            <div class="room-meta"> Até 10 pessoas</div>
+          </div>
+          <div class="room-card-actions">
+            <a href="#" class="btn btn-outline">Ver detalhes</a>
+            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="room-card">
+          <div class="room-card-top">
+            <span class="room-badge livre">Livre agora</span>
+          </div>
+          <div>
+            <div class="room-title">Lab. de Música</div>
+            <div class="room-meta"> Bloco NUARTE</div>
+            <div class="room-meta"> Até 10 pessoas</div>
+          </div>
+          <div class="room-card-actions">
+            <a href="#" class="btn btn-outline">Ver detalhes</a>
+            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="room-card">
+          <div class="room-card-top">
+            <span class="room-badge ocupada">Ocupada</span>
+          </div>
+          <div>
+            <div class="room-title">Sala Multiuso</div>
+            <div class="room-meta"> Bloco NUARTE</div>
+            <div class="room-meta"> Até 20 pessoas</div>
+          </div>
+          <div class="room-card-actions">
+            <a href="#" class="btn btn-outline">Ver detalhes</a>
+            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Painel: Minhas reservas -->
+  <section class="rooms-panel" id="panel-reservas" hidden>
+    <div class="rooms-section">
+      <div class="rooms-section-head">
+        <h2>Minhas reservas</h2>
+        <span class="rooms-section-count">3 reservas</span>
+      </div>
+
+      <div class="reservations-list">
+        <div class="reservation-row">
+
+          <div class="reservation-info">
+            <div class="reservation-room">Lab. de Música</div>
+            <div class="reservation-time">Qui, 27 de agosto · 14h às 16h</div>
+          </div>
+          <span class="reservation-status confirmada">Confirmada</span>
+          <button type="button" class="reservation-cancel">Cancelar</button>
+        </div>
+
+        <div class="reservation-row">
+          
+          <div class="reservation-info">
+            <div class="reservation-room">Auditório</div>
+            <div class="reservation-time">Sex, 28 de agosto · 9h às 11h</div>
+          </div>
+          <span class="reservation-status pendente">Pendente</span>
+          <button type="button" class="reservation-cancel">Cancelar</button>
+        </div>
+
+        <div class="reservation-row">
+          
+          <div class="reservation-info">
+            <div class="reservation-room">Lab. de Cenografia</div>
+            <div class="reservation-time">Ter, 18 de agosto · 19h às 21h</div>
+          </div>
+          <span class="reservation-status cancelada">Cancelada</span>
+          <button type="button" class="reservation-cancel" disabled style="opacity:.4;cursor:not-allowed;">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Alternância visual entre abas (apenas front-end, sem integração ainda)
+  document.querySelectorAll('.rooms-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.rooms-tab').forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      var target = tab.getAttribute('data-tab');
+      document.getElementById('panel-salas').hidden = target !== 'salas';
+      document.getElementById('panel-reservas').hidden = target !== 'reservas';
+    });
+  });
+</script>
