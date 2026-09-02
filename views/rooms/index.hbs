@@ -180,67 +180,67 @@
   </div>
   <!-- /rooms-main -->
 
+  <!-- ===== Modal: Nova Reserva de Sala ===== -->
+  <div class="modal-overlay hidden" id="roomModalOverlay" onclick="closeRoomModal()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="roomModalTitle" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <h2 id="roomModalTitle">Nova Reserva de Sala</h2>
+        <button class="modal-close" type="button" aria-label="Fechar" onclick="closeRoomModal()">✕</button>
+      </div>
+
+      <form class="modal-form" id="roomReservationForm" onsubmit="return handleReservationSubmit(event)">
+        <label class="field">
+          <span>Sala</span>
+          <select name="sala" id="reservaSala" required>
+            <option value="" disabled selected>Selecione uma sala</option>
+            <option value="Sala de Música">Sala de Música</option>
+            <option value="Auditório">Auditório</option>
+            <option value="Lab. de Cenografia">Lab. de Cenografia</option>
+            <option value="Lab. de Música">Lab. de Música</option>
+            <option value="Sala Multiuso">Sala Multiuso</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Data da reserva</span>
+          <input type="date" name="date" required />
+        </label>
+
+        <label class="field">
+          <span>Horário de início</span>
+          <input type="time" name="startTime" required />
+        </label>
+
+        <label class="field">
+          <span>Horário de término</span>
+          <input type="time" name="endTime" required />
+        </label>
+
+        <label class="field">
+          <span>Quantidade de participantes</span>
+          <input type="number" name="participants" min="1" placeholder="Ex: 8" />
+        </label>
+
+        <label class="field">
+          <span>Finalidade da reserva</span>
+          <textarea name="purpose" rows="3" placeholder="Ex: Ensaio do coral, gravação, reunião de equipe..." required></textarea>
+        </label>
+
+        <label class="field">
+          <span>Observações</span>
+          <textarea name="notes" rows="2" placeholder="Alguma observação adicional (equipamentos, acessibilidade...)"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-outline" onclick="closeRoomModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Confirmar Reserva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 <!-- /rooms-page -->
-
-<!-- ===== Modal: Nova Reserva de Sala ===== -->
-<div class="modal-overlay hidden" id="roomModalOverlay" onclick="closeRoomModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="roomModalTitle" onclick="event.stopPropagation()">
-    <div class="modal-head">
-      <h2 id="roomModalTitle">Nova Reserva de Sala</h2>
-      <button class="modal-close" type="button" aria-label="Fechar" onclick="closeRoomModal()">✕</button>
-    </div>
-
-    <form class="modal-form" id="roomReservationForm" onsubmit="return handleReservationSubmit(event)">
-      <label class="field">
-        <span>Sala</span>
-        <select name="sala" id="reservaSala" required>
-          <option value="" disabled selected>Selecione uma sala</option>
-          <option value="Sala de Música">Sala de Música</option>
-          <option value="Auditório">Auditório</option>
-          <option value="Lab. de Cenografia">Lab. de Cenografia</option>
-          <option value="Lab. de Música">Lab. de Música</option>
-          <option value="Sala Multiuso">Sala Multiuso</option>
-        </select>
-      </label>
-
-      <label class="field">
-        <span>Data da reserva</span>
-        <input type="date" name="date" required />
-      </label>
-
-      <label class="field">
-        <span>Horário de início</span>
-        <input type="time" name="startTime" required />
-      </label>
-
-      <label class="field">
-        <span>Horário de término</span>
-        <input type="time" name="endTime" required />
-      </label>
-
-      <label class="field">
-        <span>Quantidade de participantes</span>
-        <input type="number" name="participants" min="1" placeholder="Ex: 8" />
-      </label>
-
-      <label class="field">
-        <span>Finalidade da reserva</span>
-        <textarea name="purpose" rows="3" placeholder="Ex: Ensaio do coral, gravação, reunião de equipe..." required></textarea>
-      </label>
-
-      <label class="field">
-        <span>Observações</span>
-        <textarea name="notes" rows="2" placeholder="Alguma observação adicional (equipamentos, acessibilidade...)"></textarea>
-      </label>
-
-      <div class="modal-actions">
-        <button type="button" class="btn-outline" onclick="closeRoomModal()">Cancelar</button>
-        <button type="submit" class="btn-primary">Confirmar Reserva</button>
-      </div>
-    </form>
-  </div>
-</div>
 
 <script>
   // Alternância visual entre abas (apenas front-end, sem integração ainda)

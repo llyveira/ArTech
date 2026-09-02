@@ -311,6 +311,26 @@
   box-shadow: 0 8px 18px rgba(4, 120, 91, 0.22);
 }
 
+.rooms-page .modal-actions .btn-primary {
+  background: var(--verde-brilho);
+  box-shadow: none;
+}
+
+.rooms-page .modal-actions .btn-primary:hover {
+  background: var(--verde-primario);
+}
+
+.rooms-page .modal-actions .btn-outline {
+  background: var(--coral-bg);
+  color: var(--coral);
+  border: 1.5px solid var(--coral);
+}
+
+.rooms-page .modal-actions .btn-outline:hover {
+  background: var(--coral);
+  color: #fff;
+}
+
 /*  Minhas reservas */
 .reservations-list {
   background: var(--painel);
