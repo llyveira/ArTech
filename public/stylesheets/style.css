@@ -1,4 +1,5 @@
 /* Cores e variáveis usadas em toda a página */
+
 :root {
   --background: #f4faf6;
   --foreground: #16302a;
@@ -45,7 +46,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
-  background: var(--sidebar);
+  background: linear-gradient(160deg, #023a2b 0%, var(--primary) 60%, var(--primary-dark) 100%);
   color: #f4fbf7;
 }
 
@@ -224,11 +225,17 @@ body {
   box-shadow: 0 0 0 3px rgba(47, 125, 93, 0.2);
 }
 
+.search::-webkit-search-cancel-button {
+  -webkit-appearance: auto;
+  appearance: auto;
+  cursor: pointer;
+}
+
 .btn-primary {
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  background: var(--primary);
+  background: linear-gradient(160deg, #023a2b 0%, var(--primary) 60%, var(--primary-dark) 100%);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -623,6 +630,116 @@ body {
   }
 }
 
+/* ===== Modal (usado pelo formulário de cadastro, ex: Novo Material) ===== */
+
+/* Reaproveitável para outros cadastros (Eventos, Reservas etc.) — não é exclusivo de Materiais */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 48, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--sidebar);
+}
+
+.modal-close {
+  border: none;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.modal-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  color: var(--foreground);
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(47, 125, 93, 0.2);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+
+
 /* ===== Responsivo ===== */
 
 @media (max-width: 1280px) {
@@ -635,22 +752,27 @@ body {
   .sidebar {
     display: none;
   }
+
   .grid {
     grid-template-columns: 1fr;
   }
+
   .controls {
     flex-direction: column;
     align-items: stretch;
   }
+
   .controls .select,
   .controls .btn-muted,
   .controls .btn-primary {
     flex: 1 1 auto;
   }
+
   .main,
   .topbar {
     padding: 20px;
   }
+
   .search {
     width: 100%;
   }

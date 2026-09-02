@@ -8,6 +8,7 @@
       name="description"
       content="Painel para consultar o acervo de materiais do NUARTE do IFRN: figurinos, adereços, material cenográfico e equipamentos."
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="stylesheets/style.css" />
   </head>
 
@@ -26,14 +27,38 @@
         </a>
 
         <nav class="nav">
-          <a href="#">Dashboard</a>
-          <a href="/events" class="active">Eventos</a>
-          <a href="#">Categorias</a>
-          <a href="#">Relatórios</a>
-          <a href="#">Usuários</a>
-          <a href="/materials">Materiais</a>
-          <a href="/rooms">Reserva de Sala</a>
-          <a href="#">Configurações</a>
+          <a href="#">
+            <i class="bi bi-grid"></i>
+            Dashboard
+          </a>
+          <a href="/events" class="">
+            <i class="bi bi-calendar3"></i>
+            Eventos
+          </a>
+          <a href="#">
+            <i class="bi bi-folder"></i>
+            Categorias
+          </a>
+          <a href="#">
+            <i class="bi bi-file-earmark-text"></i>
+            Relatórios
+          </a>
+          <a href="#">
+            <i class="bi bi-people"></i>
+            Usuários
+          </a>
+          <a href="/materials">
+            <i class="bi bi-box"></i>
+            Materiais
+          </a>
+          <a href="/rooms">
+            <i class="bi bi-door-open"></i>
+            Reserva de Sala
+          </a>
+          <a href="#">
+            <i class="bi bi-gear"></i>
+            Configurações
+          </a>
         </nav>
 
         <div class="user-card">
@@ -209,6 +234,7 @@
     </div>
 
     <button class="help" type="button" aria-label="Ajuda">?</button>
+    <script src="/javascripts/materials.js"></script>
   </body>
 
 </html>

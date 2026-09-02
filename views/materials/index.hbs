@@ -1,5 +1,5 @@
 <section class="panel controls">
-    <button class="btn-primary" type="button">+ Novo Material</button>
+    <button class="btn-primary" type="button" onclick="openMaterialModal()">+ Novo Material</button>
     <button class="select" type="button">Minhas reservas</button>
     <button class="select" type="button">Reservas solicitadas</button>
     <button class="select" type="button">Ver em tabela</button>
@@ -91,3 +91,57 @@
         <button class="page-nav" type="button">Próxima ›</button>
     </nav>
 </section>
+
+<!-- ===== Modal: Novo Material ===== -->
+<div class="modal-overlay hidden" id="materialModalOverlay" onclick="closeMaterialModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="materialModalTitle" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h2 id="materialModalTitle">Novo Material</h2>
+      <button class="modal-close" type="button" aria-label="Fechar" onclick="closeMaterialModal()">✕</button>
+    </div>
+
+    <form class="modal-form" action="/materials" method="POST" enctype="multipart/form-data">
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" name="name" placeholder="Ex: Vestido de noiva" required />
+      </label>
+
+      <label class="field">
+        <span>Categoria</span>
+        <select name="categoryId" required>
+          <option value="" disabled selected>Selecione uma categoria</option>
+          <option value="1">Figurinos</option>
+          <option value="2">Adereços</option>
+          <option value="3">Material Cenográfico</option>
+          <option value="4">Livros</option>
+          <option value="5">Instrumentos Musicais</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Quantidade em estoque</span>
+        <input type="number" name="qty" min="0" placeholder="0" required />
+      </label>
+
+      <label class="field">
+        <span>Descrição</span>
+        <textarea name="description" rows="3" placeholder="Características físicas do item (cor, tamanho, material...)" required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Observações</span>
+        <textarea name="notes" rows="2" placeholder="Alguma observação sobre o estado, uso ou conservação" required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Foto</span>
+        <input type="file" name="photo" accept="image/*" />
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="closeMaterialModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Cadastrar Material</button>
+      </div>
+    </form>
+  </div>
+</div>
