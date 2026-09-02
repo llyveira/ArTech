@@ -46,4 +46,9 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+let db = require('./config/database.js')
+db.sync().then(() => {
+   console.log("Banco de dados sincronizado!");
+});
+
 module.exports = app;

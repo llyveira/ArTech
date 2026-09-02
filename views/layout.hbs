@@ -1,73 +1,214 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{title}} | Artech</title>
-  <meta name="description"
-    content="Painel para consultar o acervo de materiais do NUARTE do IFRN: figurinos, adereços, material cenográfico e equipamentos." />
-  <link rel="stylesheet" href="stylesheets/style.css" />
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}} | Artech</title>
+    <meta
+      name="description"
+      content="Painel para consultar o acervo de materiais do NUARTE do IFRN: figurinos, adereços, material cenográfico e equipamentos."
+    />
+    <link rel="stylesheet" href="stylesheets/style.css" />
+  </head>
 
-<body>
-  <div class="layout">
+  <body>
+    <div class="layout">
 
-    <aside class="sidebar">
-      <a href="/events">
-        <div class="brand">
-          <div class="brand-logo">
-            <img src="images/artech-logo.jpg" alt="Logo Artech" />
+      <aside class="sidebar">
+        <a href="/events">
+          <div class="brand">
+            <div class="brand-logo">
+              <img src="images/artech-logo.jpg" alt="Logo Artech" />
+            </div>
+            <p class="brand-sub">Instituto Federal<br />Rio Grande do Norte</p>
+            <p class="brand-name">NUARTE</p>
           </div>
-          <p class="brand-sub">Instituto Federal<br />Rio Grande do Norte</p>
-          <p class="brand-name">NUARTE</p>
-        </div>
-      </a>
+        </a>
 
-      <nav class="nav">
-        <a href="#">Dashboard</a>
-        <a href="/events" class="active">Eventos</a>
-        <a href="#">Categorias</a>
-        <a href="#">Relatórios</a>
-        <a href="#">Usuários</a>
-        <a href="/materials">Materiais</a>
-        <a href="/rooms">Reserva de Sala</a>
-        <a href="#">Configurações</a>
-      </nav>
+        <nav class="nav">
+          <a href="#">Dashboard</a>
+          <a href="/events" class="active">Eventos</a>
+          <a href="#">Categorias</a>
+          <a href="#">Relatórios</a>
+          <a href="#">Usuários</a>
+          <a href="/materials">Materiais</a>
+          <a href="/rooms">Reserva de Sala</a>
+          <a href="#">Configurações</a>
+        </nav>
 
-      <div class="user-card">
-        <span class="avatar">MI</span>
-        <div>
-          <p class="user-name">Maria Isabelly</p>
-          <p class="user-role">PRO · NUARTE</p>
+        <div class="user-card">
+          <span class="avatar">MI</span>
+          <div>
+            <p class="user-name">Maria Isabelly</p>
+            <p class="user-role">PRO · NUARTE</p>
+          </div>
         </div>
+      </aside>
+
+      <div class="content">
+        <header class="topbar">
+          <div>
+            <h1>{{title}}</h1>
+            <p class="subtitle">{{subtitle}}</p>
+          </div>
+          <div class="topbar-actions">
+            <input
+              class="search"
+              type="search"
+              placeholder="Pesquisar..."
+              aria-label="Pesquisar"
+            />
+          </div>
+        </header>
+
+        <main class="main">
+          {{! Não deletar }}
+          {{{body}}}
+        </main>
+
+        <footer class="site-footer">
+          <div class="footer-grid">
+            <div class="footer-col">
+              <h3 class="footer-heading">Sobre o Artech</h3>
+              <p class="footer-title">Tecnologia aplicada à Gestão
+                Artístico-cultural</p>
+              <p class="footer-desc">Software para gestão e divulgação de
+                atividades e recursos artísticos do NUARTE.</p>
+              <ul class="footer-links">
+                <li>
+                  <a
+                    href="https://portal.ifrn.edu.br/projetos-de-extensao/4277/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <svg
+                      class="footer-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ><path
+                        d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"
+                      /><path
+                        d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"
+                      /></svg>
+                    Portal do NUARTE/SC
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://portal.ifrn.edu.br/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <svg
+                      class="footer-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ><path
+                        d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"
+                      /><path
+                        d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"
+                      /></svg>
+                    Portal do IFRN
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://portal.ifrn.edu.br/campus/santacruz/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <svg
+                      class="footer-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ><path
+                        d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"
+                      /><path
+                        d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"
+                      /></svg>
+                    Portal do IFRN/SC
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h3 class="footer-heading">Links úteis</h3>
+              <ul class="footer-links">
+                <li>
+                  <a href="#" target="_blank" rel="noopener">
+                    <svg
+                      class="footer-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ><rect x="2" y="2" width="20" height="20" rx="5" /><circle
+                        cx="12"
+                        cy="12"
+                        r="4"
+                      /><circle
+                        cx="17.5"
+                        cy="6.5"
+                        r="1"
+                        fill="currentColor"
+                        stroke="none"
+                      /></svg>
+                    Instagram do NUARTE
+                  </a>
+                </li>
+                <li>
+                  <a href="#" target="_blank" rel="noopener">
+                    <svg
+                      class="footer-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ><rect x="2" y="2" width="20" height="20" rx="5" /><circle
+                        cx="12"
+                        cy="12"
+                        r="4"
+                      /><circle
+                        cx="17.5"
+                        cy="6.5"
+                        r="1"
+                        fill="currentColor"
+                        stroke="none"
+                      /></svg>
+                    Instagram dos Desenvolvedores
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="footer-col">
+              <h3 class="footer-heading">Informações técnicas</h3>
+              <ul class="footer-info">
+                <li>Versão: <strong>1.0.0</strong></li>
+                <li>Curso:
+                  <strong>Técnico Integrado em Informática — IFRN</strong></li>
+                <li>Desenvolvido por: <strong>Equipe Artech</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            © 2026 NUARTE · Instituto Federal do Rio Grande do Norte — Campus
+            Santa Cruz. Projeto
+            <a href="#">Artech</a>.
+          </div>
+        </footer>
       </div>
-    </aside>
-
-    <div class="content">
-      <header class="topbar">
-        <div>
-          <h1>{{title}}</h1>
-          <p class="subtitle">{{subtitle}}</p>
-        </div>
-        <div class="topbar-actions">
-          <input class="search" type="search" placeholder="Pesquisar materiais..." aria-label="Pesquisar materiais" />
-          <button class="btn-primary" type="button">+ Novo Material</button>
-        </div>
-      </header>
-
-      <main class="main">
-        {{!-- Não deletar --}}
-        {{{body}}}
-      </main>
-
-      <footer class="footer">
-        © 2026 NUARTE · Instituto Federal do Rio Grande do Norte — Campus Santa Cruz. Projeto <a href="#">Artech</a>.
-      </footer>
     </div>
-  </div>
 
-  <button class="help" type="button" aria-label="Ajuda">?</button>
-</body>
+    <button class="help" type="button" aria-label="Ajuda">?</button>
+  </body>
 
 </html>
