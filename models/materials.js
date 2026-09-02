@@ -91,9 +91,6 @@ Materials.init(
     notes: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: { msg: 'O campo observações não pode ser vazio.' }
-      }
     },
     // NOTA: campo "photo" não existe no diagrama de classes atual.
     // Adicionado aqui porque o front-end (materiais.html) já exibe foto
