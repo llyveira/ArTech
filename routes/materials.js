@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+// Importação do modelo
+let Materials = require("../models/Materials");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
