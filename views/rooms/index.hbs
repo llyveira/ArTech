@@ -1,50 +1,8 @@
 <link rel="stylesheet" href="/stylesheets/rooms.css" />
 
 <div class="rooms-page">
-<div class="rooms-body">
-
-  <!-- Sidebar: dashboard -->
-  <aside class="rooms-sidebar">
-    <div class="sidebar-brand">
-      <div class="rooms-brand-badge">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 21L21 3M21 3H12M21 3V12" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="sidebar-brand-name">ArTech</div>
-        <div class="sidebar-brand-sub">NUARTE · Reserva de Salas</div>
-      </div>
-    </div>
-
-    <div class="sidebar-title">Painel</div>
-
-    <div class="sidebar-stat">
-      <div class="sidebar-stat-value">5</div>
-      <div class="sidebar-stat-label">Salas cadastradas</div>
-    </div>
-    <div class="sidebar-stat">
-      <div class="sidebar-stat-value">4</div>
-      <div class="sidebar-stat-label">Livres hoje</div>
-    </div>
-    <div class="sidebar-stat">
-      <div class="sidebar-stat-value">3</div>
-      <div class="sidebar-stat-label">Suas reservas</div>
-    </div>
-  </aside>
 
   <div class="rooms-main">
-
-  <!-- Topbar -->
-  <header class="rooms-topbar">
-    <div></div>
-    <div class="rooms-topbar-actions">
-      <a href="/materials" class="rooms-nav-link">Materiais</a>
-      <a href="/rooms" class="rooms-nav-link active">Salas</a>
-      <a href="#" class="rooms-nav-link">Eventos</a>
-      <div class="rooms-avatar">JS</div>
-    </div>
-  </header>
 
   <!-- Hero -->
   <section class="rooms-hero">
@@ -72,6 +30,7 @@
       </div>
       <button type="button" class="rooms-filter">Tipo de sala <span class="arrow">▼</span></button>
       <button type="button" class="rooms-filter">Capacidade <span class="arrow">▼</span></button>
+      <button type="button" class="btn-primary" onclick="openRoomModal()">+ Nova Reserva</button>
     </div>
   </section>
 
@@ -104,7 +63,7 @@
           </div>
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+            <button type="button" class="btn btn-primary" onclick="openRoomModal('Sala de Música')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -120,7 +79,7 @@
           </div>
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+            <button type="button" class="btn btn-primary" onclick="openRoomModal('Auditório')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -136,7 +95,7 @@
           </div>
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+            <button type="button" class="btn btn-primary" onclick="openRoomModal('Lab. de Cenografia')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -152,7 +111,7 @@
           </div>
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+            <button type="button" class="btn btn-primary" onclick="openRoomModal('Lab. de Música')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -168,7 +127,7 @@
           </div>
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <a href="#" class="btn btn-primary">Solicitar reserva</a>
+            <button type="button" class="btn btn-primary" onclick="openRoomModal('Sala Multiuso')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -184,7 +143,7 @@
         <span class="rooms-section-count">3 reservas</span>
       </div>
 
-      <div class="reservations-list">
+      <div class="reservations-list" id="reservationsList">
         <div class="reservation-row">
 
           <div class="reservation-info">
@@ -192,7 +151,7 @@
             <div class="reservation-time">Qui, 27 de agosto · 14h às 16h</div>
           </div>
           <span class="reservation-status confirmada">Confirmada</span>
-          <button type="button" class="reservation-cancel">Cancelar</button>
+          <button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>
         </div>
 
         <div class="reservation-row">
@@ -202,7 +161,7 @@
             <div class="reservation-time">Sex, 28 de agosto · 9h às 11h</div>
           </div>
           <span class="reservation-status pendente">Pendente</span>
-          <button type="button" class="reservation-cancel">Cancelar</button>
+          <button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>
         </div>
 
         <div class="reservation-row">
@@ -221,9 +180,67 @@
   </div>
   <!-- /rooms-main -->
 
+  <!-- ===== Modal: Nova Reserva de Sala ===== -->
+  <div class="modal-overlay hidden" id="roomModalOverlay" onclick="closeRoomModal()">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="roomModalTitle" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <h2 id="roomModalTitle">Nova Reserva de Sala</h2>
+        <button class="modal-close" type="button" aria-label="Fechar" onclick="closeRoomModal()">✕</button>
+      </div>
+
+      <form class="modal-form" id="roomReservationForm" onsubmit="return handleReservationSubmit(event)">
+        <label class="field">
+          <span>Sala</span>
+          <select name="sala" id="reservaSala" required>
+            <option value="" disabled selected>Selecione uma sala</option>
+            <option value="Sala de Música">Sala de Música</option>
+            <option value="Auditório">Auditório</option>
+            <option value="Lab. de Cenografia">Lab. de Cenografia</option>
+            <option value="Lab. de Música">Lab. de Música</option>
+            <option value="Sala Multiuso">Sala Multiuso</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Data da reserva</span>
+          <input type="date" name="date" required />
+        </label>
+
+        <label class="field">
+          <span>Horário de início</span>
+          <input type="time" name="startTime" required />
+        </label>
+
+        <label class="field">
+          <span>Horário de término</span>
+          <input type="time" name="endTime" required />
+        </label>
+
+        <label class="field">
+          <span>Quantidade de participantes</span>
+          <input type="number" name="participants" min="1" placeholder="Ex: 8" />
+        </label>
+
+        <label class="field">
+          <span>Finalidade da reserva</span>
+          <textarea name="purpose" rows="3" placeholder="Ex: Ensaio do coral, gravação, reunião de equipe..." required></textarea>
+        </label>
+
+        <label class="field">
+          <span>Observações</span>
+          <textarea name="notes" rows="2" placeholder="Alguma observação adicional (equipamentos, acessibilidade...)"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-outline" onclick="closeRoomModal()">Cancelar</button>
+          <button type="submit" class="btn-primary">Confirmar Reserva</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
-<!-- /rooms-body -->
-</div>
+<!-- /rooms-page -->
 
 <script>
   // Alternância visual entre abas (apenas front-end, sem integração ainda)
@@ -236,4 +253,77 @@
       document.getElementById('panel-reservas').hidden = target !== 'reservas';
     });
   });
+
+  // ===== Modal: Nova Reserva de Sala (apenas front-end, sem integração ainda) =====
+
+  function openRoomModal(roomName) {
+    document.getElementById('roomModalOverlay').classList.remove('hidden');
+    var select = document.getElementById('reservaSala');
+    if (roomName) {
+      select.value = roomName;
+    }
+  }
+
+  function closeRoomModal() {
+    document.getElementById('roomModalOverlay').classList.add('hidden');
+  }
+
+  var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  var DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+  function formatarData(isoDate) {
+    if (!isoDate) return '';
+    var partes = isoDate.split('-');
+    var dataObj = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+    var diaSemana = DIAS_SEMANA[dataObj.getDay()];
+    var mes = MESES[dataObj.getMonth()];
+    return diaSemana + ', ' + dataObj.getDate() + ' de ' + mes;
+  }
+
+  function formatarHora(hora) {
+    if (!hora) return '';
+    return hora.replace(/^0/, '').replace(':00', 'h').replace(':', 'h');
+  }
+
+  // Envio do formulário: ainda sem integração com o back-end, apenas
+  // adiciona a reserva visualmente em "Minhas reservas".
+  function handleReservationSubmit(event) {
+    event.preventDefault();
+
+    var form = event.target;
+    var sala = form.sala.value;
+    var data = formatarData(form.date.value);
+    var inicio = formatarHora(form.startTime.value);
+    var fim = formatarHora(form.endTime.value);
+
+    var row = document.createElement('div');
+    row.className = 'reservation-row';
+    row.innerHTML =
+      '<div class="reservation-info">' +
+        '<div class="reservation-room">' + sala + '</div>' +
+        '<div class="reservation-time">' + data + ' · ' + inicio + ' às ' + fim + '</div>' +
+      '</div>' +
+      '<span class="reservation-status pendente">Pendente</span>' +
+      '<button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>';
+
+    document.getElementById('reservationsList').prepend(row);
+    updateReservationCount();
+
+    closeRoomModal();
+    form.reset();
+
+    // Leva o usuário para a aba "Minhas reservas" para ver o resultado
+    document.querySelector('.rooms-tab[data-tab="reservas"]').click();
+  }
+
+  function cancelReservation(button) {
+    button.closest('.reservation-row').remove();
+    updateReservationCount();
+  }
+
+  function updateReservationCount() {
+    var total = document.querySelectorAll('#reservationsList .reservation-row').length;
+    document.querySelector('#panel-reservas .rooms-section-count').textContent =
+      total + (total === 1 ? ' reserva' : ' reservas');
+  }
 </script>
