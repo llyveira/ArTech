@@ -47,7 +47,7 @@ class Materials extends Model {
 
   /**
    * Método Estático: lista apenas materiais com estoque disponível (qty > 0).
-   * Complementa o available() de instância, cobrindo o caso de listagem.
+   * Complementa o available() de instância, cobrindo o caso de listagem. (Pensar em caso de aplicação)
    */
   static async findAvailable() {
     const { Op } = require('sequelize');
