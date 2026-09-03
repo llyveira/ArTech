@@ -50,45 +50,6 @@
             <span class="room-badge livre">Livre agora</span>
           </div>
           <div>
-            <div class="room-title">Sala de Música</div>
-            <div class="room-meta"> Bloco NUARTE</div>
-            <div class="room-meta"> Até 10 pessoas</div>
-          </div>
-          <div class="room-week">
-            <div class="room-day"><div class="room-day-label">Seg</div><div class="room-day-dot fechado[]"></div></div>
-            <div class="room-day"><div class="room-day-label">Ter</div><div class="room-day-dot livre"></div></div>
-            <div class="room-day"><div class="room-day-label">Qua</div><div class="room-day-dot ocupado"></div></div>
-            <div class="room-day"><div class="room-day-label">Qui</div><div class="room-day-dot livre"></div></div>
-            <div class="room-day"><div class="room-day-label">Sex</div><div class="room-day-dot livre"></div></div>
-          </div>
-          <div class="room-card-actions">
-            <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <button type="button" class="btn btn-primary" onclick="openRoomModal('Sala de Música')">Solicitar reserva</button>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="room-card">
-          <div class="room-card-top">
-            <span class="room-badge ocupada">Ocupada</span>
-          </div>
-          <div>
-            <div class="room-title">Auditório</div>
-            <div class="room-meta"> Bloco A</div>
-            <div class="room-meta"> Até 40 pessoas</div>
-          </div>
-          <div class="room-card-actions">
-            <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <button type="button" class="btn btn-primary" onclick="openRoomModal('Auditório')">Solicitar reserva</button>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="room-card">
-          <div class="room-card-top">
-            <span class="room-badge livre">Livre agora</span>
-          </div>
-          <div>
             <div class="room-title">Lab. de Cenografia</div>
             <div class="room-meta"> Bloco NUARTE</div>
             <div class="room-meta"> Até 10 pessoas</div>
@@ -99,7 +60,7 @@
           </div>
         </article>
 
-        <!-- Card 4 -->
+        <!-- Card 2 -->
         <article class="room-card">
           <div class="room-card-top">
             <span class="room-badge livre">Livre agora</span>
@@ -112,22 +73,6 @@
           <div class="room-card-actions">
             <a href="#" class="btn btn-outline">Ver detalhes</a>
             <button type="button" class="btn btn-primary" onclick="openRoomModal('Lab. de Música')">Solicitar reserva</button>
-          </div>
-        </article>
-
-        <!-- Card 5 -->
-        <article class="room-card">
-          <div class="room-card-top">
-            <span class="room-badge ocupada">Ocupada</span>
-          </div>
-          <div>
-            <div class="room-title">Sala Multiuso</div>
-            <div class="room-meta"> Bloco NUARTE</div>
-            <div class="room-meta"> Até 20 pessoas</div>
-          </div>
-          <div class="room-card-actions">
-            <a href="#" class="btn btn-outline">Ver detalhes</a>
-            <button type="button" class="btn btn-primary" onclick="openRoomModal('Sala Multiuso')">Solicitar reserva</button>
           </div>
         </article>
 
@@ -163,16 +108,6 @@
           <span class="reservation-status pendente">Pendente</span>
           <button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>
         </div>
-
-        <div class="reservation-row">
-          
-          <div class="reservation-info">
-            <div class="reservation-room">Lab. de Cenografia</div>
-            <div class="reservation-time">Ter, 18 de agosto · 19h às 21h</div>
-          </div>
-          <span class="reservation-status cancelada">Cancelada</span>
-          <button type="button" class="reservation-cancel" disabled style="opacity:.4;cursor:not-allowed;">Cancelar</button>
-        </div>
       </div>
     </div>
   </section>
@@ -193,11 +128,8 @@
           <span>Sala</span>
           <select name="sala" id="reservaSala" required>
             <option value="" disabled selected>Selecione uma sala</option>
-            <option value="Sala de Música">Sala de Música</option>
-            <option value="Auditório">Auditório</option>
             <option value="Lab. de Cenografia">Lab. de Cenografia</option>
             <option value="Lab. de Música">Lab. de Música</option>
-            <option value="Sala Multiuso">Sala Multiuso</option>
           </select>
         </label>
 
