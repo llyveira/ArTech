@@ -1,17 +1,22 @@
     
     <!-- Cabeçalho Principal -->
-    <header class="page-header">
+    {{!-- <header class="page-header">
       <div class="header-title">
         <h1>{{title}}</h1>
         <p>{{subtitle}}</p>
       </div>
       <div class="header-actions">
         <input type="search" placeholder="Pesquisar eventos...">
-        <button type="button">+ Novo Evento</button>
+       
       </div>
-    </header>
+    </header> --}}
 
     <!-- Filtros de Busca -->
+    <section class="filters-section">
+
+        <!-- Botão de Novo Evento -->
+<button class="btn-novo-evento" type="button" onclick="abrirModalNovoEvento()">+ Novo Evento</button>
+
     <select name="categoria">
         <option value="" disabled selected>Categoria</option>
         <option value="oficinas-artisticas">Oficinas artísticas</option>
@@ -50,53 +55,206 @@
       </select>
 
         {{!-- Botao de limpar filtros --}}
-        <button type="button" class="btn-limpar" onclick="limparFiltros()">Limpar Filtros</button>
-      </section>
+      <button type="button" class="btn-limpar" onclick="limparFiltros()">Limpar Filtros</button>
+    </section>
 
     <!-- Seção da Lista de Eventos -->
-        <div class="section-header">
-            <h2>Lista de Eventos</h2>
-            <span class="badge-count"> 0 eventos encontrados</span>
-         </div>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Lista de Eventos</h2>
+        <span class="badge">4 eventos encontrados</span>
+      </div>
 
-      <!-- Grid de Cards de Eventos -->
-      <div class="events-grid">
-        {{#each eventos}}
-          <article class="event-card">
-            <div class="card-image-wrapper">
-              <img src="{{this.imagem}}" alt="{{this.titulo}}">
-              <span class="status-tag {{this.statusClass}}">{{this.status}}</span>
+      <div class="grid">
+        <article class="card">
+          <div class="card-media">
+            <img src="OficinaDeTeatro.jpg" alt="Oficina de Teatro" loading="lazy" />
+            <span class="tag tag-publicado">Publicado</span>
+          </div>
+          <div class="card-body">
+            <h3>Oficina de Teatro</h3>
+            <ul class="event-details">
+              <li>📅 20/06/2026</li>
+              <li>⏰ 15:00</li>
+              <li>📍 NUARTE</li>
+              <li>👤 Responsável: João Silva</li>
+              <li>👥 Vagas: 20</li>
+              <li>📞 Contato: (84) 99999-9999</li>
+            </ul>
+            <div class="card-actions">
+              <button class="btn-outline" type="button">Visualizar</button>
+              <button class="btn-outline" type="button">Editar</button>
+              <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
             </div>
+          </div>
+        </article>
 
-            <div class="card-body">
-              <h3>{{this.titulo}}</h3>
-              
-              <ul class="event-details">
-                <li>📅 {{this.data}}</li>
-                <li>⏰ {{this.horario}}</li>
-                <li>📍 {{this.local}}</li>
-                <li>👤 Responsável: {{this.responsavel}}</li>
-                <li>👥 Vagas: {{this.vagas}}</li>
-                <li>📞 Contato: {{this.contato}}</li>
-              </ul>
-
-              <div class="card-actions">
-                <a href="/eventos/{{this.id}}" class="btn-visualizar">Visualizar</a>
-                <a href="/eventos/{{this.id}}/editar" class="btn-editar">Editar</a>
-                <button type="button" class="btn-excluir">Excluir</button>
-              </div>
+        <article class="card">
+          <div class="card-media">
+            <img src="ExposicaoCultural.jpg" alt="Exposição Cultural" loading="lazy" />
+            <span class="tag tag-publicado">Publicado</span>
+          </div>
+          <div class="card-body">
+            <h3>Exposição Cultural</h3>
+            <ul class="event-details">
+              <li>📅 25/06/2026</li>
+              <li>⏰ 18:00</li>
+              <li>📍 Auditório IFRN</li>
+              <li>👤 Responsável: Maria Santos</li>
+              <li>👥 Vagas: Livre</li>
+              <li>📞 Contato: (84) 98888-8888</li>
+            </ul>
+            <div class="card-actions">
+              <button class="btn-outline" type="button">Visualizar</button>
+              <button class="btn-outline" type="button">Editar</button>
+              <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
             </div>
-          </article>
-        {{else}}
-          <p>Nenhum evento encontrado.</p>
-        {{/each}}
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-media">
+            <img src="WorkshopDeDanca.jpg" alt="Workshop de Dança" loading="lazy" />
+            <span class="tag tag-rascunho">Rascunho</span>
+          </div>
+          <div class="card-body">
+            <h3>Workshop de Dança</h3>
+            <ul class="event-details">
+              <li>📅 02/07/2026</li>
+              <li>⏰ 14:00</li>
+              <li>📍 NUARTE - Sala 02</li>
+              <li>👤 Responsável: Carla Mendes</li>
+              <li>👥 Vagas: 15</li>
+              <li>📞 Contato: (84) 97777-7777</li>
+            </ul>
+            <div class="card-actions">
+              <button class="btn-outline" type="button">Visualizar</button>
+              <button class="btn-outline" type="button">Editar</button>
+              <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-media">
+            <img src="SarauLiterario.jpg" alt="Sarau Literário" loading="lazy" />
+            <span class="tag tag-publicado">Publicado</span>
+          </div>
+          <div class="card-body">
+            <h3>Sarau Literário</h3>
+            <ul class="event-details">
+              <li>📅 10/07/2026</li>
+              <li>⏰ 19:00</li>
+              <li>📍 Biblioteca IFRN</li>
+              <li>👤 Responsável: Pedro Alves</li>
+              <li>👥 Vagas: 30</li>
+              <li>📞 Contato: (84) 96666-6666</li>
+            </ul>
+            <div class="card-actions">
+              <button class="btn-outline" type="button">Visualizar</button>
+              <button class="btn-outline" type="button">Editar</button>
+              <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
+            </div>
+          </div>
+        </article>
       </div>
 
       <!-- Paginação -->
-      <div class="pagination">
-        <button disabled>&lt; Anterior</button>
-        <button class="active">1</button>
-        <button>2</button>
-        <button>Próxima &gt;</button>
-      </div>
+      <nav class="pagination">
+        <button class="page-nav" type="button" disabled>‹ Anterior</button>
+        <button class="page current" type="button">1</button>
+        <button class="page" type="button">2</button>
+        <button class="page-nav" type="button">Próxima ›</button>
+      </nav>
     </section>
+
+   <!-- ===== Modal: Novo Evento ===== -->
+<div class="modal-overlay hidden" id="modalNovoEvento" onclick="fecharModalNovoEvento()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalNovoEventoTitle" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h2 id="modalNovoEventoTitle">Novo Evento</h2>
+      <button class="modal-close" type="button" aria-label="Fechar" onclick="fecharModalNovoEvento()">✕</button>
+    </div>
+
+    <form class="modal-form" action="/events" method="POST" enctype="multipart/form-data">
+      <label class="field">
+        <span>Nome do evento</span>
+        <input type="text" name="name" placeholder="Ex: Oficina de Teatro" required />
+      </label>
+
+      <label class="field">
+        <span>Descrição</span>
+        <textarea name="description" rows="3" placeholder="Descreva o evento..." required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Categoria</span>
+        <select name="category" required>
+          <option value="" disabled selected>Selecione uma categoria</option>
+          <option value="oficinas-artisticas">Oficinas artísticas</option>
+          <option value="apresentacoes-culturais">Apresentações culturais</option>
+          <option value="ensaios">Ensaios</option>
+          <option value="exposicoes">Exposições</option>
+          <option value="reunioes">Reuniões</option>
+          <option value="projetos-culturais">Projetos culturais</option>
+          <option value="aulas-musicais">Aulas e atividades musicais</option>
+          <option value="palestras">Palestras</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Imagem</span>
+        <input type="file" name="image" accept="image/*" />
+      </label>
+
+      <fieldset class="modal-fieldset">
+        <legend>Reserva</legend>
+
+        <div class="modal-grid-2">
+          <label class="field">
+            <span>Data</span>
+            <input type="date" name="reservation_date" required />
+          </label>
+          <label class="field">
+            <span>Horário</span>
+            <input type="time" name="reservation_time" required />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Local</span>
+          <select name="reservation_location" required>
+            <option value="" disabled selected>Selecione o local</option>
+            <option value="nuarte">NUARTE</option>
+            <option value="biblioteca-ifrn">Biblioteca IFRN</option>
+            <option value="espaco-cultural">Espaço Cultural</option>
+            <option value="auditorio-ifrn">Auditório IFRN</option>
+          </select>
+        </label>
+
+        <div class="modal-grid-2">
+          <label class="field">
+            <span>Responsável</span>
+            <input type="text" name="reservation_responsible" placeholder="Nome do responsável" required />
+          </label>
+          <label class="field">
+            <span>Vagas</span>
+            <input type="text" name="reservation_spots" placeholder="Ex: 20 ou Livre" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Contato</span>
+          <input type="tel" name="reservation_contact" placeholder="(84) 90000-0000" />
+        </label>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="fecharModalNovoEvento()">Cancelar</button>
+        <button type="submit" class="btn-primary">Criar Evento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <script src="/javascripts/events.js" defer></script>

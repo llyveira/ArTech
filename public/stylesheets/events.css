@@ -1,0 +1,352 @@
+/* =========================================================
+   Eventos do NUARTE — estilos da página de eventos
+   (filtros, lista de eventos, paginação)
+   ========================================================= */
+
+:root {
+  --color-primary: #1a7a4f;
+  --color-primary-dark: #135c3c;
+  --color-primary-light: #e6f5ec;
+  --color-primary-lighter: #f3faf6;
+
+  --color-orange: #f0a83c;
+  --color-danger: #e0554f;
+  --color-danger-light: #fceeed;
+
+  --color-text: #1f2a24;
+  --color-text-muted: #6b7a72;
+  --color-border: #e3ebe6;
+  --color-card-bg: #ffffff;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(20, 40, 30, 0.04), 0 4px 14px rgba(20, 40, 30, 0.06);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ========== Barra de filtros (.filters-section) ========== */
+
+.filters-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 32px 20px;
+  padding: 20px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  flex-wrap: wrap;
+}
+
+.filters-section select {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1 1 160px;
+  min-width: 140px;
+  padding: 10px 36px 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%236B7A72' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+    no-repeat right 14px center;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.filters-section select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.btn-novo-evento {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #219a63, var(--color-primary-dark));
+  color: #fff;
+  border: none;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  white-space: nowrap;
+  margin-right: 8px;
+  box-shadow: 0 2px 6px rgba(19, 92, 60, 0.25);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-novo-evento:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 3px 10px rgba(19, 92, 60, 0.32);
+}
+
+.btn-novo-evento:active {
+  filter: brightness(0.96);
+}
+
+.btn-limpar {
+  flex: 0 0 auto;
+  min-width: 140px;
+  margin-left: auto;
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-light);
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-limpar:hover {
+  background: var(--color-primary-light);
+}
+
+/* ========== Painel "Lista de Eventos" (.panel) ==========*/
+
+.panel {
+  margin: 0 32px 32px;
+  padding: 24px;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.panel-head h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.badge {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+/* ========== Grid de cards (.grid > .card) ========== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid > p {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 40px 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-primary-lighter);
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-text-muted);
+}
+
+.tag-publicado {
+  background: var(--color-primary);
+}
+
+.tag-rascunho {
+  background: var(--color-orange);
+}
+
+.card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.card-body h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.event-details {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.event-details li {
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.btn-outline,
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-outline {
+  flex: 1;
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary-light);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-light);
+}
+
+.btn-danger {
+  flex: 0 0 auto;
+  width: 40px;
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  border-color: var(--color-danger-light);
+}
+
+.btn-danger:hover {
+  background: #f8d9d7;
+}
+
+/* ========== Paginhação ==========*/
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.pagination button {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: var(--color-primary-lighter);
+}
+
+.pagination button:disabled {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination button.current {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ========== Responsivel ==========*/
+
+@media (max-width: 640px) {
+  .filters-section,
+  .panel {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .filters-section select {
+    flex: 1 1 45%;
+    min-width: 0;
+  }
+
+  .btn-limpar {
+    margin-left: 0;
+    width: 100%;
+  }
+}
