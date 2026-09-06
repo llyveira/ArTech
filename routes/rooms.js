@@ -5,7 +5,7 @@ let { Classrooms, Reservations, ReservationParticipants } = require("../models/r
 
 /* GET rooms apenas visual, ainda sem funcionalidade e integração com banco de dados s */
 router.get('/', function(req, res, next) {
-  res.render('rooms/index', { title: 'Reserva de Salas' });
+  res.render('rooms/index', { title: 'Reserva de Salas', subtitle:'Consulte a disponibilidade das salas, solicite sua reserva e acompanhe tudo em um só lugar.' });
 });
 
 module.exports = router;
