@@ -1,0 +1,29 @@
+
+<link rel="stylesheet" href="/stylesheets/style.css" />
+<section class="event-view">
+  <a href="/events" class="back-link">← Voltar para Eventos</a>
+
+  <div class="event-view-card">
+    <div class="event-view-media">
+      <img src="{{evento.imagem}}" alt="{{evento.titulo}}">
+      <span class="tag tag-{{evento.statusClass}}">{{evento.status}}</span>
+    </div>
+
+    <div class="event-view-body">
+      <h1>{{evento.titulo}}</h1>
+
+      <ul class="event-details">
+        <li>📅 {{evento.data}}</li>
+        <li>⏰ {{evento.horario}}</li>
+        <li>📍 {{evento.local}}</li>
+        <li>👤 Responsável: {{evento.responsavel}}</li>
+        <li>👥 Vagas: {{evento.vagas}}</li>
+        <li>📞 Contato: {{evento.contato}}</li>
+      </ul>
+
+      <p class="event-view-description">{{evento.descricao}}</p>
+
+      <button type="button" class="btn-primary btn-inscrever">Inscrever-se</button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,1041 @@
+/* =========================================================
+   ARTECH — CSS COMPARTILHADO
+   Login + Cadastro Interno + Cadastro Externo
+   ========================================================= */
+
+:root {
+    --background: #e9f2ec;
+    --card: #ffffff;
+
+    --ink: #12322b;
+    --copy: #565e6e;
+
+    --primary: #2f7d5d;
+    --primary-dark: #276a4f;
+    --primary-foreground: #ffffff;
+
+    --secondary: #1c2430;
+    --secondary-foreground: #ffffff;
+
+    --muted: #7b8290;
+    --label: #276a4f;
+
+    --field-border: #e9ecf2;
+    --field-icon: #a4dcb9;
+
+    --placeholder: #c3c7d0;
+    --placeholder-strong: #8b93a2;
+
+    --panel-shadow: rgba(38, 92, 75, 0.13);
+    --panel-inner-shadow: rgba(10, 60, 45, 0.18);
+    --field-shadow: rgba(45, 55, 80, 0.07);
+    --button-shadow: rgba(23, 166, 120, 0.22);
+    --dark-shadow: rgba(15, 20, 30, 0.20);
+
+    --benefit-purple: #6b3fa0;
+    --benefit-gold: #d8a10a;
+    --benefit-orange: #e86a1d;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+
+    padding: 24px 16px 40px;
+
+    background: var(--background);
+
+    font-family: "Nunito Sans", sans-serif;
+    color: var(--ink);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================================
+   ESTRUTURA
+   ========================================================= */
+
+main {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+
+    width: 100%;
+    max-width: 504px;
+
+    background: var(--card);
+
+    border-radius: 30px;
+    overflow: hidden;
+
+    box-shadow: 0 28px 70px var(--panel-shadow);
+}
+
+
+/* =========================================================
+   PAINEL VERDE
+   ========================================================= */
+
+.brand-panel {
+    position: relative;
+
+    width: 184px;
+    min-width: 184px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    padding: 28px 22px;
+
+    background:
+        linear-gradient(
+            160deg,
+            #023a2b 0%,
+            var(--primary) 60%,
+            var(--primary-dark) 100%
+        );
+
+    text-align: center;
+
+    color: var(--primary-foreground);
+}
+
+.brand-panel-inner {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =========================================================
+   LOGO / ÍCONE
+   ========================================================= */
+
+.logo-frame,
+.icon-badge {
+    width: 70px;
+    height: 70px;
+
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.30);
+
+    background: rgba(255, 255, 255, 0.10);
+
+    box-shadow: 0 12px 30px var(--panel-inner-shadow);
+}
+
+.logo-frame {
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 255, 255, 0.38);
+
+    background: rgba(255, 255, 255, 0.12);
+
+    box-shadow:
+        0 0 0 5px rgba(255, 255, 255, 0.08),
+        0 12px 30px var(--panel-inner-shadow);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.logo-frame img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    border-radius: 13px;
+}
+
+.icon-badge {
+    color: #c7d2e3;
+}
+
+.icon-badge i {
+    font-size: 28px;
+}
+
+
+/* =========================================================
+   TEXTO DO PAINEL
+   ========================================================= */
+
+.brand-panel h2 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    line-height: 1.3;
+}
+
+.brand-panel p {
+    margin: 10px 0 0;
+
+    font-size: 8px;
+    line-height: 1.55;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+
+/* =========================================================
+   SELO DE SEGURANÇA
+   ========================================================= */
+
+.secure-badge {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    height: 30px;
+
+    margin-top: 22px;
+    padding: 0 11px;
+
+    border-radius: 999px;
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+
+    background: rgba(255, 255, 255, 0.06);
+
+    font-size: 7px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.secure-badge i {
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.form-panel {
+    flex: 1;
+    min-width: 0;
+
+    padding: 34px 30px 28px;
+}
+
+.form-panel header {
+    margin-bottom: 24px;
+}
+
+.form-panel h1 {
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    color: var(--ink);
+}
+
+.subtitle {
+    margin: 8px 0 0;
+
+    font-size: 7px;
+    font-weight: 600;
+
+    letter-spacing: 0.28em;
+
+    text-transform: uppercase;
+
+    color: var(--muted);
+}
+
+form {
+    width: 100%;
+}
+
+form > * + * {
+    margin-top: 16px;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.field {
+    display: block;
+    min-width: 0;
+}
+
+.field-label {
+    display: block;
+
+    margin: 0 0 5px 3px;
+
+    font-size: 7px;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color: var(--label);
+}
+
+.field-box {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 42px;
+
+    padding: 0 11px;
+
+    border: 1px solid var(--field-border);
+
+    border-radius: 11px;
+
+    background: var(--card);
+
+    box-shadow: 0 5px 14px var(--field-shadow);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.field-box.highlighted {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 166, 120, 0.10),
+        0 5px 14px var(--field-shadow);
+}
+
+.field-box:focus-within {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 166, 120, 0.10),
+        0 5px 14px var(--field-shadow);
+}
+
+.field-icon {
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--field-icon);
+}
+
+.field-icon i {
+    font-size: 14px;
+}
+
+.field-box input {
+    flex: 1;
+
+    min-width: 0;
+    width: 0;
+    height: 100%;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    font-family: inherit;
+    font-size: 10px;
+
+    color: var(--ink);
+}
+
+.field-box input::placeholder {
+    color: var(--placeholder);
+}
+
+.field-box input.password::placeholder {
+    color: var(--placeholder-strong);
+}
+
+
+/* =========================================================
+   SENHAS
+   ========================================================= */
+
+.password-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 13px;
+
+    width: 100%;
+}
+
+.password-row > .field {
+    min-width: 0;
+}
+
+.password-toggle {
+    flex-shrink: 0;
+
+    margin-left: 4px;
+    padding: 0;
+
+    border: 0;
+
+    background: none;
+
+    cursor: pointer;
+
+    color: var(--field-icon);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle:hover {
+    color: var(--primary);
+}
+
+.password-toggle i {
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   BOTÃO PRINCIPAL
+   ========================================================= */
+
+.btn-primary {
+    width: 100%;
+    height: 46px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+    padding: 0 18px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            160deg,
+            #023a2b 0%,
+            var(--primary) 60%,
+            var(--primary-dark) 100%
+        );
+
+    color: var(--primary-foreground);
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow: 0 14px 28px var(--button-shadow);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LOGIN — OPÇÕES
+   ========================================================= */
+
+.options {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 14px;
+
+    font-size: 7px;
+    font-weight: 700;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    color: var(--muted);
+
+    cursor: pointer;
+}
+
+.remember input {
+    width: 12px;
+    height: 12px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+
+    cursor: pointer;
+}
+
+.forgot {
+    margin-left: auto;
+
+    color: var(--primary-dark);
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.forgot:hover {
+    color: var(--primary);
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LOGIN — CADASTRO
+   ========================================================= */
+
+.register {
+    width: 100%;
+
+    margin: 20px 0 0;
+
+    text-align: center;
+
+    font-size: 7px;
+    font-weight: 600;
+
+    color: var(--muted);
+}
+
+.register a {
+    color: var(--primary-dark);
+
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.register a:hover {
+    color: var(--primary);
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   LINKS INFERIORES
+   ========================================================= */
+
+.legal-links {
+    margin-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    font-size: 6.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+}
+
+.legal-links a {
+    color: var(--muted);
+
+    text-decoration: none;
+}
+
+.legal-links a:hover {
+    color: var(--primary);
+}
+
+.legal-links span {
+    color: #d8dde5;
+}
+
+
+/* =========================================================
+   CARTÃO — ACESSO EXTERNO
+   ========================================================= */
+
+.guest-card {
+    width: 100%;
+    max-width: 504px;
+
+    margin-top: 16px;
+
+    padding: 18px 20px;
+
+    background: var(--card);
+
+    border-radius: 20px;
+
+    box-shadow: 0 14px 35px var(--panel-shadow);
+}
+
+
+/* =========================================================
+   CABEÇALHO DO CARD
+   ========================================================= */
+
+.guest-header {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   ÍCONE DO GLOBO
+   ========================================================= */
+
+.guest-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #f0f1f3;
+
+    color: #1c2430;
+}
+
+.guest-icon i {
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   TEXTO DO CARD
+   ========================================================= */
+
+.guest-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.guest-title {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.guest-title h2 {
+    margin: 0;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    color: var(--ink);
+}
+
+.visitor-tag {
+    padding: 3px 7px;
+
+    border-radius: 999px;
+
+    background: #eef1f8;
+
+    color: #4a5a7a;
+
+    font-size: 6px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+.guest-text p {
+    margin: 5px 0 0;
+
+    font-size: 7px;
+    line-height: 1.45;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   BOTÃO DO ACESSO EXTERNO
+   ========================================================= */
+
+.btn-dark {
+    flex-shrink: 0;
+
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 0 11px;
+
+    border-radius: 9px;
+
+    background: var(--secondary);
+
+    color: var(--secondary-foreground);
+
+    font-family: inherit;
+    font-size: 7px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    box-shadow: 0 7px 15px var(--dark-shadow);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.btn-dark:hover {
+    background: #111821;
+
+    transform: translateY(-1px);
+}
+
+.btn-dark:active {
+    transform: translateY(0);
+}
+
+.btn-dark .ext {
+    opacity: 0.75;
+}
+
+
+/* =========================================================
+   BENEFÍCIOS
+   ========================================================= */
+
+.benefits {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
+
+    margin-top: 14px;
+}
+
+.benefit {
+    min-width: 0;
+
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 0 7px;
+
+    border-radius: 8px;
+
+    background: #f7f8fa;
+
+    font-size: 6.5px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.benefit i {
+    flex-shrink: 0;
+
+    font-size: 13px;
+}
+
+.benefit .label {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.tone-purple {
+    color: var(--benefit-purple);
+}
+
+.tone-gold {
+    color: var(--benefit-gold);
+}
+
+.tone-orange {
+    color: var(--benefit-orange);
+}
+
+.back {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+    max-width: 504px;
+
+    margin: 0 auto 14px;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+    color: #3d4a60;
+
+    text-decoration: none;
+}
+
+.back:hover {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (min-width: 640px) {
+
+    .brand-panel {
+        display: flex;
+    }
+
+    .form-panel {
+        padding: 34px 30px 28px;
+    }
+}
+
+
+@media (max-width: 639px) {
+
+    .card,
+    .guest-card {
+        max-width: 504px;
+    }
+
+    .brand-panel {
+        display: none;
+    }
+
+    .form-panel {
+        padding: 32px 28px 26px;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .guest-header {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+    }
+
+    .guest-text {
+        flex: 1;
+    }
+
+    .btn-dark {
+        margin-left: 50px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 20px 12px 30px;
+    }
+
+    .card,
+    .guest-card {
+        border-radius: 24px;
+    }
+
+    .form-panel {
+        padding: 28px 22px 24px;
+    }
+
+    .form-panel h1 {
+        font-size: 20px;
+    }
+
+    .password-row {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+    .field-box {
+        height: 43px;
+    }
+
+    .btn-primary {
+        height: 46px;
+    }
+
+    .options {
+        flex-wrap: nowrap;
+    }
+
+    .guest-card {
+        padding: 16px;
+    }
+
+    .guest-header {
+        gap: 10px;
+    }
+
+    .guest-text {
+        width: calc(100% - 48px);
+    }
+
+    .btn-dark {
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+    .benefits {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 360px) {
+
+    .form-panel {
+        padding: 25px 18px 22px;
+    }
+
+    .form-panel h1 {
+        font-size: 19px;
+    }
+
+    .subtitle {
+        font-size: 6px;
+
+        letter-spacing: 0.22em;
+    }
+
+    .field-box input {
+        font-size: 9px;
+    }
+
+    .options {
+        font-size: 6.5px;
+    }
+}
