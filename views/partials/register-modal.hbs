@@ -1,0 +1,195 @@
+<div class="modal-overlay hidden" id="registerModalOverlay">
+  <div
+    class="modal register-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="registerModalTitle"
+  >
+    <section class="card">
+
+      <!-- PAINEL DA MARCA -->
+      <aside class="brand-panel">
+        <div class="brand-panel-inner">
+
+          <div class="logo-frame">
+            <img src="/images/artech-logo.jpg" alt="Logo Artech" />
+          </div>
+
+          <h2>Arte, cultura e comunidade.</h2>
+
+          <p>
+            Conecte-se às atividades, eventos e recursos artísticos do IF.
+          </p>
+
+          <div class="secure-badge">
+            <i class="bi bi-shield-check"></i>
+            Ambiente seguro
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- PAINEL DO FORMULÁRIO -->
+      <div class="form-panel">
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeRegisterButton"
+          aria-label="Fechar"
+        >
+          ✕
+        </button>
+
+        <header>
+          <h1 id="registerModalTitle">Criar conta</h1>
+          <p class="subtitle">Cadastro de Usuários</p>
+        </header>
+
+        <form id="registerForm" action="/users/register" method="POST">
+
+          <!-- NOME -->
+          <div class="input-group">
+            <label for="registerName">
+              Nome completo
+            </label>
+
+            <div class="input-wrapper">
+              <i class="bi bi-person"></i>
+
+              <input
+                type="text"
+                id="registerName"
+                name="name"
+                placeholder="Digite seu nome completo"
+                autocomplete="name"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- E-MAIL -->
+          <div class="input-group">
+            <label for="registerEmail">
+              E-mail
+            </label>
+
+            <div class="input-wrapper">
+              <i class="bi bi-envelope"></i>
+
+              <input
+                type="email"
+                id="registerEmail"
+                name="email"
+                placeholder="Digite seu e-mail"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- MATRÍCULA -->
+          <div class="input-group">
+            <label for="registerRegistration">
+              Matrícula
+              <span>(opcional, para usuários internos)</span>
+            </label>
+
+            <div class="input-wrapper">
+              <i class="bi bi-card-text"></i>
+
+              <input
+                type="text"
+                id="registerRegistration"
+                name="registration"
+                placeholder="Digite sua matrícula"
+              />
+            </div>
+          </div>
+
+          <!-- SENHA -->
+          <div class="input-group">
+            <label for="registerPassword">
+              Senha
+            </label>
+
+            <div class="input-wrapper">
+              <i class="bi bi-lock"></i>
+
+              <input
+                type="password"
+                id="registerPassword"
+                name="password"
+                placeholder="Digite sua senha"
+                autocomplete="new-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleRegisterPassword"
+                aria-label="Mostrar senha"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- CONFIRMAÇÃO DE SENHA -->
+          <div class="input-group">
+            <label for="registerConfirmPassword">
+              Confirmar senha
+            </label>
+
+            <div class="input-wrapper">
+              <i class="bi bi-lock-fill"></i>
+
+              <input
+                type="password"
+                id="registerConfirmPassword"
+                name="confirmPassword"
+                placeholder="Confirme sua senha"
+                autocomplete="new-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleRegisterConfirmPassword"
+                aria-label="Mostrar confirmação de senha"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- BOTÃO DE CADASTRO -->
+          <button type="submit" class="submit-btn" id="registerSubmitBtn">
+            <i class="bi bi-person-plus"></i>
+            Criar minha conta
+          </button>
+
+        </form>
+
+        <!-- LINK PARA LOGIN -->
+        <p class="register">
+          Já possui uma conta?
+
+          <a href="#" id="openLoginFromRegister">
+            Entrar
+          </a>
+        </p>
+
+        <!-- LINKS LEGAIS -->
+        <div class="legal-links">
+          <a href="#">Termos de uso</a>
+          <span>•</span>
+          <a href="#">Política de privacidade</a>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>

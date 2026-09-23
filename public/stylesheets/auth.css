@@ -1,111 +1,125 @@
 /* =========================================================
-   ARTECH — CSS COMPARTILHADO
-   Login + Cadastro Interno + Cadastro Externo
-   ========================================================= */
+   VARIÁVEIS
+========================================================= */
 
-:root {
-    --background: #e9f2ec;
-    --card: #ffffff;
-
-    --ink: #12322b;
-    --copy: #565e6e;
-
-    --primary: #2f7d5d;
-    --primary-dark: #276a4f;
-    --primary-foreground: #ffffff;
-
-    --secondary: #1c2430;
-    --secondary-foreground: #ffffff;
-
-    --muted: #7b8290;
-    --label: #276a4f;
-
-    --field-border: #e9ecf2;
-    --field-icon: #a4dcb9;
-
-    --placeholder: #c3c7d0;
-    --placeholder-strong: #8b93a2;
-
-    --panel-shadow: rgba(38, 92, 75, 0.13);
-    --panel-inner-shadow: rgba(10, 60, 45, 0.18);
-    --field-shadow: rgba(45, 55, 80, 0.07);
-    --button-shadow: rgba(23, 166, 120, 0.22);
-    --dark-shadow: rgba(15, 20, 30, 0.20);
-
-    --benefit-purple: #6b3fa0;
-    --benefit-gold: #d8a10a;
-    --benefit-orange: #e86a1d;
+#loginModalOverlay,
+#registerModalOverlay {
+    --auth-background: #e9f2ec;
+    --auth-card: #ffffff;
+    --auth-ink: #12322b;
+    --auth-copy: #565e6e;
+    --auth-primary: #2f7d5d;
+    --auth-primary-dark: #276a4f;
+    --auth-primary-foreground: #ffffff;
+    --auth-secondary: #1c2430;
+    --auth-secondary-foreground: #ffffff;
+    --auth-muted: #7b8290;
+    --auth-label: #276a4f;
+    --auth-field-border: #e9ecf2;
+    --auth-field-icon: #a4dcb9;
+    --auth-placeholder: #c3c7d0;
+    --auth-placeholder-strong: #8b93a2;
+    --auth-panel-shadow: rgba(38, 92, 75, 0.13);
+    --auth-panel-inner-shadow: rgba(10, 60, 45, 0.18);
+    --auth-field-shadow: rgba(45, 55, 80, 0.07);
+    --auth-button-shadow: rgba(23, 166, 120, 0.22);
+    --auth-dark-shadow: rgba(15, 20, 30, 0.2);
+    --auth-benefit-purple: #6b3fa0;
+    --auth-benefit-gold: #d8a10a;
+    --auth-benefit-orange: #e86a1d;
 }
 
 
 /* =========================================================
-   RESET
-   ========================================================= */
+   OVERLAY
+========================================================= */
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    min-width: 320px;
-}
-
-body {
-    margin: 0;
-    min-width: 320px;
-    min-height: 100vh;
-
-    padding: 24px 16px 40px;
-
-    background: var(--background);
-
-    font-family: "Nunito Sans", sans-serif;
-    color: var(--ink);
+#loginModalOverlay,
+#registerModalOverlay {
+    position: fixed;
+    inset: 0;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 16px;
+
+    overflow-y: auto;
+
+    background: rgba(18, 50, 43, 0.55);
+
+    z-index: 1000;
+}
+
+#loginModalOverlay.hidden,
+#registerModalOverlay.hidden {
+    display: none;
 }
 
 
 /* =========================================================
-   ESTRUTURA
-   ========================================================= */
+   MODAL
+========================================================= */
 
-main {
+#loginModalOverlay .modal,
+#registerModalOverlay .modal {
     width: 100%;
+    max-width: 630px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-height: calc(100vh - 32px);
+
+    overflow: visible;
+
+    background: transparent;
+    box-shadow: none;
 }
 
-.card {
+
+/* =========================================================
+   CARD PRINCIPAL
+========================================================= */
+
+#loginModalOverlay .card,
+#registerModalOverlay .card {
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
 
-    width: 100%;
-    max-width: 504px;
+    width: 630px;
+    max-width: 100%;
 
-    background: var(--card);
+    height: min(675px, calc(100vh - 32px));
+    min-height: 0;
+
+    margin: 0 auto;
+    padding: 0;
+
+    background: var(--auth-card);
 
     border-radius: 30px;
     overflow: hidden;
 
-    box-shadow: 0 28px 70px var(--panel-shadow);
+    box-shadow: 0 28px 70px var(--auth-panel-shadow);
 }
 
 
 /* =========================================================
    PAINEL VERDE
-   ========================================================= */
+========================================================= */
 
-.brand-panel {
+#loginModalOverlay .brand-panel,
+#registerModalOverlay .brand-panel {
     position: relative;
 
-    width: 184px;
-    min-width: 184px;
-    flex-shrink: 0;
+    flex: 0 0 230px;
+
+    width: 230px;
+    min-width: 230px;
+    min-height: 0;
 
     display: flex;
     flex-direction: column;
@@ -116,35 +130,37 @@ main {
 
     padding: 28px 22px;
 
-    background:
-        linear-gradient(
-            160deg,
-            #023a2b 0%,
-            var(--primary) 60%,
-            var(--primary-dark) 100%
-        );
+    background: linear-gradient(
+        160deg,
+        #023a2b 0%,
+        var(--auth-primary) 60%,
+        var(--auth-primary-dark) 100%
+    );
 
     text-align: center;
 
-    color: var(--primary-foreground);
+    color: var(--auth-primary-foreground);
 }
 
-.brand-panel-inner {
+#loginModalOverlay .brand-panel-inner,
+#registerModalOverlay .brand-panel-inner {
     position: relative;
     z-index: 1;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    width: 100%;
 }
 
 
 /* =========================================================
-   LOGO / ÍCONE
-   ========================================================= */
+   LOGO
+========================================================= */
 
-.logo-frame,
-.icon-badge {
+#loginModalOverlay .logo-frame,
+#registerModalOverlay .logo-frame {
     width: 70px;
     height: 70px;
 
@@ -154,64 +170,49 @@ main {
     align-items: center;
     justify-content: center;
 
-    border-radius: 16px;
-
-    border: 1px solid rgba(255, 255, 255, 0.30);
-
-    background: rgba(255, 255, 255, 0.10);
-
-    box-shadow: 0 12px 30px var(--panel-inner-shadow);
-}
-
-.logo-frame {
     overflow: hidden;
 
     border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 16px;
 
     background: rgba(255, 255, 255, 0.12);
 
     box-shadow:
         0 0 0 5px rgba(255, 255, 255, 0.08),
-        0 12px 30px var(--panel-inner-shadow);
+        0 12px 30px var(--auth-panel-inner-shadow);
 
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
 }
 
-.logo-frame img {
+#loginModalOverlay .logo-frame img,
+#registerModalOverlay .logo-frame img {
+    display: block;
+
     width: 100%;
     height: 100%;
 
     object-fit: cover;
 
-    display: block;
-
     border-radius: 13px;
-}
-
-.icon-badge {
-    color: #c7d2e3;
-}
-
-.icon-badge i {
-    font-size: 28px;
 }
 
 
 /* =========================================================
-   TEXTO DO PAINEL
-   ========================================================= */
+   TEXTOS DO PAINEL VERDE
+========================================================= */
 
-.brand-panel h2 {
+#loginModalOverlay .brand-panel h2,
+#registerModalOverlay .brand-panel h2 {
     margin: 0;
 
     font-size: 16px;
     font-weight: 800;
-
     line-height: 1.3;
 }
 
-.brand-panel p {
+#loginModalOverlay .brand-panel p,
+#registerModalOverlay .brand-panel p {
     margin: 10px 0 0;
 
     font-size: 8px;
@@ -223,9 +224,10 @@ main {
 
 /* =========================================================
    SELO DE SEGURANÇA
-   ========================================================= */
+========================================================= */
 
-.secure-badge {
+#loginModalOverlay .secure-badge,
+#registerModalOverlay .secure-badge {
     display: inline-flex;
     align-items: center;
 
@@ -236,15 +238,13 @@ main {
     margin-top: 22px;
     padding: 0 11px;
 
-    border-radius: 999px;
-
     border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
 
     background: rgba(255, 255, 255, 0.06);
 
     font-size: 7px;
     font-weight: 700;
-
     line-height: 1.2;
 
     text-transform: uppercase;
@@ -252,73 +252,149 @@ main {
     color: rgba(255, 255, 255, 0.72);
 }
 
-.secure-badge i {
+#loginModalOverlay .secure-badge i,
+#registerModalOverlay .secure-badge i {
     font-size: 12px;
 }
 
 
 /* =========================================================
-   FORMULÁRIO
-   ========================================================= */
+   ÁREA DO FORMULÁRIO
+========================================================= */
 
-.form-panel {
-    flex: 1;
+#loginModalOverlay .form-panel,
+#registerModalOverlay .form-panel {
+    position: relative;
+
+    flex: 1 1 auto;
+
     min-width: 0;
+    min-height: 0;
 
-    padding: 34px 30px 28px;
+    padding: 40px 32px 28px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background: var(--auth-card);
 }
 
-.form-panel header {
-    margin-bottom: 24px;
-}
 
-.form-panel h1 {
-    margin: 0;
+/* =========================================================
+   BOTÃO DE FECHAR
+========================================================= */
+
+#loginModalOverlay .modal-close,
+#registerModalOverlay .modal-close {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    z-index: 1;
+
+    width: 28px;
+    height: 28px;
 
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 999px;
+
+    background: var(--auth-field-border);
+    color: var(--auth-muted);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+#loginModalOverlay .modal-close:hover,
+#registerModalOverlay .modal-close:hover {
+    background: #e2e6ea;
+    color: var(--auth-ink);
+}
+
+
+/* =========================================================
+   CABEÇALHO
+========================================================= */
+
+#loginModalOverlay .form-panel header,
+#registerModalOverlay .form-panel header {
+    margin: 0 0 24px;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+}
+
+#loginModalOverlay .form-panel h1,
+#registerModalOverlay .form-panel h1 {
+    display: flex;
+    align-items: center;
+
     gap: 6px;
+
+    margin: 0;
 
     font-size: 21px;
     font-weight: 800;
-
     line-height: 1;
 
-    color: var(--ink);
+    color: var(--auth-ink);
 }
 
-.subtitle {
+#loginModalOverlay .subtitle,
+#registerModalOverlay .subtitle {
     margin: 8px 0 0;
 
     font-size: 7px;
     font-weight: 600;
 
     letter-spacing: 0.28em;
+    line-height: 1.5;
 
     text-transform: uppercase;
 
-    color: var(--muted);
+    color: var(--auth-muted);
 }
 
-form {
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+#loginModalOverlay form,
+#registerModalOverlay form {
     width: 100%;
+    margin: 0;
 }
 
-form > * + * {
+#loginModalOverlay form > * + *,
+#registerModalOverlay form > * + * {
     margin-top: 16px;
 }
 
 
 /* =========================================================
-   CAMPOS
-   ========================================================= */
+   CAMPOS DE LOGIN
+========================================================= */
 
-.field {
+#loginModalOverlay .field {
     display: block;
     min-width: 0;
 }
 
-.field-label {
+#loginModalOverlay .field-label {
     display: block;
 
     margin: 0 0 5px 3px;
@@ -327,13 +403,14 @@ form > * + * {
     font-weight: 800;
 
     letter-spacing: 0.08em;
+    line-height: 1.5;
 
     text-transform: uppercase;
 
-    color: var(--label);
+    color: var(--auth-label);
 }
 
-.field-box {
+#loginModalOverlay .field-box {
     display: flex;
     align-items: center;
 
@@ -342,57 +419,51 @@ form > * + * {
 
     padding: 0 11px;
 
-    border: 1px solid var(--field-border);
-
+    border: 1px solid var(--auth-field-border);
     border-radius: 11px;
 
-    background: var(--card);
+    background: var(--auth-card);
 
-    box-shadow: 0 5px 14px var(--field-shadow);
+    box-shadow: 0 5px 14px var(--auth-field-shadow);
 
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
 
-.field-box.highlighted {
-    border-color: var(--primary);
+#loginModalOverlay .field-box.highlighted,
+#loginModalOverlay .field-box:focus-within {
+    border-color: var(--auth-primary);
 
     box-shadow:
-        0 0 0 3px rgba(23, 166, 120, 0.10),
-        0 5px 14px var(--field-shadow);
+        0 0 0 3px rgba(23, 166, 120, 0.1),
+        0 5px 14px var(--auth-field-shadow);
 }
 
-.field-box:focus-within {
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(23, 166, 120, 0.10),
-        0 5px 14px var(--field-shadow);
-}
-
-.field-icon {
-    flex-shrink: 0;
-
-    margin-right: 10px;
-
+#loginModalOverlay .field-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    color: var(--field-icon);
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    color: var(--auth-field-icon);
 }
 
-.field-icon i {
+#loginModalOverlay .field-icon i {
     font-size: 14px;
 }
 
-.field-box input {
+#loginModalOverlay .field-box input {
     flex: 1;
 
     min-width: 0;
     width: 0;
     height: 100%;
+
+    padding: 0;
 
     border: 0;
     outline: none;
@@ -402,140 +473,154 @@ form > * + * {
     font-family: inherit;
     font-size: 10px;
 
-    color: var(--ink);
+    color: var(--auth-ink);
 }
 
-.field-box input::placeholder {
-    color: var(--placeholder);
+#loginModalOverlay .field-box input::placeholder {
+    color: var(--auth-placeholder);
 }
 
-.field-box input.password::placeholder {
-    color: var(--placeholder-strong);
+#loginModalOverlay .field-box input.password::placeholder {
+    color: var(--auth-placeholder-strong);
 }
 
 
 /* =========================================================
-   SENHAS
-   ========================================================= */
+   CAMPOS DE CADASTRO
+========================================================= */
 
-.password-row {
-    display: grid;
+#registerModalOverlay .input-group {
+    margin-bottom: 18px;
+}
 
-    grid-template-columns:
-        minmax(0, 1fr)
-        minmax(0, 1fr);
+#registerModalOverlay .input-group label {
+    display: block;
 
-    gap: 13px;
+    margin: 0 0 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    color: var(--auth-ink);
+}
+
+#registerModalOverlay .input-group label span {
+    font-weight: 400;
+    color: var(--auth-muted);
+}
+
+#registerModalOverlay .input-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
 
     width: 100%;
 }
 
-.password-row > .field {
-    min-width: 0;
+#registerModalOverlay .input-wrapper > i {
+    position: absolute;
+
+    left: 14px;
+
+    color: var(--auth-muted);
+
+    pointer-events: none;
 }
 
-.password-toggle {
+#registerModalOverlay .input-wrapper input {
+    width: 100%;
+    min-height: 44px;
+
+    padding: 11px 42px;
+
+    border: 1px solid var(--auth-field-border);
+    border-radius: 8px;
+
+    outline: none;
+
+    background: var(--auth-card);
+    color: var(--auth-ink);
+
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#registerModalOverlay .input-wrapper input:focus {
+    border-color: var(--auth-primary);
+
+    box-shadow: 0 0 0 3px rgba(47, 125, 93, 0.12);
+}
+
+#registerModalOverlay .input-wrapper input::placeholder {
+    color: var(--auth-placeholder);
+}
+
+
+/* =========================================================
+   ALTERNÂNCIA DE SENHA
+========================================================= */
+
+#loginModalOverlay .password-toggle,
+#registerModalOverlay .toggle-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    background: transparent;
+    color: var(--auth-field-icon);
+
+    cursor: pointer;
+}
+
+#loginModalOverlay .password-toggle:hover,
+#registerModalOverlay .toggle-password:hover {
+    color: var(--auth-primary);
+}
+
+#loginModalOverlay .password-toggle i,
+#registerModalOverlay .toggle-password i {
+    font-size: 15px;
+}
+
+#loginModalOverlay .password-toggle {
     flex-shrink: 0;
 
     margin-left: 4px;
     padding: 0;
-
-    border: 0;
-
-    background: none;
-
-    cursor: pointer;
-
-    color: var(--field-icon);
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.password-toggle:hover {
-    color: var(--primary);
-}
+#registerModalOverlay .toggle-password {
+    position: absolute;
 
-.password-toggle i {
-    font-size: 15px;
+    right: 10px;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
 }
 
 
 /* =========================================================
-   BOTÃO PRINCIPAL
-   ========================================================= */
+   OPÇÕES DO LOGIN
+========================================================= */
 
-.btn-primary {
-    width: 100%;
-    height: 46px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-
-    margin-top: 20px;
-    padding: 0 18px;
-
-    border: 0;
-    border-radius: 11px;
-
-    background:
-        linear-gradient(
-            160deg,
-            #023a2b 0%,
-            var(--primary) 60%,
-            var(--primary-dark) 100%
-        );
-
-    color: var(--primary-foreground);
-
-    font-family: inherit;
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 0.06em;
-
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    box-shadow: 0 14px 28px var(--button-shadow);
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-
-    transform: translateY(-1px);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-.btn-primary i {
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   LOGIN — OPÇÕES
-   ========================================================= */
-
-.options {
-    width: 100%;
-
+#loginModalOverlay .options {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     gap: 10px;
+
+    width: 100%;
 
     margin-top: 14px;
 
@@ -543,50 +628,112 @@ form > * + * {
     font-weight: 700;
 }
 
-.remember {
+#loginModalOverlay .remember {
     display: flex;
     align-items: center;
 
     gap: 5px;
 
-    color: var(--muted);
+    color: var(--auth-muted);
 
     cursor: pointer;
 }
 
-.remember input {
+#loginModalOverlay .remember input {
     width: 12px;
     height: 12px;
 
     margin: 0;
 
-    accent-color: var(--primary);
+    accent-color: var(--auth-primary);
 
     cursor: pointer;
 }
 
-.forgot {
+#loginModalOverlay .forgot {
     margin-left: auto;
 
-    color: var(--primary-dark);
+    color: var(--auth-primary-dark);
 
     text-decoration: none;
-
     white-space: nowrap;
 }
 
-.forgot:hover {
-    color: var(--primary);
-
+#loginModalOverlay .forgot:hover {
+    color: var(--auth-primary);
     text-decoration: underline;
 }
 
 
 /* =========================================================
-   LOGIN — CADASTRO
-   ========================================================= */
+   BOTÕES
+========================================================= */
 
-.register {
+#loginModalOverlay .btn-primary,
+#registerModalOverlay .submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+    min-height: 44px;
+
+    margin-top: 20px;
+    padding: 12px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: linear-gradient(
+        160deg,
+        #023a2b 0%,
+        var(--auth-primary) 60%,
+        var(--auth-primary-dark) 100%
+    );
+
+    color: var(--auth-primary-foreground);
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow: 0 14px 28px var(--auth-button-shadow);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+#loginModalOverlay .btn-primary:hover,
+#registerModalOverlay .submit-btn:hover {
+    background: var(--auth-primary-dark);
+    transform: translateY(-1px);
+}
+
+#loginModalOverlay .btn-primary:active,
+#registerModalOverlay .submit-btn:active {
+    transform: translateY(0);
+}
+
+#loginModalOverlay .btn-primary i,
+#registerModalOverlay .submit-btn i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   LINK DE CADASTRO
+========================================================= */
+
+#loginModalOverlay .register,
+#registerModalOverlay .register {
     width: 100%;
 
     margin: 20px 0 0;
@@ -596,446 +743,195 @@ form > * + * {
     font-size: 7px;
     font-weight: 600;
 
-    color: var(--muted);
+    color: var(--auth-muted);
 }
 
-.register a {
-    color: var(--primary-dark);
+#loginModalOverlay .register a,
+#registerModalOverlay .register a {
+    color: var(--auth-primary-dark);
 
     font-weight: 800;
 
     text-decoration: none;
 }
 
-.register a:hover {
-    color: var(--primary);
-
+#loginModalOverlay .register a:hover,
+#registerModalOverlay .register a:hover {
+    color: var(--auth-primary);
     text-decoration: underline;
 }
 
 
 /* =========================================================
-   LINKS INFERIORES
-   ========================================================= */
+   LINKS LEGAIS
+========================================================= */
 
-.legal-links {
-    margin-top: 20px;
-
+#loginModalOverlay .legal-links,
+#registerModalOverlay .legal-links {
     display: flex;
     align-items: center;
     justify-content: center;
 
     gap: 14px;
 
+    margin-top: 20px;
+
     font-size: 6.5px;
     font-weight: 800;
 
     letter-spacing: 0.06em;
-
     text-transform: uppercase;
 }
 
-.legal-links a {
-    color: var(--muted);
+#loginModalOverlay .legal-links a,
+#registerModalOverlay .legal-links a {
+    color: var(--auth-muted);
 
     text-decoration: none;
 }
 
-.legal-links a:hover {
-    color: var(--primary);
+#loginModalOverlay .legal-links a:hover,
+#registerModalOverlay .legal-links a:hover {
+    color: var(--auth-primary);
 }
 
-.legal-links span {
+#loginModalOverlay .legal-links span,
+#registerModalOverlay .legal-links span {
     color: #d8dde5;
 }
 
 
 /* =========================================================
-   CARTÃO — ACESSO EXTERNO
-   ========================================================= */
+   LINHA DE SENHAS
+========================================================= */
 
-.guest-card {
-    width: 100%;
-    max-width: 504px;
-
-    margin-top: 16px;
-
-    padding: 18px 20px;
-
-    background: var(--card);
-
-    border-radius: 20px;
-
-    box-shadow: 0 14px 35px var(--panel-shadow);
-}
-
-
-/* =========================================================
-   CABEÇALHO DO CARD
-   ========================================================= */
-
-.guest-header {
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-}
-
-
-/* =========================================================
-   ÍCONE DO GLOBO
-   ========================================================= */
-
-.guest-icon {
-    width: 38px;
-    height: 38px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background: #f0f1f3;
-
-    color: #1c2430;
-}
-
-.guest-icon i {
-    font-size: 20px;
-}
-
-
-/* =========================================================
-   TEXTO DO CARD
-   ========================================================= */
-
-.guest-text {
-    flex: 1;
-    min-width: 0;
-}
-
-.guest-title {
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-}
-
-.guest-title h2 {
-    margin: 0;
-
-    font-size: 12px;
-    font-weight: 800;
-
-    color: var(--ink);
-}
-
-.visitor-tag {
-    padding: 3px 7px;
-
-    border-radius: 999px;
-
-    background: #eef1f8;
-
-    color: #4a5a7a;
-
-    font-size: 6px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.05em;
-}
-
-.guest-text p {
-    margin: 5px 0 0;
-
-    font-size: 7px;
-    line-height: 1.45;
-
-    color: var(--muted);
-}
-
-
-/* =========================================================
-   BOTÃO DO ACESSO EXTERNO
-   ========================================================= */
-
-.btn-dark {
-    flex-shrink: 0;
-
-    height: 34px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 6px;
-
-    padding: 0 11px;
-
-    border-radius: 9px;
-
-    background: var(--secondary);
-
-    color: var(--secondary-foreground);
-
-    font-family: inherit;
-    font-size: 7px;
-    font-weight: 800;
-
-    text-decoration: none;
-
-    white-space: nowrap;
-
-    box-shadow: 0 7px 15px var(--dark-shadow);
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
-}
-
-.btn-dark:hover {
-    background: #111821;
-
-    transform: translateY(-1px);
-}
-
-.btn-dark:active {
-    transform: translateY(0);
-}
-
-.btn-dark .ext {
-    opacity: 0.75;
-}
-
-
-/* =========================================================
-   BENEFÍCIOS
-   ========================================================= */
-
-.benefits {
+#loginModalOverlay .password-row {
     display: grid;
 
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
-    gap: 8px;
-
-    margin-top: 14px;
-}
-
-.benefit {
-    min-width: 0;
-
-    height: 32px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
-
-    padding: 0 7px;
-
-    border-radius: 8px;
-
-    background: #f7f8fa;
-
-    font-size: 6.5px;
-    font-weight: 800;
-
-    white-space: nowrap;
-}
-
-.benefit i {
-    flex-shrink: 0;
-
-    font-size: 13px;
-}
-
-.benefit .label {
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-}
-
-.tone-purple {
-    color: var(--benefit-purple);
-}
-
-.tone-gold {
-    color: var(--benefit-gold);
-}
-
-.tone-orange {
-    color: var(--benefit-orange);
-}
-
-.back {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
+    gap: 13px;
 
     width: 100%;
-    max-width: 504px;
-
-    margin: 0 auto 14px;
-
-    font-size: 8px;
-    font-weight: 800;
-
-    letter-spacing: 0.12em;
-
-    text-transform: uppercase;
-
-    color: #3d4a60;
-
-    text-decoration: none;
 }
 
-.back:hover {
-    color: var(--primary);
+#loginModalOverlay .password-row > .field {
+    min-width: 0;
 }
 
 
 /* =========================================================
-   RESPONSIVIDADE
-   ========================================================= */
+   TABLETS E TELAS MENORES
+========================================================= */
 
-@media (min-width: 640px) {
-
-    .brand-panel {
-        display: flex;
+@media (max-width: 700px) {
+    #loginModalOverlay,
+    #registerModalOverlay {
+        padding: 12px;
     }
 
-    .form-panel {
-        padding: 34px 30px 28px;
+    #loginModalOverlay .modal,
+    #registerModalOverlay .modal {
+        max-width: 100%;
+    }
+
+    #loginModalOverlay .card,
+    #registerModalOverlay .card {
+        width: 100%;
+        height: min(675px, calc(100vh - 24px));
+    }
+
+    #loginModalOverlay .brand-panel,
+    #registerModalOverlay .brand-panel {
+        flex: 0 0 200px;
+
+        width: 200px;
+        min-width: 200px;
+    }
+
+    #loginModalOverlay .form-panel,
+    #registerModalOverlay .form-panel {
+        padding: 32px 25px 26px;
     }
 }
 
 
-@media (max-width: 639px) {
+/* =========================================================
+   CELULARES
+========================================================= */
 
-    .card,
-    .guest-card {
-        max-width: 504px;
+@media (max-width: 560px) {
+    #loginModalOverlay .card,
+    #registerModalOverlay .card {
+        flex-direction: column;
+
+        width: 100%;
+        height: auto;
+
+        max-height: calc(100vh - 24px);
+
+        border-radius: 24px;
     }
 
-    .brand-panel {
+    #loginModalOverlay .brand-panel,
+    #registerModalOverlay .brand-panel {
         display: none;
     }
 
-    .form-panel {
+    #loginModalOverlay .form-panel,
+    #registerModalOverlay .form-panel {
+        flex: 1 1 auto;
+
+        max-height: calc(100vh - 24px);
+
         padding: 32px 28px 26px;
     }
 }
 
 
-@media (max-width: 560px) {
-
-    .guest-header {
-        align-items: flex-start;
-
-        flex-wrap: wrap;
-    }
-
-    .guest-text {
-        flex: 1;
-    }
-
-    .btn-dark {
-        margin-left: 50px;
-    }
-}
-
-
-@media (max-width: 480px) {
-
-    body {
-        padding: 20px 12px 30px;
-    }
-
-    .card,
-    .guest-card {
-        border-radius: 24px;
-    }
-
-    .form-panel {
-        padding: 28px 22px 24px;
-    }
-
-    .form-panel h1 {
-        font-size: 20px;
-    }
-
-    .password-row {
-        grid-template-columns: 1fr;
-
-        gap: 16px;
-    }
-
-    .field-box {
-        height: 43px;
-    }
-
-    .btn-primary {
-        height: 46px;
-    }
-
-    .options {
-        flex-wrap: nowrap;
-    }
-
-    .guest-card {
-        padding: 16px;
-    }
-
-    .guest-header {
-        gap: 10px;
-    }
-
-    .guest-text {
-        width: calc(100% - 48px);
-    }
-
-    .btn-dark {
-        width: 100%;
-
-        margin-left: 0;
-    }
-
-    .benefits {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
 
 @media (max-width: 360px) {
-
-    .form-panel {
-        padding: 25px 18px 22px;
+    #loginModalOverlay .form-panel,
+    #registerModalOverlay .form-panel {
+        padding: 28px 20px 24px;
     }
 
-    .form-panel h1 {
+    #loginModalOverlay .form-panel h1,
+    #registerModalOverlay .form-panel h1 {
         font-size: 19px;
     }
 
-    .subtitle {
+    #loginModalOverlay .subtitle,
+    #registerModalOverlay .subtitle {
         font-size: 6px;
-
         letter-spacing: 0.22em;
     }
 
-    .field-box input {
+    #loginModalOverlay .field-box input {
         font-size: 9px;
     }
 
-    .options {
+    #loginModalOverlay .options {
         font-size: 6.5px;
     }
+}
+
+#loginModalOverlay .form-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 40px 32px 28px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#loginModalOverlay .form-panel header,
+#loginModalOverlay .form-panel form {
+    width: 100%;
+    max-width: 100%;
 }

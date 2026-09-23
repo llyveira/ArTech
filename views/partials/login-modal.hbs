@@ -1,0 +1,147 @@
+<div class="modal-overlay hidden" id="loginModalOverlay">
+  <div
+    class="modal login-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loginModalTitle"
+  >
+    <section class="card">
+
+      <!-- PAINEL VERDE -->
+      <aside class="brand-panel">
+        <div class="brand-panel-inner">
+
+          <div class="logo-frame">
+            <img src="/images/artech-logo.jpg" alt="Logo Artech" />
+          </div>
+
+          <h2>Arte, cultura e comunidade.</h2>
+
+          <p>
+            Conecte-se às atividades, eventos e recursos artísticos do IF.
+          </p>
+
+          <div class="secure-badge">
+            <i class="bi bi-shield-check"></i>
+            Ambiente seguro
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- FORMULÁRIO -->
+      <div class="form-panel">
+
+        <button
+          type="button"
+          class="modal-close"
+          id="closeLoginButton"
+          aria-label="Fechar"
+        >
+          ✕
+        </button>
+
+        <header>
+          <h1 id="loginModalTitle">Login</h1>
+          <p class="subtitle">Acesse sua conta</p>
+        </header>
+
+        <form id="loginForm" action="/users/login" method="POST">
+
+          <!-- E-MAIL -->
+          <div class="field">
+            <label class="field-label" for="login">
+              E-mail
+            </label>
+
+            <div class="field-box highlighted">
+              <span class="field-icon">
+                <i class="bi bi-envelope"></i>
+              </span>
+
+              <input
+                type="email"
+                id="login"
+                name="login"
+                placeholder="seu.email@gmail.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- SENHA -->
+          <div class="field">
+            <label class="field-label" for="password">
+              Senha
+            </label>
+
+            <div class="field-box">
+              <span class="field-icon">
+                <i class="bi bi-lock"></i>
+              </span>
+
+              <input
+                class="password"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                id="toggleLoginPassword"
+                aria-label="Mostrar senha"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- OPÇÕES -->
+          <div class="options">
+
+            <label class="remember">
+              <input type="checkbox" name="remember" />
+
+              <span>Lembrar de mim</span>
+            </label>
+
+            <a href="#" class="forgot" id="forgotPasswordLink">
+              Esqueci a senha
+            </a>
+
+          </div>
+
+          <!-- BOTÃO DE LOGIN -->
+          <button type="submit" class="btn-primary" id="submitBtn">
+            <span>Entrar</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+
+        </form>
+
+        <!-- LINK PARA CADASTRO -->
+        <p class="register">
+          Não tem uma conta?
+
+          <a href="#" id="openRegisterFromLogin">
+            Cadastre-se
+          </a>
+        </p>
+
+        <!-- LINKS LEGAIS -->
+        <div class="legal-links">
+          <a href="#">Termos de uso</a>
+          <span>•</span>
+          <a href="#">Política de privacidade</a>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>

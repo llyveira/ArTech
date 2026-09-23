@@ -739,7 +739,114 @@ body {
   margin-top: 8px;
 }
 
+/* ===== Ajuste final da área de autenticação ===== */
 
+.auth-area {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 24px;
+  flex-shrink: 0;
+}
+
+.auth-area .user-card {
+  margin-top: 0;
+  width: 100%;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease,
+              transform 0.2s ease;
+}
+
+.register-button {
+  background: transparent;
+  color: #f4fbf7;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.register-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.login-button {
+  background: var(--card);
+  color: var(--primary-dark);
+  border-color: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+.login-button:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.auth-button i {
+  font-size: 17px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Menu lateral compacto sem rolagem ===== */
+
+.sidebar {
+  height: 100vh;
+  overflow: hidden;
+  padding: 20px 16px;
+}
+
+.nav {
+  flex: 0 0 auto;
+  overflow: visible;
+  gap: 3;
+  padding-top: 12px;
+}
+
+.nav a {
+  padding: 7px 12px;
+}
+
+/* Área de autenticação */
+.auth-area {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+}
+
+.auth-area .user-card {
+  margin-top: 0;
+  width: 100%;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
 
 /* ===== Responsivo ===== */
 
