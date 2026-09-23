@@ -57,6 +57,13 @@
   flex-wrap: wrap;
 }
 
+.rooms-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .rooms-tabs {
   display: inline-flex;
   background: var(--card);
@@ -87,19 +94,6 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-
-.rooms-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 16px;
-  min-width: 220px;
-}
-
-.rooms-search svg { flex-shrink: 0; color: var(--muted-foreground); }
 
 .rooms-search input {
   border: none;
@@ -158,10 +152,9 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
-  padding: 22px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -170,12 +163,61 @@
   transform: translateY(-2px);
 }
 
-.room-card-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+/* Área da imagem da sala (mesma altura do .card-media de materiais).
+   Enquanto não há imagem, mostra um fundo neutro como espaço reservado. */
+.room-media {
+  position: relative;
+  height: 176px;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
 }
+
+.room-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.room-media .room-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.room-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+/* Horário de funcionamento */
+.room-hours {
+  background: var(--muted);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.room-hours-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 8px;
+}
+
+.room-hours-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.room-hours-row + .room-hours-row { margin-top: 4px; }
+.room-hours-row strong { color: var(--foreground); font-weight: 600; }
 
 /* Status da sala reaproveita os mesmos pares cor/fundo dos badges
    de materiais e eventos: verde = disponível, vermelho = ocupado. */
@@ -228,7 +270,7 @@
 .room-card-actions {
   display: flex;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: auto;
 }
 
 .room-card-actions > .btn-outline { flex: 1; text-align: center; text-decoration: none; }
@@ -298,4 +340,5 @@
 @media (max-width: 640px) {
   .rooms-grid { grid-template-columns: 1fr; }
   .rooms-toolbar { flex-direction: column; align-items: stretch; }
+  .rooms-toolbar-left { flex-direction: column; align-items: stretch; }
 }
