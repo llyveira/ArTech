@@ -31,6 +31,17 @@ class Classrooms extends Model {
   static async findAllRooms() {
     return await this.findAll({ order: [['number', 'ASC']] });
   }
+
+  // Garante que as salas do NUARTE existam no banco (só cria se ainda não existirem).
+  static async seedDefaults() {
+    const defaults = [
+      { number: '01', name: 'Lab. de Cenografia' },
+      { number: '02', name: 'Lab. de Música' },
+    ];
+    for (const room of defaults) {
+      await this.findOrCreate({ where: { number: room.number }, defaults: room });
+    }
+  }
 }
 
 
@@ -243,4 +254,8 @@ ReservationParticipants.init(
 );
 
 
-module.exports = { Classrooms, Reservations, ReservationParticipants };
+// Associações: uma sala tem várias reservas (cria o getReservations() usado em available()).
+Classrooms.hasMany(Reservations, { foreignKey: 'classroomId', as: 'reservations' });
+Reservations.belongsTo(Classrooms, { foreignKey: 'classroomId', as: 'classroom' });
+
+module.exports = { Classrooms, Reservations, ReservationParticipants };

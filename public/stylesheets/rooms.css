@@ -329,6 +329,15 @@
 
 .reservation-cancel:hover { background: rgba(217, 83, 79, 0.1); }
 
+.reservation-cancel-form { margin: 0; }
+
+.reservation-empty {
+  padding: 28px 22px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted-foreground);
+}
+
 /* Visibilidade dos painéis (alternância de aba, só front-end) */
 .rooms-panel[hidden] { display: none; }
 

@@ -83,8 +83,12 @@ app.use(function (err, req, res, next) {
 // Conexão com o banco de dados
 var db = require('./config/database.js');
 
-db.sync().then(() => {
+// Importa o model para que a tabela seja criada e as salas cadastradas
+var { Classrooms } = require('./models/rooms');
+
+db.sync().then(async () => {
+  await Classrooms.seedDefaults(); // cria as salas do NUARTE se ainda não existirem
   console.log('Banco de dados sincronizado!');
 });
 
-module.exports = app;
+module.exports = app;

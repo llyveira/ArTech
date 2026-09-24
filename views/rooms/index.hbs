@@ -87,29 +87,26 @@
     <div class="rooms-section">
       <div class="rooms-section-head">
         <h2>Minhas reservas</h2>
-        <span class="rooms-section-count">3 reservas</span>
+        <span class="rooms-section-count">{{totalReservas}}</span>
       </div>
 
       <div class="reservations-list" id="reservationsList">
+        {{#each reservas}}
         <div class="reservation-row">
-
           <div class="reservation-info">
-            <div class="reservation-room">Lab. de Música</div>
-            <div class="reservation-time">Qui, 27 de agosto · 14h às 16h</div>
+            <div class="reservation-room">{{sala}}</div>
+            <div class="reservation-time">{{horario}}</div>
           </div>
-          <span class="reservation-status confirmada">Confirmada</span>
-          <button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>
+          <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
+          {{#if podeCancelar}}
+          <form action="/rooms/{{id}}/cancel" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
+            <button type="submit" class="reservation-cancel">Cancelar</button>
+          </form>
+          {{/if}}
         </div>
-
-        <div class="reservation-row">
-          
-          <div class="reservation-info">
-            <div class="reservation-room">Lab. de Cenografia</div>
-            <div class="reservation-time">Sex, 28 de agosto · 9h às 11h</div>
-          </div>
-          <span class="reservation-status pendente">Pendente</span>
-          <button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>
-        </div>
+        {{else}}
+        <div class="reservation-empty">Você ainda não tem reservas.</div>
+        {{/each}}
       </div>
     </div>
   </section>
@@ -125,13 +122,14 @@
         <button class="modal-close" type="button" aria-label="Fechar" onclick="closeRoomModal()">✕</button>
       </div>
 
-      <form class="modal-form" id="roomReservationForm" onsubmit="return handleReservationSubmit(event)">
+      <form class="modal-form" id="roomReservationForm" action="/rooms" method="POST">
         <label class="field">
           <span>Sala</span>
           <select name="sala" id="reservaSala" required>
             <option value="" disabled selected>Selecione uma sala</option>
-            <option value="Lab. de Cenografia">Lab. de Cenografia</option>
-            <option value="Lab. de Música">Lab. de Música</option>
+            {{#each salas}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
           </select>
         </label>
 
@@ -152,7 +150,7 @@
 
         <label class="field">
           <span>Quantidade de participantes</span>
-          <input type="number" name="participants" min="1" placeholder="Ex: 8" />
+          <input type="number" name="participants" min="1" placeholder="Ex: 8" required />
         </label>
 
         <label class="field">
@@ -177,87 +175,40 @@
 <!-- /rooms-page -->
 
 <script>
-  // Alternância visual entre abas (apenas front-end, sem integração ainda)
+  // Alternância entre abas "Salas disponíveis" / "Minhas reservas"
+  function selecionarAba(nome) {
+    document.querySelectorAll('.rooms-tab').forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-tab') === nome);
+    });
+    document.getElementById('panel-salas').hidden = nome !== 'salas';
+    document.getElementById('panel-reservas').hidden = nome !== 'reservas';
+  }
+
   document.querySelectorAll('.rooms-tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
-      document.querySelectorAll('.rooms-tab').forEach(function (t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      var target = tab.getAttribute('data-tab');
-      document.getElementById('panel-salas').hidden = target !== 'salas';
-      document.getElementById('panel-reservas').hidden = target !== 'reservas';
+      selecionarAba(tab.getAttribute('data-tab'));
     });
   });
 
-  // ===== Modal: Nova Reserva de Sala (apenas front-end, sem integração ainda) =====
+  // Depois de salvar/cancelar, o servidor redireciona para /rooms?tab=reservas
+  if (new URLSearchParams(window.location.search).get('tab') === 'reservas') {
+    selecionarAba('reservas');
+  }
 
+  // ===== Modal: Nova Reserva de Sala =====
+
+  // Abre o modal; se vier o nome de uma sala (botão do card), já deixa ela selecionada
   function openRoomModal(roomName) {
     document.getElementById('roomModalOverlay').classList.remove('hidden');
-    var select = document.getElementById('reservaSala');
     if (roomName) {
-      select.value = roomName;
+      var select = document.getElementById('reservaSala');
+      Array.prototype.forEach.call(select.options, function (opt) {
+        if (opt.text === roomName) select.value = opt.value;
+      });
     }
   }
 
   function closeRoomModal() {
     document.getElementById('roomModalOverlay').classList.add('hidden');
-  }
-
-  var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-  var DIAS_SEMANA = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-
-  function formatarData(isoDate) {
-    if (!isoDate) return '';
-    var partes = isoDate.split('-');
-    var dataObj = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-    var diaSemana = DIAS_SEMANA[dataObj.getDay()];
-    var mes = MESES[dataObj.getMonth()];
-    return diaSemana + ', ' + dataObj.getDate() + ' de ' + mes;
-  }
-
-  function formatarHora(hora) {
-    if (!hora) return '';
-    return hora.replace(/^0/, '').replace(':00', 'h').replace(':', 'h');
-  }
-
-  // Envio do formulário: ainda sem integração com o back-end, apenas
-  // adiciona a reserva visualmente em "Minhas reservas".
-  function handleReservationSubmit(event) {
-    event.preventDefault();
-
-    var form = event.target;
-    var sala = form.sala.value;
-    var data = formatarData(form.date.value);
-    var inicio = formatarHora(form.startTime.value);
-    var fim = formatarHora(form.endTime.value);
-
-    var row = document.createElement('div');
-    row.className = 'reservation-row';
-    row.innerHTML =
-      '<div class="reservation-info">' +
-        '<div class="reservation-room">' + sala + '</div>' +
-        '<div class="reservation-time">' + data + ' · ' + inicio + ' às ' + fim + '</div>' +
-      '</div>' +
-      '<span class="reservation-status pendente">Pendente</span>' +
-      '<button type="button" class="reservation-cancel" onclick="cancelReservation(this)">Cancelar</button>';
-
-    document.getElementById('reservationsList').prepend(row);
-    updateReservationCount();
-
-    closeRoomModal();
-    form.reset();
-
-    // Leva o usuário para a aba "Minhas reservas" para ver o resultado
-    document.querySelector('.rooms-tab[data-tab="reservas"]').click();
-  }
-
-  function cancelReservation(button) {
-    button.closest('.reservation-row').remove();
-    updateReservationCount();
-  }
-
-  function updateReservationCount() {
-    var total = document.querySelectorAll('#reservationsList .reservation-row').length;
-    document.querySelector('#panel-reservas .rooms-section-count').textContent =
-      total + (total === 1 ? ' reserva' : ' reservas');
   }
 </script>
