@@ -36,6 +36,17 @@ hbs.registerPartial(
   )
 );
 
+hbs.registerHelper('statusLabel', function (status) {
+  const labels = {
+    disponivel: 'Disponível',
+    indisponivel: 'Indisponível',
+    emprestado: 'Emprestado',
+    reservado: 'Reservado',
+    defeito: 'Com defeito',
+  };
+  return labels[status] || status;
+});
+
 // Middlewares
 app.use(logger('dev'));
 app.use(express.json());

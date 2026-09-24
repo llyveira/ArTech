@@ -1,120 +1,109 @@
 <section class="panel controls">
-    <button class="btn-primary" type="button" onclick="openMaterialModal()">+ Novo Material</button>
-    <button class="select" type="button">Minhas reservas</button>
-    <button class="select" type="button">Reservas solicitadas</button>
-    <button class="select" type="button">Ver em tabela</button>
-    <button class="select" type="button">Categoria <span>▾</span></button>
-    <button class="btn-muted" type="button">Limpar Filtro</button>
+  <button class="btn-primary" type="button" onclick="openMaterialModal()">+ Novo
+    Material</button>
+  <button class="select" type="button">Minhas reservas</button>
+  <button class="select" type="button">Reservas solicitadas</button>
+  <button class="select" type="button">Ver em tabela</button>
+  <button class="select" id="1" type="button">Categoria <span>▾</span></button>
+  <button class="btn-muted" type="button">Limpar Filtro</button>
 </section>
 
 <section class="panel">
-    <div class="panel-head">
-        <h2>Lista de Materiais</h2>
-        <span class="badge">4 materiais encontrados</span>
-    </div>
+  <div class="panel-head">
+    <h2>Lista de Materiais</h2>
+    <span class="badge">{{dados.length}} materiais encontrados</span>
+  </div>
 
-    <div class="grid">
-        <article class="card">
-            <div class="card-media">
-                <img src="figurino.jpg" alt="Figurino de Cena" loading="lazy" />
-                <span class="tag tag-available">Disponível</span>
-            </div>
-            <div class="card-body">
-                <h3>Vestido de Noiva</h3>
-                <span class="category">Figurinos</span>
-                <p class="description">Vestido longo branco, em tecido rendado, tamanho M, com véu incluso. Bom estado de conservação.</p>
-                <div class="card-actions">
-                    <button class="btn-outline" type="button">Visualizar</button>
-                    <button class="btn-outline" type="button">Editar</button>
-                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
-                </div>
-            </div>
-        </article>
+  <div class="grid">
+    {{#each dados}}
+      <article class="card">
+        <div class="card-media">
+          {{#if this.photo}}
+            <img src="{{this.photo}}" alt="{{this.name}}" loading="lazy" />
+          {{else}}
+            <img
+              src="/images/sem-foto.jpg"
+              alt="{{this.name}}"
+              loading="lazy"
+            />
+          {{/if}}
+          <span class="tag tag-{{this.status}}">{{statusLabel
+              this.status
+            }}</span>
+        </div>
+        <div class="card-body">
+          <h3>{{this.name}}</h3>
+          <p class="description">{{this.description}}</p>
+          <p class="qty">Em estoque: {{this.qty}}</p>
+          <div class="card-actions">
+            <button class="btn-outline" type="button">Visualizar</button>
+            <button class="btn-outline" type="button">Editar</button>
+            <button
+              class="btn-danger"
+              type="button"
+              aria-label="Excluir"
+            >🗑</button>
+          </div>
+        </div>
+      </article>
+    {{else}}
+      <p class="empty-state">Nenhum material cadastrado ainda.</p>
+    {{/each}}
+  </div>
 
-        <article class="card">
-            <div class="card-media">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKBmIg2YbWIgrqXtrNZtKtDR9Sni8X0sNgezfIuKFhNA&s=10" alt="Chapéu de Palha" loading="lazy" />
-                <span class="tag tag-borrowed">Emprestado</span>
-            </div>
-            <div class="card-body">
-                <h3>Chapéu de Palha</h3>
-                <span class="category">Adereços</span>
-                <p class="description">Chapéu de palha trançada, aba larga, cor natural, tamanho único. Adequado para uso ao ar livre.
-                </p>
-                <div class="card-actions">
-                    <button class="btn-outline" type="button">Visualizar</button>
-                    <button class="btn-outline" type="button">Editar</button>
-                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
-                </div>
-            </div>
-        </article>
-
-        <article class="card">
-            <div class="card-media">
-                <img src="cenario.jpg" alt="Cenário Modular" loading="lazy" />
-                <span class="tag tag-available">Disponível</span>
-            </div>
-            <div class="card-body">
-                <h3>Vaso de Planta</h3>
-                <span class="category">Material Cenográfico</span>
-                <p class="description">Vaso cerâmico, cor terracota, altura aproximada de 40cm, com planta artificial incluída.</p>
-                <div class="card-actions">
-                    <button class="btn-outline" type="button">Visualizar</button>
-                    <button class="btn-outline" type="button">Editar</button>
-                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
-                </div>
-            </div>
-        </article>
-
-        <article class="card">
-            <div class="card-media">
-                <img src="img/violao.jpg" alt="Violão Acústico" loading="lazy" />
-                <span class="tag tag-borrowed">Emprestado</span>
-            </div>
-            <div class="card-body">
-                <h3>Violão Acústico</h3>
-                <span class="category">Instrumentos Musicais</span>
-                <p class="description">Violão de seis cordas, corpo em madeira maciça, cor natural, acompanha capa protetora.</p>
-                <div class="card-actions">
-                    <button class="btn-outline" type="button">Visualizar</button>
-                    <button class="btn-outline" type="button">Editar</button>
-                    <button class="btn-danger" type="button" aria-label="Excluir">🗑</button>
-                </div>
-            </div>
-        </article>
-    </div>
-
-    <nav class="pagination">
-        <button class="page-nav" type="button" disabled>‹ Anterior</button>
-        <button class="page current" type="button">1</button>
-        <button class="page" type="button">2</button>
-        <button class="page-nav" type="button">Próxima ›</button>
-    </nav>
+  <nav class="pagination">
+    <button class="page-nav" type="button" disabled>‹ Anterior</button>
+    <button class="page current" type="button">1</button>
+    <button class="page" type="button">2</button>
+    <button class="page-nav" type="button">Próxima ›</button>
+  </nav>
 </section>
 
 <!-- ===== Modal: Novo Material ===== -->
-<div class="modal-overlay hidden" id="materialModalOverlay" onclick="closeMaterialModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="materialModalTitle" onclick="event.stopPropagation()">
+<div
+  class="modal-overlay hidden"
+  id="materialModalOverlay"
+  onclick="closeMaterialModal()"
+>
+  <div
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="materialModalTitle"
+    onclick="event.stopPropagation()"
+  >
     <div class="modal-head">
       <h2 id="materialModalTitle">Novo Material</h2>
-      <button class="modal-close" type="button" aria-label="Fechar" onclick="closeMaterialModal()">✕</button>
+      <button
+        class="modal-close"
+        type="button"
+        aria-label="Fechar"
+        onclick="closeMaterialModal()"
+      >✕</button>
     </div>
 
-    <form class="modal-form" action="/materials" method="POST" enctype="multipart/form-data">
+    <form class="modal-form" action="/materials" method="POST">
       <label class="field">
         <span>Nome</span>
-        <input type="text" name="name" placeholder="Ex: Vestido de noiva" required />
+        <input
+          type="text"
+          name="name"
+          placeholder="Ex: Vestido de noiva"
+          required
+        />
       </label>
 
       <label class="field">
         <span>Categoria</span>
-        <select name="categoryId" required>
+        <select name="category" required>
           <option value="" disabled selected>Selecione uma categoria</option>
-          <option value="1">Figurinos</option>
-          <option value="2">Adereços</option>
-          <option value="3">Material Cenográfico</option>
-          <option value="4">Livros</option>
-          <option value="5">Instrumentos Musicais</option>
+          <option value="figurino">Figurino</option>
+          <option value="adereços">Adereços</option>
+          <option value="tecidos">Tecidos</option>
+          <option value="material_cenografico">Material Cenográfico</option>
+          <option value="livros">Livros</option>
+          <option value="sala_de_isntrumentos">Sala de Instrumentos</option>
+          <option value="laboratorio_de_musica">Laboratório de Música</option>
         </select>
       </label>
 
@@ -125,21 +114,39 @@
 
       <label class="field">
         <span>Descrição</span>
-        <textarea name="description" rows="3" placeholder="Características físicas do item (cor, tamanho, material...)" required></textarea>
+        <textarea
+          name="description"
+          rows="3"
+          placeholder="Características físicas do item (cor, tamanho, material...)"
+          required
+        ></textarea>
       </label>
 
       <label class="field">
         <span>Observações</span>
-        <textarea name="notes" rows="2" placeholder="Alguma observação sobre o estado, uso ou conservação" required></textarea>
+        <textarea
+          name="notes"
+          rows="2"
+          placeholder="Alguma observação sobre o estado, uso ou conservação"
+          required
+        ></textarea>
       </label>
 
       <label class="field">
-        <span>Foto</span>
-        <input type="file" name="photo" accept="image/*" />
+        <span>Foto (link da imagem)</span>
+        <input
+          type="url"
+          name="photo"
+          placeholder="https://exemplo.com/foto.jpg"
+        />
       </label>
 
       <div class="modal-actions">
-        <button type="button" class="btn-outline" onclick="closeMaterialModal()">Cancelar</button>
+        <button
+          type="button"
+          class="btn-outline"
+          onclick="closeMaterialModal()"
+        >Cancelar</button>
         <button type="submit" class="btn-primary">Cadastrar Material</button>
       </div>
     </form>

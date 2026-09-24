@@ -282,14 +282,21 @@ body {
 .select {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--card);
-  color: var(--muted-foreground);
+  background: var(--accent);
+  color: var(--accent-foreground);
   font-size: 14px;
   cursor: pointer;
+}
+
+.select[id="1"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 .select:hover {
@@ -367,11 +374,11 @@ body {
 
 .tag {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 12px;
+  top: 10px;
+  right: 10px;
+  padding: 4px 11px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
 }
 
@@ -383,6 +390,35 @@ body {
 .tag-borrowed {
   background: var(--warning);
   color: var(--warning-foreground);
+}
+
+/* Cores das tags de status do material (disponível, indisponível,
+   emprestado, reservado, com defeito). A posição, padding e border-radius
+   já vêm da classe .tag acima — aqui só definimos cor de fundo/texto. */
+
+.tag-disponivel {
+  background: #dcf5e3;
+  color: #1f7a3d;
+}
+
+.tag-indisponivel {
+  background: #fbe4ee;
+  color: #a8285b;
+}
+
+.tag-emprestado {
+  background: var(--destructive-bg);
+  color: var(--destructive);
+}
+
+.tag-reservado {
+  background: #ece4fb;
+  color: #5b3ea8;
+}
+
+.tag-defeito {
+  background: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .card-body {

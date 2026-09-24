@@ -70,10 +70,6 @@ function logout() {
 }
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ==========================================
-  // ELEMENTOS DOS MODAIS
-  // ==========================================
-
   const loginModalOverlay = document.getElementById('loginModalOverlay');
   const registerModalOverlay = document.getElementById('registerModalOverlay');
 
@@ -87,11 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const openLoginFromRegister = document.getElementById('openLoginFromRegister');
 
   const logoutButton = document.getElementById('logoutButton');
-
-
-  // ==========================================
-  // FUNÇÕES DOS MODAIS
-  // ==========================================
 
   function openModal(modal) {
     if (!modal) return;
@@ -120,11 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal(registerModalOverlay);
   }
 
-
-  // ==========================================
-  // ABRIR LOGIN E CADASTRO
-  // ==========================================
-
   openLoginButton?.addEventListener('click', (event) => {
     event.preventDefault();
 
@@ -141,10 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  // ==========================================
-  // FECHAR MODAIS
-  // ==========================================
-
   closeLoginButton?.addEventListener('click', () => {
     closeModal(loginModalOverlay);
   });
@@ -153,11 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
   closeRegisterButton?.addEventListener('click', () => {
     closeModal(registerModalOverlay);
   });
-
-
-  // ==========================================
-  // ALTERNAR ENTRE LOGIN E CADASTRO
-  // ==========================================
 
   openRegisterFromLogin?.addEventListener('click', (event) => {
     event.preventDefault();
@@ -174,11 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal(loginModalOverlay);
   });
 
-
-  // ==========================================
-  // FECHAR AO CLICAR FORA DO MODAL
-  // ==========================================
-
   loginModalOverlay?.addEventListener('click', (event) => {
     if (event.target === loginModalOverlay) {
       closeModal(loginModalOverlay);
@@ -192,21 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
-  // ==========================================
-  // FECHAR COM A TECLA ESC
-  // ==========================================
-
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       closeAllModals();
     }
   });
-
-
-  // ==========================================
-  // MOSTRAR E OCULTAR SENHA
-  // ==========================================
 
   function configurePasswordToggle(buttonId, inputId) {
     const toggleButton = document.getElementById(buttonId);
@@ -233,31 +195,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
-  // Senha do login
   configurePasswordToggle(
     'toggleLoginPassword',
     'password'
   );
 
-
-  // Senha do cadastro
   configurePasswordToggle(
     'toggleRegisterPassword',
     'registerPassword'
   );
 
-
-  // Confirmação de senha do cadastro
   configurePasswordToggle(
     'toggleRegisterConfirmPassword',
     'registerConfirmPassword'
   );
-
-
-  // ==========================================
-  // ESQUECI A SENHA
-  // ==========================================
 
   const forgotPasswordLink = document.getElementById('forgotPasswordLink');
 
@@ -267,10 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('A recuperação de senha será implementada posteriormente.');
   });
 
-
-  // ==========================================
-  // LOGOUT PROVISÓRIO
-  // ==========================================
 
   logoutButton?.addEventListener('click', (event) => {
     event.preventDefault();

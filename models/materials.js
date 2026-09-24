@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Instância de conexão
+const materialCategory = require('./materialCategory'); // Enum de categorias (Passo 1)
+const materialStatus = require('./materialStatus'); // Enum de status do material
 
 class Materials extends Model {
   /**
@@ -28,20 +30,13 @@ class Materials extends Model {
   /**
    * Método Estático: filtra materiais por categoria.
    * Equivalente ao método filter() do diagrama de classes.
-   * Ex: Material.filter(categoryId)
-   * NOTA: depende da associação Material.belongsTo(MaterialCategory) e da
-   * coluna de chave estrangeira correspondente para funcionar de fato.
-   *
-   * PENDÊNCIA: a coluna "categoryId" usada abaixo ainda não existe no
-   * schema deste model. Ela só passa a existir de verdade quando a
-   * associação Material.belongsTo(MaterialCategory) for declarada
-   * (geralmente em um models/index.js, após o model MaterialCategory
-   * também ser criado). Até lá, este método roda sem erro, mas o filtro
-   * não retorna resultados corretos, pois a coluna não é persistida no banco.
+   * Ex: Material.filter(materialCategory.LIVROS)
+   * "category" é um ENUM (ver models/materialCategory.js), não uma FK,
+   * então o filtro é feito diretamente pelo valor da string.
    */
-  static async filter(categoryId) {
+  static async filter(category) {
     return await this.findAll({
-      where: { categoryId }
+      where: { category }
     });
   }
 
@@ -92,13 +87,35 @@ Materials.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    // NOTA: campo "photo" não existe no diagrama de classes atual.
-    // Adicionado aqui porque o front-end (materiais.html) já exibe foto
-    // por card, seguindo o mesmo padrão do atributo "image" da classe Event.
-    // Vale atualizar o diagrama de classes para refletir essa adição.
     photo: {
       type: DataTypes.STRING, // guarda o caminho/URL do arquivo de imagem
       allowNull: true,
+    },
+    category: {
+      type: DataTypes.ENUM(...Object.values(materialCategory)),
+      allowNull: false,
+      // defaultValue é necessário aqui: o SQLite não permite adicionar
+      // (via ALTER TABLE) uma coluna NOT NULL sem um valor padrão numa
+      // tabela que já existe. Sem isso, o alter:true falha silenciosamente
+      // e a coluna nunca é criada de fato.
+      defaultValue: materialCategory.FIGURINO,
+      validate: {
+        isIn: {
+          args: [Object.values(materialCategory)],
+          msg: 'Categoria inválida.'
+        }
+      }
+    },
+    status: {
+      type: DataTypes.ENUM(...Object.values(materialStatus)),
+      allowNull: false,
+      defaultValue: materialStatus.DISPONIVEL,
+      validate: {
+        isIn: {
+          args: [Object.values(materialStatus)],
+          msg: 'Status inválido.'
+        }
+      }
     }
   },
   {
