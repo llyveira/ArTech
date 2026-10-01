@@ -97,6 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modal.classList.add('hidden');
 
+    // Limpa os campos do formulário desse modal, para que da próxima vez
+    // que for aberto não venha com dados da tentativa anterior.
+    modal.querySelector('form')?.reset();
+
     const loginClosed = loginModalOverlay?.classList.contains('hidden');
     const registerClosed = registerModalOverlay?.classList.contains('hidden');
 
@@ -219,10 +223,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  logoutButton?.addEventListener('click', (event) => {
+  logoutButton?.addEventListener('click', async (event) => {
     event.preventDefault();
 
-    alert('A funcionalidade de logout será implementada posteriormente.');
+    try {
+      await fetch('/users/logout', { method: 'POST' });
+    } catch (err) {
+      console.error('Erro ao sair:', err);
+    }
+
+    window.location.href = '/';
   });
+
+  // Abre o modal de login automaticamente quando a página carrega com
+  // ?login=1 na URL (usado após o cadastro redirecionar para a home).
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('login') === '1') {
+    openModal(loginModalOverlay);
+
+    // Remove o "?login=1" da URL sem recarregar a página, para que um
+    // F5 depois não reabra o modal sozinho.
+    const url = new URL(window.location.href);
+    url.searchParams.delete('login');
+    window.history.replaceState({}, '', url);
+  }
 
 });

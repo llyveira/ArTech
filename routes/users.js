@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // Importação do modelo
-let Users = require('../models/Users');
+let Users = require('../models/users');
 
 /* GET listagem de usuários (uso administrativo). */
 router.get('/', function (req, res, next) {
@@ -30,7 +30,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('E-mail ou senha inválidos.');
     }
 
-    // PENDÊNCIA: criação da sessão/token de autenticação
+    // Cria a sessão: a partir daqui, o middleware no app.js vai reconhecer
+    // esse usuário como logado em todas as páginas seguintes.
+    req.session.userId = user.id;
 
     res.redirect('/');
 
@@ -61,17 +63,30 @@ router.post('/register', async (req, res) => {
     await Users.register({
       name: form.name,
       email: form.email,
-      ifrn_registration: form.registration,
+      // ATUALIZADO: matrícula é opcional. Se vier vazia (""), convertemos
+      // para null — senão duas strings vazias seriam tratadas como
+      // "matrículas duplicadas" pela constraint unique.
+      ifrn_registration: form.registration ? form.registration : null,
       password: form.password
     });
 
-    res.redirect('/users/login');
+    // Redireciona para a home com um sinalizador na URL, que o auth.js
+    // usa para abrir o modal de login automaticamente (em vez de mandar
+    // para a página separada /users/login).
+    res.redirect('/?login=1');
 
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
 
     res.status(400).send(err.message);
   }
+});
+
+/* POST logout */
+router.post('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
 });
 
 module.exports = router;

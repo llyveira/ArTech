@@ -2,9 +2,9 @@ const materialCategory= Object.freeze({
 FIGURINO: 'figurino',
 ADERECOS: 'adereços',
 TECIDOS:'tecidos',
-MATERIAIS_ARTISTICOS: 'material_cenografico',
+MATERIAIS_ARTISTICOS: 'material_artistico',
 LIVROS: 'livros',
-SALA_DE_INSTRUMENTOS: 'sala_de_isntrumentos',
+SALA_DE_INSTRUMENTOS: 'sala_de_instrumentos',
 LABORATORIO_DE_MUSICA: 'laboratorio_de_musica',
 });
 

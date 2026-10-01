@@ -99,33 +99,31 @@ Users.init(
         notEmpty: { msg: 'O e-mail é obrigatório.' }
       }
     },
+    // OPCIONAL (ajuste): o cadastro simples (nome, e-mail, matrícula, senha)
+    // não coleta CPF ainda. Pode ser preenchido depois, no perfil do usuário.
     cpf: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
-      validate: {
-        notEmpty: { msg: 'O CPF é obrigatório.' }
-      }
     },
+    // OPCIONAL (ajuste): mesmo motivo do cpf.
     phone: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: 'O telefone é obrigatório.' }
-      }
+      allowNull: true,
     },
+    // OPCIONAL: já era tratado como opcional no formulário
+    // ("opcional, para usuários internos"), mas o model exigia. Ajustado
+    // para bater com o que o formulário realmente envia.
     ifrn_registration: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       unique: true,
-      validate: {
-        notEmpty: { msg: 'A matrícula é obrigatória.' }
-      }
     },
-    // Valores placeholder — confirmar com a equipe
+    // OPCIONAL (ajuste): o formulário de cadastro simples não pergunta
+    // isso ainda. Valores placeholder — confirmar com a equipe.
     ifrn_role: {
       type: DataTypes.ENUM('student', 'staff', 'external'),
-      allowNull: false,
+      allowNull: true,
     },
     actived: {
       type: DataTypes.BOOLEAN,
