@@ -15,6 +15,7 @@ var materialsRouter = require('./routes/materials');
 var roomsRouter = require('./routes/rooms');
 
 var Users = require('./models/users'); // NOVO: usado no middleware de sessão
+var userLevel = require('./models/userLevel'); // NOVO: usado para calcular permissões do menu
 
 var app = express();
 
@@ -99,6 +100,18 @@ app.use(async (req, res, next) => {
   } else {
     res.locals.currentUser = null;
   }
+
+  // NOVO: nível do usuário (quem não está logado conta como EXTERNAL),
+  // e flags prontas para o menu decidir o que mostrar, sem precisar
+  // comparar números dentro do template.
+  const currentLevel = res.locals.currentUser
+    ? res.locals.currentUser.profile
+    : userLevel.EXTERNAL;
+
+  res.locals.canViewMaterials = currentLevel >= userLevel.INTERNAL;
+  res.locals.canViewCategories = currentLevel >= userLevel.PRO;
+  res.locals.isCoordinator = currentLevel >= userLevel.COORDINATOR;
+
   next();
 });
 

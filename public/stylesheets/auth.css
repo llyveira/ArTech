@@ -1,3 +1,6 @@
+/* =========================================================
+   VARIÁVEIS
+========================================================= */
 #loginModalOverlay,
 #registerModalOverlay {
     --auth-background: #e9f2ec;
@@ -11,53 +14,53 @@
     --auth-secondary-foreground: #ffffff;
     --auth-muted: #7b8290;
     --auth-label: #276a4f;
-    --auth-field-border: #e9ecf2;
-    --auth-field-icon: #a4dcb9;
-    --auth-placeholder: #c3c7d0;
+    --auth-field-border: #e1e7e3;
+    --auth-field-icon: #6f91b5;
+    --auth-placeholder: #b9c4d2;
     --auth-placeholder-strong: #8b93a2;
-    --auth-panel-shadow: rgba(38, 92, 75, 0.13);
+    --auth-panel-shadow: rgba(38, 92, 75, 0.18);
     --auth-panel-inner-shadow: rgba(10, 60, 45, 0.18);
-    --auth-field-shadow: rgba(45, 55, 80, 0.07);
+    --auth-field-shadow: rgba(45, 55, 80, 0.04);
     --auth-button-shadow: rgba(23, 166, 120, 0.22);
-    --auth-dark-shadow: rgba(15, 20, 30, 0.2);
-    --auth-benefit-purple: #6b3fa0;
-    --auth-benefit-gold: #d8a10a;
-    --auth-benefit-orange: #e86a1d;
 }
 
+/* =========================================================
+   OVERLAY
+========================================================= */
 #loginModalOverlay,
 #registerModalOverlay {
     position: fixed;
     inset: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 100%;
     height: 100%;
-
-    padding: 16px;
-
+    padding: 20px;
     overflow-y: auto;
     background: rgba(18, 50, 43, 0.55);
     z-index: 1000;
+    
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 #loginModalOverlay.hidden,
 #registerModalOverlay.hidden {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
+/* =========================================================
+   MODAL & CARD (Largura reduzida para 440px)
+========================================================= */
 #loginModalOverlay .modal,
 #registerModalOverlay .modal {
     width: 100%;
-    max-width: 630px;
-
-    max-height: calc(100vh - 32px);
-
-    overflow: visible;
-
+    max-width: 440px;
+    max-height: calc(100vh - 40px);
     background: transparent;
     box-shadow: none;
 }
@@ -65,272 +68,177 @@
 #loginModalOverlay .card,
 #registerModalOverlay .card {
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
-
-    width: 630px;
+    flex-direction: column;
+    width: 440px;
     max-width: 100%;
-
-    height: min(675px, calc(100vh - 32px));
+    height: auto;
+    max-height: calc(100vh - 40px);
     min-height: 0;
-
-    margin: 0 auto;
-    padding: 0;
-
-    background: var(--auth-card);
-
-    border-radius: 30px;
-    overflow: hidden;
-
-    box-shadow: 0 28px 70px var(--auth-panel-shadow);
-}
-
-#loginModalOverlay .brand-panel,
-#registerModalOverlay .brand-panel {
-    position: relative;
-
-    flex: 0 0 230px;
-
-    width: 230px;
-    min-width: 230px;
-    min-height: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-
-    padding: 28px 22px;
-
-    background: linear-gradient(
-        160deg,
-        #023a2b 0%,
-        var(--auth-primary) 60%,
-        var(--auth-primary-dark) 100%
-    );
-
-    text-align: center;
-
-    color: var(--auth-primary-foreground);
-}
-
-#loginModalOverlay .brand-panel-inner,
-#registerModalOverlay .brand-panel-inner {
-    position: relative;
-    z-index: 1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    width: 100%;
-}
-
-#loginModalOverlay .logo-frame,
-#registerModalOverlay .logo-frame {
-    width: 70px;
-    height: 70px;
-
-    margin-bottom: 22px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-
-    border: 1px solid rgba(255, 255, 255, 0.38);
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.12);
-
-    box-shadow:
-        0 0 0 5px rgba(255, 255, 255, 0.08),
-        0 12px 30px var(--auth-panel-inner-shadow);
-
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
-#loginModalOverlay .logo-frame img,
-#registerModalOverlay .logo-frame img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    border-radius: 13px;
-}
-
-#loginModalOverlay .brand-panel h2,
-#registerModalOverlay .brand-panel h2 {
     margin: 0;
-
-    font-size: 16px;
-    font-weight: 800;
-    line-height: 1.3;
-}
-
-#loginModalOverlay .brand-panel p,
-#registerModalOverlay .brand-panel p {
-    margin: 10px 0 0;
-
-    font-size: 8px;
-    line-height: 1.55;
-
-    color: rgba(255, 255, 255, 0.72);
-}
-
-#loginModalOverlay .secure-badge,
-#registerModalOverlay .secure-badge {
-    display: inline-flex;
-    align-items: center;
-
-    gap: 6px;
-
-    height: 30px;
-
-    margin-top: 22px;
-    padding: 0 11px;
-
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 999px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    font-size: 7px;
-    font-weight: 700;
-    line-height: 1.2;
-
-    text-transform: uppercase;
-
-    color: rgba(255, 255, 255, 0.72);
-}
-
-#loginModalOverlay .secure-badge i,
-#registerModalOverlay .secure-badge i {
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   ÁREA DO FORMULÁRIO
-========================================================= */
-
-#loginModalOverlay .form-panel,
-#registerModalOverlay .form-panel {
-    position: relative;
-
-    flex: 1 1 auto;
-
-    min-width: 0;
-    min-height: 0;
-
-    padding: 40px 32px 28px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    background: var(--auth-card);
-}
-
-
-/* =========================================================
-   BOTÃO DE FECHAR
-========================================================= */
-
-#loginModalOverlay .modal-close,
-#registerModalOverlay .modal-close {
-    position: absolute;
-
-    top: 16px;
-    right: 16px;
-
-    z-index: 1;
-
-    width: 28px;
-    height: 28px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     padding: 0;
-
-    border: 0;
-    border-radius: 999px;
-
-    background: var(--auth-field-border);
-    color: var(--auth-muted);
-
-    font-size: 13px;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+    background: var(--auth-card);
+    border: none;
+    outline: none;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px var(--auth-panel-shadow);
 }
-
-#loginModalOverlay .modal-close:hover,
-#registerModalOverlay .modal-close:hover {
-    background: #e2e6ea;
-    color: var(--auth-ink);
-}
-
 
 /* =========================================================
    CABEÇALHO
 ========================================================= */
-
-#loginModalOverlay .form-panel header,
-#registerModalOverlay .form-panel header {
-    margin: 0 0 24px;
-    padding: 0;
-
-    background: transparent;
-    border: 0;
-}
-
-#loginModalOverlay .form-panel h1,
-#registerModalOverlay .form-panel h1 {
+#loginModalOverlay .form-panel-header,
+#registerModalOverlay .form-panel-header {
+    position: relative;
     display: flex;
     align-items: center;
-
-    gap: 6px;
-
-    margin: 0;
-
-    font-size: 21px;
-    font-weight: 800;
-    line-height: 1;
-
-    color: var(--auth-ink);
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-height: 92px;
+    padding: 16px 28px;
+    background: 
+        radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0) 38%),
+        linear-gradient(135deg, #023a2b 0%, #126247 55%, #2f7d5d 100%);
+    color: #ffffff;
+    overflow: hidden;
 }
 
-#loginModalOverlay .subtitle,
-#registerModalOverlay .subtitle {
-    margin: 8px 0 0;
-
-    font-size: 7px;
-    font-weight: 600;
-
-    letter-spacing: 0.28em;
-    line-height: 1.5;
-
-    text-transform: uppercase;
-
-    color: var(--auth-muted);
+#loginModalOverlay .form-panel-header::after,
+#registerModalOverlay .form-panel-header::after {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -30px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 14px 14px;
+    opacity: 0.45;
+    pointer-events: none;
 }
-
 
 /* =========================================================
-   FORMULÁRIO
+   TÍTULO
 ========================================================= */
+#loginModalOverlay .form-panel-title,
+#registerModalOverlay .form-panel-title {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+#loginModalOverlay .form-panel-icon,
+#registerModalOverlay .form-panel-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    color: #ffffff;
+}
+
+#loginModalOverlay .form-panel-icon i,
+#registerModalOverlay .form-panel-icon i {
+    font-size: 25px;
+}
+
+#loginModalOverlay .form-panel-header h1,
+#registerModalOverlay .form-panel-header h1 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #ffffff;
+}
+
+#loginModalOverlay .form-panel-header .subtitle,
+#registerModalOverlay .form-panel-header .subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.35;
+    text-transform: none;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+/* =========================================================
+   BOTÃO FECHAR
+========================================================= */
+#loginModalOverlay .modal-close,
+#registerModalOverlay .modal-close {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+#loginModalOverlay .modal-close:hover,
+#registerModalOverlay .modal-close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    transform: scale(1.03);
+}
+
+/* =========================================================
+   MENSAGEM DE SEGURANÇA
+========================================================= */
+#loginModalOverlay .auth-notice,
+#registerModalOverlay .auth-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 28px;
+    background: #f5faf7;
+    color: var(--auth-ink);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    border-bottom: 1px solid #edf2ef;
+}
+
+#loginModalOverlay .auth-notice i,
+#registerModalOverlay .auth-notice i {
+    flex-shrink: 0;
+    color: var(--auth-primary);
+    font-size: 19px;
+}
+
+/* =========================================================
+   ÁREA DO FORMULÁRIO
+========================================================= */
+#loginModalOverlay .form-panel,
+#registerModalOverlay .form-panel {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    padding: 25px 28px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--auth-card);
+}
 
 #loginModalOverlay form,
 #registerModalOverlay form {
@@ -338,64 +246,44 @@
     margin: 0;
 }
 
-#loginModalOverlay form > * + *,
-#registerModalOverlay form > * + * {
-    margin-top: 16px;
-}
-
-
 /* =========================================================
-   CAMPOS DE LOGIN
+   CAMPOS DE LOGIN (COM CORREÇÃO DE FOCO DA BORDA VERDE)
 ========================================================= */
-
 #loginModalOverlay .field {
     display: block;
     min-width: 0;
+    margin-bottom: 16px;
 }
 
 #loginModalOverlay .field-label {
     display: block;
-
-    margin: 0 0 5px 3px;
-
-    font-size: 7px;
-    font-weight: 800;
-
-    letter-spacing: 0.08em;
-    line-height: 1.5;
-
-    text-transform: uppercase;
-
-    color: var(--auth-label);
+    margin: 0 0 6px 2px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.4;
+    text-transform: none;
+    color: var(--auth-ink);
 }
 
 #loginModalOverlay .field-box {
     display: flex;
     align-items: center;
-
     width: 100%;
-    height: 42px;
-
-    padding: 0 11px;
-
+    height: 44px;
+    padding: 0 12px;
     border: 1px solid var(--auth-field-border);
-    border-radius: 11px;
-
+    border-radius: 9px;
     background: var(--auth-card);
-
     box-shadow: 0 5px 14px var(--auth-field-shadow);
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #loginModalOverlay .field-box.highlighted,
 #loginModalOverlay .field-box:focus-within {
     border-color: var(--auth-primary);
-
-    box-shadow:
-        0 0 0 3px rgba(23, 166, 120, 0.1),
+    box-shadow: 
+        0 0 0 3px rgba(23, 166, 120, 0.08),
         0 5px 14px var(--auth-field-shadow);
 }
 
@@ -403,36 +291,28 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
-
     margin-right: 10px;
-
     color: var(--auth-field-icon);
 }
 
 #loginModalOverlay .field-icon i {
-    font-size: 14px;
+    font-size: 17px;
 }
 
 #loginModalOverlay .field-box input {
     flex: 1;
-
     min-width: 0;
     width: 0;
     height: 100%;
-
     padding: 0;
-
-    border: 0;
-    outline: none;
-
+    border: 0 !important;
+    outline: none !important;
     background: transparent;
-
     font-family: inherit;
-    font-size: 10px;
-
+    font-size: 14px;
     color: var(--auth-ink);
+    box-shadow: none !important;
 }
 
 #loginModalOverlay .field-box input::placeholder {
@@ -443,24 +323,19 @@
     color: var(--auth-placeholder-strong);
 }
 
-
 /* =========================================================
    CAMPOS DE CADASTRO
 ========================================================= */
-
 #registerModalOverlay .input-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 #registerModalOverlay .input-group label {
     display: block;
-
-    margin: 0 0 7px;
-
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.5;
-
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
     color: var(--auth-ink);
 }
 
@@ -471,71 +346,53 @@
 
 #registerModalOverlay .input-wrapper {
     position: relative;
-
     display: flex;
     align-items: center;
-
     width: 100%;
 }
 
 #registerModalOverlay .input-wrapper > i {
     position: absolute;
-
     left: 14px;
-
-    color: var(--auth-muted);
-
+    color: var(--auth-field-icon);
     pointer-events: none;
+    font-size: 17px;
 }
 
 #registerModalOverlay .input-wrapper input {
     width: 100%;
     min-height: 44px;
-
-    padding: 11px 42px;
-
+    padding: 10px 42px;
     border: 1px solid var(--auth-field-border);
-    border-radius: 8px;
-
+    border-radius: 9px;
     outline: none;
-
     background: var(--auth-card);
     color: var(--auth-ink);
-
     font-family: inherit;
     font-size: 14px;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #registerModalOverlay .input-wrapper input:focus {
     border-color: var(--auth-primary);
-
-    box-shadow: 0 0 0 3px rgba(47, 125, 93, 0.12);
+    box-shadow: 0 0 0 3px rgba(47, 125, 93, 0.10);
 }
 
 #registerModalOverlay .input-wrapper input::placeholder {
     color: var(--auth-placeholder);
 }
 
-
 /* =========================================================
    ALTERNÂNCIA DE SENHA
 ========================================================= */
-
 #loginModalOverlay .password-toggle,
 #registerModalOverlay .toggle-password {
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: 0;
-
     background: transparent;
     color: var(--auth-field-icon);
-
     cursor: pointer;
 }
 
@@ -546,74 +403,56 @@
 
 #loginModalOverlay .password-toggle i,
 #registerModalOverlay .toggle-password i {
-    font-size: 15px;
+    font-size: 18px;
 }
 
 #loginModalOverlay .password-toggle {
     flex-shrink: 0;
-
     margin-left: 4px;
     padding: 0;
 }
 
 #registerModalOverlay .toggle-password {
     position: absolute;
-
     right: 10px;
-
-    width: 32px;
-    height: 32px;
-
+    width: 34px;
+    height: 34px;
     padding: 0;
 }
-
 
 /* =========================================================
    OPÇÕES DO LOGIN
 ========================================================= */
-
 #loginModalOverlay .options {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 10px;
-
     width: 100%;
-
-    margin-top: 14px;
-
-    font-size: 7px;
-    font-weight: 700;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 #loginModalOverlay .remember {
     display: flex;
     align-items: center;
-
-    gap: 5px;
-
+    gap: 7px;
     color: var(--auth-muted);
-
     cursor: pointer;
 }
 
 #loginModalOverlay .remember input {
-    width: 12px;
-    height: 12px;
-
+    width: 14px;
+    height: 14px;
     margin: 0;
-
     accent-color: var(--auth-primary);
-
     cursor: pointer;
 }
 
 #loginModalOverlay .forgot {
     margin-left: auto;
-
     color: var(--auth-primary-dark);
-
     text-decoration: none;
     white-space: nowrap;
 }
@@ -623,51 +462,37 @@
     text-decoration: underline;
 }
 
-
 /* =========================================================
    BOTÕES
 ========================================================= */
-
 #loginModalOverlay .btn-primary,
 #registerModalOverlay .submit-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    gap: 8px;
-
+    gap: 9px;
     width: 100%;
-    min-height: 44px;
-
-    margin-top: 20px;
-    padding: 12px 16px;
-
+    min-height: 46px;
+    margin-top: 18px;
+    padding: 11px 16px;
     border: none;
-    border-radius: 8px;
-
-    background: linear-gradient(
-        160deg,
-        #023a2b 0%,
-        var(--auth-primary) 60%,
-        var(--auth-primary-dark) 100%
-    );
-
+    border-radius: 9px;
+    background: 
+        linear-gradient(
+            135deg,
+            #023a2b 0%,
+            var(--auth-primary) 60%,
+            var(--auth-primary-dark) 100%
+        );
     color: var(--auth-primary-foreground);
-
     font-family: inherit;
-    font-size: 10px;
+    font-size: 13px;
     font-weight: 800;
-
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-
+    letter-spacing: 0;
+    text-transform: none;
     cursor: pointer;
-
     box-shadow: 0 14px 28px var(--auth-button-shadow);
-
-    transition:
-        background 0.2s ease,
-        transform 0.15s ease;
+    transition: background 0.2s ease, transform 0.15s ease;
 }
 
 #loginModalOverlay .btn-primary:hover,
@@ -683,34 +508,27 @@
 
 #loginModalOverlay .btn-primary i,
 #registerModalOverlay .submit-btn i {
-    font-size: 13px;
+    font-size: 17px;
 }
 
-
 /* =========================================================
-   LINK DE CADASTRO
+   LINK DE CADASTRO / LOGIN
 ========================================================= */
-
 #loginModalOverlay .register,
 #registerModalOverlay .register {
     width: 100%;
-
-    margin: 20px 0 0;
-
+    margin: 18px 0 0;
     text-align: center;
-
-    font-size: 7px;
-    font-weight: 600;
-
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
     color: var(--auth-muted);
 }
 
 #loginModalOverlay .register a,
 #registerModalOverlay .register a {
     color: var(--auth-primary-dark);
-
     font-weight: 800;
-
     text-decoration: none;
 }
 
@@ -720,32 +538,26 @@
     text-decoration: underline;
 }
 
-
 /* =========================================================
    LINKS LEGAIS
 ========================================================= */
-
 #loginModalOverlay .legal-links,
 #registerModalOverlay .legal-links {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    gap: 14px;
-
-    margin-top: 20px;
-
-    font-size: 6.5px;
-    font-weight: 800;
-
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
 #loginModalOverlay .legal-links a,
 #registerModalOverlay .legal-links a {
     color: var(--auth-muted);
-
     text-decoration: none;
 }
 
@@ -759,18 +571,13 @@
     color: #d8dde5;
 }
 
-
 /* =========================================================
    LINHA DE SENHAS
 ========================================================= */
-
 #loginModalOverlay .password-row {
     display: grid;
-
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-
     gap: 13px;
-
     width: 100%;
 }
 
@@ -778,11 +585,9 @@
     min-width: 0;
 }
 
-
 /* =========================================================
-   TABLETS E TELAS MENORES
+   TABLETS
 ========================================================= */
-
 @media (max-width: 700px) {
     #loginModalOverlay,
     #registerModalOverlay {
@@ -797,100 +602,141 @@
     #loginModalOverlay .card,
     #registerModalOverlay .card {
         width: 100%;
-        height: min(675px, calc(100vh - 24px));
+        max-width: 440px;
+        max-height: calc(100vh - 24px);
     }
 
-    #loginModalOverlay .brand-panel,
-    #registerModalOverlay .brand-panel {
-        flex: 0 0 200px;
-
-        width: 200px;
-        min-width: 200px;
+    #loginModalOverlay .form-panel-header,
+    #registerModalOverlay .form-panel-header {
+        min-height: 115px;
+        padding: 20px 24px;
     }
 
     #loginModalOverlay .form-panel,
     #registerModalOverlay .form-panel {
-        padding: 32px 25px 26px;
+        padding: 22px 24px 22px;
     }
 }
-
 
 /* =========================================================
    CELULARES
 ========================================================= */
-
 @media (max-width: 560px) {
     #loginModalOverlay .card,
     #registerModalOverlay .card {
-        flex-direction: column;
-
         width: 100%;
-        height: auto;
-
         max-height: calc(100vh - 24px);
-
-        border-radius: 24px;
+        border-radius: 20px;
     }
 
-    #loginModalOverlay .brand-panel,
-    #registerModalOverlay .brand-panel {
-        display: none;
+    #loginModalOverlay .form-panel-header,
+    #registerModalOverlay .form-panel-header {
+        min-height: 105px;
+        padding: 18px 20px;
+    }
+
+    #loginModalOverlay .form-panel-title,
+    #registerModalOverlay .form-panel-title {
+        gap: 10px;
+    }
+
+    #loginModalOverlay .form-panel-icon,
+    #registerModalOverlay .form-panel-icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    #loginModalOverlay .form-panel-icon i,
+    #registerModalOverlay .form-panel-icon i {
+        font-size: 25px;
+    }
+
+    #loginModalOverlay .form-panel-header h1,
+    #registerModalOverlay .form-panel-header h1 {
+        font-size: 22px;
+    }
+
+    #loginModalOverlay .form-panel-header .subtitle,
+    #registerModalOverlay .form-panel-header .subtitle {
+        font-size: 12px;
+    }
+
+    #loginModalOverlay .modal-close,
+    #registerModalOverlay .modal-close {
+        width: 38px;
+        height: 38px;
+    }
+
+    #loginModalOverlay .auth-notice,
+    #registerModalOverlay .auth-notice {
+        padding: 11px 20px;
+        font-size: 11px;
     }
 
     #loginModalOverlay .form-panel,
     #registerModalOverlay .form-panel {
-        flex: 1 1 auto;
+        padding: 20px;
+    }
 
-        max-height: calc(100vh - 24px);
+    #registerModalOverlay .input-group label {
+        font-size: 13px;
+    }
 
-        padding: 32px 28px 26px;
+    #registerModalOverlay .input-wrapper input {
+        font-size: 13px;
     }
 }
-
 
 /* =========================================================
    CELULARES PEQUENOS
 ========================================================= */
-
 @media (max-width: 360px) {
+    #loginModalOverlay .form-panel-header,
+    #registerModalOverlay .form-panel-header {
+        min-height: 98px;
+        padding: 16px;
+    }
+
     #loginModalOverlay .form-panel,
     #registerModalOverlay .form-panel {
-        padding: 28px 20px 24px;
+        padding: 18px 16px;
     }
 
-    #loginModalOverlay .form-panel h1,
-    #registerModalOverlay .form-panel h1 {
-        font-size: 19px;
+    #loginModalOverlay .form-panel-header h1,
+    #registerModalOverlay .form-panel-header h1 {
+        font-size: 20px;
     }
 
-    #loginModalOverlay .subtitle,
-    #registerModalOverlay .subtitle {
-        font-size: 6px;
-        letter-spacing: 0.22em;
+    #loginModalOverlay .form-panel-header .subtitle,
+    #registerModalOverlay .form-panel-header .subtitle {
+        font-size: 11px;
+    }
+
+    #loginModalOverlay .auth-notice,
+    #registerModalOverlay .auth-notice {
+        padding: 10px 16px;
+        font-size: 10px;
+    }
+
+    #loginModalOverlay .field-label {
+        font-size: 11px;
     }
 
     #loginModalOverlay .field-box input {
-        font-size: 9px;
+        font-size: 13px;
     }
 
     #loginModalOverlay .options {
-        font-size: 6.5px;
+        font-size: 11px;
     }
-}
 
-#loginModalOverlay .form-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    #loginModalOverlay .register,
+    #registerModalOverlay .register {
+        font-size: 11px;
+    }
 
-    padding: 40px 32px 28px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-#loginModalOverlay .form-panel header,
-#loginModalOverlay .form-panel form {
-    width: 100%;
-    max-width: 100%;
+    #loginModalOverlay .legal-links,
+    #registerModalOverlay .legal-links {
+        font-size: 9px;
+    }
 }

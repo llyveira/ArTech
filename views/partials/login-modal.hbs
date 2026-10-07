@@ -7,30 +7,18 @@
   >
     <section class="card">
 
-      <!-- PAINEL VERDE -->
-      <aside class="brand-panel">
-        <div class="brand-panel-inner">
+      <!-- CABEÇALHO DO MODAL -->
+      <header class="form-panel-header">
+        <div class="form-panel-title">
+          <span class="form-panel-icon">
+            <i class="bi bi-box-arrow-in-right"></i>
+          </span>
 
-          <div class="logo-frame">
-            <img src="/images/artech-logo.jpg" alt="Logo Artech" />
+          <div>
+            <h1 id="loginModalTitle">Login</h1>
+            <p class="subtitle">Acesse sua conta</p>
           </div>
-
-          <h2>Arte, cultura e comunidade.</h2>
-
-          <p>
-            Conecte-se às atividades, eventos e recursos artísticos do IF.
-          </p>
-
-          <div class="secure-badge">
-            <i class="bi bi-shield-check"></i>
-            Ambiente seguro
-          </div>
-
         </div>
-      </aside>
-
-      <!-- FORMULÁRIO -->
-      <div class="form-panel">
 
         <button
           type="button"
@@ -38,14 +26,18 @@
           id="closeLoginButton"
           aria-label="Fechar"
         >
-          ✕
+          <i class="bi bi-x-lg"></i>
         </button>
+      </header>
 
-        <header>
-          <h1 id="loginModalTitle">Login</h1>
-          <p class="subtitle">Acesse sua conta</p>
-        </header>
+      <!-- MENSAGEM DE SEGURANÇA -->
+      <div class="auth-notice">
+        <i class="bi bi-shield-check"></i>
+        <span>Conexão protegida. Nunca pedimos sua senha por e-mail.</span>
+      </div>
 
+      <!-- FORMULÁRIO -->
+      <div class="form-panel">
         <form id="loginForm" action="/users/login" method="POST">
 
           <!-- E-MAIL -->
@@ -104,20 +96,17 @@
 
           <!-- OPÇÕES -->
           <div class="options">
-
             <label class="remember">
               <input type="checkbox" name="remember" />
-
               <span>Lembrar de mim</span>
             </label>
 
             <a href="#" class="forgot" id="forgotPasswordLink">
               Esqueci a senha
             </a>
-
           </div>
 
-          <!-- BOTÃO DE LOGIN -->
+          <!-- BOTÃO -->
           <button type="submit" class="btn-primary" id="submitBtn">
             <span>Entrar</span>
             <i class="bi bi-arrow-right"></i>
@@ -125,10 +114,9 @@
 
         </form>
 
-        <!-- LINK PARA CADASTRO -->
+        <!-- CADASTRO -->
         <p class="register">
           Não tem uma conta?
-
           <a href="#" id="openRegisterFromLogin">
             Cadastre-se
           </a>
@@ -140,8 +128,10 @@
           <span>•</span>
           <a href="#">Política de privacidade</a>
         </div>
-
       </div>
+
     </section>
+    ```
+
   </div>
 </div>

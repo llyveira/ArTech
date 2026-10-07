@@ -46,9 +46,15 @@ body {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
-  background: linear-gradient(160deg, #023a2b 0%, var(--primary) 60%, var(--primary-dark) 100%);
+  padding: 20px 16px;
+  background: linear-gradient(
+    160deg,
+    #023a2b 0%,
+    var(--primary) 60%,
+    var(--primary-dark) 100%
+  );
   color: #f4fbf7;
+  overflow: hidden;
 }
 
 .brand {
@@ -112,12 +118,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding-top: 24px;
+  padding-top: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+  flex: 0 0 auto;
 }
 
 .nav a {
-  padding: 10px 12px;
+  padding: 7px 12px;
   border-radius: 8px;
   color: inherit;
   text-decoration: none;
@@ -134,8 +141,19 @@ body {
   color: var(--primary-dark);
 }
 
-.user-card {
+.auth-area {
+  width: 100%;
   margin-top: auto;
+  padding-top: 12px;
+  flex-shrink: 0;
+}
+
+.auth-area .user-card {
+  margin-top: 0;
+  width: 100%;
+}
+
+.user-card {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -169,6 +187,56 @@ body {
   margin: 0;
   font-size: 12px;
   color: var(--muted-foreground);
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.register-button {
+  background: transparent;
+  color: #f4fbf7;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.register-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.login-button {
+  background: var(--card);
+  color: var(--primary-dark);
+  border-color: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+.login-button:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.auth-button i {
+  font-size: 17px;
 }
 
 /* ===== Conteúdo principal ===== */
@@ -236,7 +304,12 @@ body {
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(160deg, #023a2b 0%, var(--primary) 60%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    160deg,
+    #023a2b 0%,
+    var(--primary) 60%,
+    var(--primary-dark) 100%
+  );
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -292,6 +365,30 @@ body {
   cursor: pointer;
 }
 
+/* ===== Novo Estilo para o Botão Voltar (Igual ao "Ver reservas") ===== */
+/* ===== Estilo do Botão Voltar (Mais fino / Estilo Contador) ===== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px; /* Altura menor e mais compacto */
+  border: 1px solid var(--border);
+  border-radius: 999px; /* Formato de pílula (igual a contadores e badges) */
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 13px; /* Fonte levemente menor */
+  font-weight: 500;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  line-height: normal;
+}
+
+.btn-back:hover {
+  border-color: rgba(47, 125, 93, 0.4);
+  filter: brightness(0.97);
+}
+
 .select[id="1"] {
   display: flex;
   justify-content: center;
@@ -319,16 +416,30 @@ body {
   color: var(--accent-foreground);
 }
 
+/* ===== Cabeçalho do Painel ===== */
+
 .panel-head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .panel-head h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-head h2 + .badge {
+  display: inline-block;
+  margin-left: 12px;
+  vertical-align: middle;
 }
 
 .badge {
@@ -340,21 +451,96 @@ body {
   font-weight: 500;
 }
 
+/* ===== Seletor de Visualização (Pílula) ===== */
+
+.view-switch {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  box-shadow: var(--shadow-card);
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  color: var(--primary);
+}
+
+.view-btn.active {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  box-shadow: 0 1px 3px rgba(30, 70, 55, 0.08);
+}
+
+/* ===== Comportamento da Tabela ===== */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table, .table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  margin-top: 8px;
+}
+
+th, .table th {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sidebar);
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+td, .table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+tr:hover td, .table tr:hover td {
+  background: rgba(244, 250, 246, 0.6);
+}
+
 /* ===== Cartões de material ===== */
 
 .grid {
-  margin-top: 24px;
+  margin-top: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
 .card {
+  position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--card);
   box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -363,23 +549,47 @@ body {
 
 .card-media {
   position: relative;
+  height: 176px;
+  background: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-media img {
   display: block;
-  width: 100%;
-  height: 176px;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
+/* ===== Tags e Situações ===== */
+
 .tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  display: inline-block;
   padding: 4px 11px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
+  position: static; 
+}
+
+.card .tag,
+.material-card .tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+td .tag, 
+th .tag {
+  position: static !important;
+  display: inline-block !important;
+  top: auto !important;
+  right: auto !important;
 }
 
 .tag-available {
@@ -391,10 +601,6 @@ body {
   background: var(--warning);
   color: var(--warning-foreground);
 }
-
-/* Cores das tags de status do material (disponível, indisponível,
-   emprestado, reservado, com defeito). A posição, padding e border-radius
-   já vêm da classe .tag acima — aqui só definimos cor de fundo/texto. */
 
 .tag-disponivel {
   background: #dcf5e3;
@@ -454,6 +660,12 @@ body {
   overflow: hidden;
 }
 
+.qty {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
 .card-actions {
   display: flex;
   align-items: center;
@@ -488,6 +700,13 @@ body {
 
 .btn-danger:hover {
   background: rgba(217, 83, 79, 0.1);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 32px;
 }
 
 /* ===== Paginação ===== */
@@ -660,16 +879,7 @@ body {
   text-decoration: underline;
 }
 
-@media (max-width: 900px) {
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-/* ===== Modal (usado pelo formulário de cadastro, ex: Novo Material) ===== */
-
-/* Reaproveitável para outros cadastros (Eventos, Reservas etc.) — não é exclusivo de Materiais */
+/* ===== Modal ===== */
 
 .modal-overlay {
   position: fixed;
@@ -702,19 +912,21 @@ body {
   justify-content: space-between;
   padding: 20px 24px;
   border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
+  color: #fff;
 }
 
 .modal-head h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: var(--sidebar);
+  color: #fff;
 }
 
 .modal-close {
   border: none;
-  background: var(--muted);
-  color: var(--muted-foreground);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
   width: 28px;
   height: 28px;
   border-radius: 999px;
@@ -723,8 +935,7 @@ body {
 }
 
 .modal-close:hover {
-  background: var(--accent);
-  color: var(--accent-foreground);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .modal-form {
@@ -775,113 +986,162 @@ body {
   margin-top: 8px;
 }
 
-/* ===== Ajuste final da área de autenticação ===== */
-
-.auth-area {
-  width: 100%;
-  margin-top: auto;
-  padding-top: 24px;
-  flex-shrink: 0;
-}
-
-.auth-area .user-card {
-  margin-top: 0;
-  width: 100%;
-}
-
-.auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.auth-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease,
-              border-color 0.2s ease,
-              transform 0.2s ease;
-}
-
-.register-button {
-  background: transparent;
-  color: #f4fbf7;
-  border-color: rgba(255, 255, 255, 0.35);
-}
-
-.register-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.7);
-}
-
-.login-button {
-  background: var(--card);
-  color: var(--primary-dark);
-  border-color: var(--card);
-  box-shadow: var(--shadow-card);
-}
-
-.login-button:hover {
-  filter: brightness(0.95);
-  transform: translateY(-1px);
-}
-
-.auth-button i {
-  font-size: 17px;
-}
-
 .hidden {
   display: none !important;
 }
 
-/* ===== Menu lateral compacto sem rolagem ===== */
+/* ===== Estilos Customizados para o Modal de Visualização de Material (2 Colunas) ===== */
 
-.sidebar {
-  height: 100vh;
+.view-material-modal {
+  max-width: 750px !important;
+  width: 100%;
+  padding: 0 !important;
   overflow: hidden;
-  padding: 20px 16px;
 }
 
-.nav {
-  flex: 0 0 auto;
-  overflow: visible;
-  gap: 3;
-  padding-top: 12px;
+.view-material-head {
+  background-color: var(--sidebar);
+  color: #ffffff;
+  padding: 16px 24px;
 }
 
-.nav a {
-  padding: 7px 12px;
+.view-material-head h2 {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
 }
 
-/* Área de autenticação */
-.auth-area {
+.view-material-head .modal-close {
+  color: #ffffff;
+}
+
+.view-material-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.view-material-media {
+  background-color: var(--muted);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 250px;
+}
+
+.view-material-media img {
   width: 100%;
-  margin-top: auto;
-  padding-top: 12px;
-  flex-shrink: 0;
+  height: 100%;
+  object-fit: cover;
 }
 
-.auth-area .user-card {
-  margin-top: 0;
-  width: 100%;
-}
-
-.auth-buttons {
+.view-material-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.field-group:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.field-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.field-value {
+  font-size: 15px;
+  color: var(--foreground);
+  margin: 0;
+  font-weight: 500;
+}
+
+.alert-label {
+  color: var(--destructive) !important;
+}
+
+.alert-value {
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.view-material-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background-color: var(--card);
+  border-top: 1px solid var(--border);
+}
+
+.panel-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+.panel-head h2 {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+}
+
+.panel-head h2 + .badge,
+.panel-head .badge {
+  display: inline-block !important;
+  margin-left: 8px !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+.panel-head .view-switch {
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* ===== Ajustes para alternância de Visualização (Cards / Tabela) ===== */
+
+#tableView.hidden {
+  display: none !important;
+}
+
+#tableView {
   width: 100%;
+  margin-top: 16px;
+}
+
+.table-name {
+  font-weight: 600;
+}
+
+.table-muted {
+  color: var(--muted-foreground);
+}
+
+.text-right {
+  text-align: right;
 }
 
 /* ===== Responsivo ===== */
@@ -910,6 +1170,7 @@ body {
   .controls .btn-muted,
   .controls .btn-primary {
     flex: 1 1 auto;
+    max-width: none;
   }
 
   .main,
@@ -919,5 +1180,14 @@ body {
 
   .search {
     width: 100%;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .view-material-body {
+    grid-template-columns: 1fr;
   }
 }
