@@ -1277,3 +1277,55 @@ th .tag {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Acesso restrito (usuário não logado) ===== */
+
+.restricted-page {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.restricted-card {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 40px 32px;
+}
+
+.restricted-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 28px;
+}
+
+.restricted-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.restricted-card p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.restricted-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}

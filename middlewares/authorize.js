@@ -21,4 +21,22 @@ function requireLevel(minLevel) {
   };
 }
 
-module.exports = { requireLevel };
+// Middleware de login: bloqueia quem não está logado e mostra a tela
+// "Acesso restrito" (com botões de entrar/cadastrar) no lugar da página.
+// Guarda a URL pedida (só GET) para voltar nela depois do login.
+function requireLogin(req, res, next) {
+  if (req.session && req.session.userId && res.locals.currentUser) {
+    return next();
+  }
+
+  if (req.method === 'GET') {
+    req.session.returnTo = req.originalUrl;
+  }
+
+  return res.status(401).render('login-required', {
+    title: 'Acesso restrito',
+    subtitle: 'Entre na sua conta para continuar.',
+  });
+}
+
+module.exports = { requireLevel, requireLogin };

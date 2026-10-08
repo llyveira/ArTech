@@ -34,7 +34,11 @@ router.post('/login', async (req, res) => {
     // esse usuário como logado em todas as páginas seguintes.
     req.session.userId = user.id;
 
-    res.redirect('/');
+    // Se o usuário foi barrado numa página restrita (ex.: /rooms), volta pra ela.
+    const destino = req.session.returnTo || '/';
+    delete req.session.returnTo;
+
+    res.redirect(destino);
 
   } catch (err) {
     console.error('Erro ao realizar login:', err);
@@ -89,4 +93,4 @@ router.post('/logout', (req, res) => {
   });
 });
 
-module.exports = router;
+module.exports = router;

@@ -313,6 +313,7 @@
 
 .reservation-status.confirmada { background: var(--accent); color: var(--accent-foreground); }
 .reservation-status.pendente { background: var(--warning); color: var(--warning-foreground); }
+.reservation-status.expirada { background: var(--destructive-bg); color: var(--destructive); }
 .reservation-status.cancelada { background: var(--muted); color: var(--muted-foreground); }
 
 .reservation-cancel {

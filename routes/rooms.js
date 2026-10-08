@@ -3,10 +3,10 @@ var router = express.Router();
 
 let { Classrooms, Reservations, ReservationParticipants } = require("../models/rooms");
 
-// PENDÊNCIA: ainda não existe sessão de login (ver routes/users.js), então toda
-// reserva é gravada em nome deste usuário fixo. Quando a autenticação existir,
-// troque por algo como req.session.userId.
-const USUARIO_PADRAO_ID = 1;
+// Autorização: só usuário logado acessa Reserva de Salas. Cada reserva é
+// gravada em nome de quem está logado (req.session.userId).
+const { requireLogin } = require('../middlewares/authorize');
+router.use(requireLogin);
 
 // Fuso de Santa Cruz/RN (UTC-3, sem horário de verão). Assim as datas do
 // formulário são interpretadas sempre no mesmo fuso, em qualquer servidor.
@@ -22,6 +22,7 @@ const STATUS = {
   APPROVED:  { label: 'Confirmada', css: 'confirmada' },
   CANCELLED: { label: 'Cancelada',  css: 'cancelada' },
   FINISHED:  { label: 'Finalizada', css: 'cancelada' },
+  EXPIRED:   { label: 'Expirada',   css: 'expirada' },
 };
 
 // Converte um Date (UTC no banco) para as partes de data/hora no fuso local.
@@ -45,7 +46,9 @@ function formatarHora(p) {
 function paraView(reserva) {
   const ini = partesLocais(reserva.pickup);
   const fim = partesLocais(reserva.return);
-  const status = STATUS[reserva.status] || STATUS.PENDING;
+  // Pendente cuja data já passou aparece como "Expirada"
+  const expirada = reserva.isExpired();
+  const status = expirada ? STATUS.EXPIRED : (STATUS[reserva.status] || STATUS.PENDING);
 
   return {
     id: reserva.id,
@@ -53,7 +56,7 @@ function paraView(reserva) {
     horario: `${ini.diaSemana}, ${ini.dia} de ${ini.mes} · ${formatarHora(ini)} às ${formatarHora(fim)}`,
     statusTexto: status.label,
     statusClass: status.css,
-    podeCancelar: reserva.status !== 'CANCELLED' && reserva.status !== 'FINISHED',
+    podeCancelar: !expirada && reserva.status !== 'CANCELLED' && reserva.status !== 'FINISHED',
   };
 }
 
@@ -63,7 +66,7 @@ router.get('/', async function (req, res, next) {
     const salas = await Classrooms.findAllRooms();
 
     const reservas = await Reservations.findAll({
-      where: { orderById: USUARIO_PADRAO_ID },
+      where: { orderById: req.session.userId },
       include: [{ model: Classrooms, as: 'classroom' }],
       order: [['createdAt', 'DESC']],
     });
@@ -105,7 +108,7 @@ router.post('/', async function (req, res) {
     }
 
     await Reservations.create({
-      orderById: USUARIO_PADRAO_ID,
+      orderById: req.session.userId,
       classroomId: sala.id,
       purpose: form.purpose,
       maxParticipants: parseInt(form.participants, 10),
@@ -134,6 +137,11 @@ router.post('/:id/cancel', async function (req, res) {
     const reserva = await Reservations.findByPk(req.params.id);
     if (!reserva) {
       return res.status(404).send('Reserva não encontrada.');
+    }
+
+    // Cada pessoa só cancela as próprias reservas
+    if (reserva.orderById !== req.session.userId) {
+      return res.status(403).send('Você não pode cancelar esta reserva.');
     }
 
     await reserva.cancel();
