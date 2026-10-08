@@ -33,7 +33,7 @@
         <!-- Card 1 -->
         <article class="room-card">
           <div class="room-media">
-            <!-- Espaço reservado para a imagem da sala: coloque <img src="..." alt="Lab. de Cenografia" /> aqui dentro -->
+            {{#if salas.[0].image}}<img src="{{salas.[0].image}}" alt="Lab. de Cenografia" />{{/if}}
             <span class="room-badge livre">Livre agora</span>
           </div>
           <div class="room-body">
@@ -57,7 +57,7 @@
         <!-- Card 2 -->
         <article class="room-card">
           <div class="room-media">
-            <!-- Espaço reservado para a imagem da sala: coloque <img src="..." alt="Lab. de Música" /> aqui dentro -->
+            {{#if salas.[1].image}}<img src="{{salas.[1].image}}" alt="Lab. de Música" />{{/if}}
             <span class="room-badge livre">Livre agora</span>
           </div>
           <div class="room-body">
