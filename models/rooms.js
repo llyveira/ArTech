@@ -70,6 +70,21 @@ Classrooms.init(
         len: { args: [2, 100], msg: 'O nome deve ter entre 2 e 100 caracteres.' }
       }
     },
+
+    // URL da imagem exibida no card da sala (opcional).
+    // Só a URL é gravada no banco; a imagem em si fica hospedada fora.
+    image: {
+      type: DataTypes.STRING(2048),
+      allowNull: true,
+      validate: {
+        isHttpUrl(value) {
+          if (value === null || value === undefined) return;
+          if (!/^https?:\/\/\S+$/i.test(value)) {
+            throw new Error('A imagem deve ser uma URL válida começando com http:// ou https://.');
+          }
+        }
+      }
+    },
   },
   {
     sequelize,
