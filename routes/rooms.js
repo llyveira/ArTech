@@ -42,12 +42,18 @@ function formatarHora(p) {
   return p.hora + 'h' + (p.minuto ? String(p.minuto).padStart(2, '0') : '');
 }
 
+// Pendente com horário já encerrado = expirada. Fica aqui na rota (e não só no
+// model) para não depender de método da instância do Sequelize.
+function estaExpirada(reserva) {
+  return reserva.status === 'PENDING' && new Date(reserva.return) < new Date();
+}
+
 // Transforma uma reserva do banco no objeto simples que a view usa.
 function paraView(reserva) {
   const ini = partesLocais(reserva.pickup);
   const fim = partesLocais(reserva.return);
   // Pendente cuja data já passou aparece como "Expirada"
-  const expirada = reserva.isExpired();
+  const expirada = estaExpirada(reserva);
   const status = expirada ? STATUS.EXPIRED : (STATUS[reserva.status] || STATUS.PENDING);
 
   return {
@@ -99,6 +105,11 @@ router.post('/', async function (req, res) {
 
     if (isNaN(pickup.getTime()) || isNaN(returnDate.getTime())) {
       return res.status(400).send('Data ou horário inválido.');
+    }
+
+    // Não permite reservar datas/horários que já passaram
+    if (returnDate < new Date()) {
+      return res.status(400).send('Não é possível reservar uma data ou horário que já passou.');
     }
 
     // Verifica se a sala já está ocupada nesse período

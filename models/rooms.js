@@ -81,6 +81,12 @@ Classrooms.init(
 
 
 class Reservations extends Model {
+  // Reserva "expirada": continua PENDING (ninguém aprovou/recusou) mas o
+  // horário dela já passou. Não é gravado no banco, é calculado na leitura.
+  isExpired(now = new Date()) {
+    return this.status === 'PENDING' && new Date(this.return) < now;
+  }
+
   async request() {
     if (this.status !== 'EDITING') {
       throw new Error('Só é possível solicitar uma reserva que esteja em edição (EDITING).');
@@ -93,6 +99,9 @@ class Reservations extends Model {
   async approve(answeredById) {
     if (this.status !== 'PENDING') {
       throw new Error('Só é possível aprovar uma reserva PENDING.');
+    }
+    if (this.isExpired()) {
+      throw new Error('Esta reserva expirou: a data já passou.');
     }
     this.status = 'APPROVED';
     this.answeredById = answeredById;
@@ -258,4 +267,4 @@ ReservationParticipants.init(
 Classrooms.hasMany(Reservations, { foreignKey: 'classroomId', as: 'reservations' });
 Reservations.belongsTo(Classrooms, { foreignKey: 'classroomId', as: 'classroom' });
 
-module.exports = { Classrooms, Reservations, ReservationParticipants };
+module.exports = { Classrooms, Reservations, ReservationParticipants };

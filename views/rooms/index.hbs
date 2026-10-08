@@ -135,7 +135,7 @@
 
         <label class="field">
           <span>Data da reserva</span>
-          <input type="date" name="date" required />
+          <input type="date" name="date" id="reservaData" required />
         </label>
 
         <label class="field">
@@ -199,6 +199,10 @@
 
   // Abre o modal; se vier o nome de uma sala (botão do card), já deixa ela selecionada
   function openRoomModal(roomName) {
+    // Não deixa escolher dias anteriores a hoje (data local do navegador)
+    var hoje = new Date();
+    hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset());
+    document.getElementById('reservaData').min = hoje.toISOString().slice(0, 10);
     document.getElementById('roomModalOverlay').classList.remove('hidden');
     if (roomName) {
       var select = document.getElementById('reservaSala');
