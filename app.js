@@ -14,6 +14,7 @@ var eventsRouter = require('./routes/events');
 var materialsRouter = require('./routes/materials');
 var roomsRouter = require('./routes/rooms');
 var requestsRouter = require('./routes/requests'); // NOVO: solicitações/empréstimos de material
+var searchRouter = require('./routes/search'); // NOVO: busca global
 
 var Users = require('./models/users'); // NOVO: usado no middleware de sessão
 var userLevel = require('./models/userLevel'); // NOVO: usado para calcular permissões do menu
@@ -124,6 +125,7 @@ app.use('/events', eventsRouter);
 app.use('/materials', materialsRouter);
 app.use('/rooms', roomsRouter);
 app.use('/requests', requestsRouter); // NOVO: solicitações/empréstimos de material
+app.use('/search', searchRouter); // NOVO: busca global
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

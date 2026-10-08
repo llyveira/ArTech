@@ -112,12 +112,17 @@
             <p class="subtitle">{{subtitle}}</p>
           </div>
           <div class="topbar-actions">
-            <input
-              class="search"
-              type="search"
-              placeholder="Pesquisar..."
-              aria-label="Pesquisar"
-            />
+            <div class="search-wrap">
+              <input
+                class="search"
+                id="globalSearchInput"
+                type="search"
+                placeholder="Pesquisar..."
+                aria-label="Pesquisar"
+                autocomplete="off"
+              />
+              <div class="search-results-dropdown hidden" id="globalSearchResults"></div>
+            </div>
           </div>
         </header>
 
@@ -274,6 +279,7 @@
 
     <script src="/javascripts/materials.js"></script>
     <script src="/javascripts/auth.js"></script>
+    <script src="/javascripts/search.js"></script>
   </body>
 
 </html>
