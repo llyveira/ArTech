@@ -367,26 +367,28 @@ body {
 
 /* ===== Novo Estilo para o Botão Voltar (Igual ao "Ver reservas") ===== */
 /* ===== Estilo do Botão Voltar (Mais fino / Estilo Contador) ===== */
+/* ===== Estilo do Botão Voltar (Igual ao da imagem de referência) ===== */
 .btn-back {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 14px; /* Altura menor e mais compacto */
-  border: 1px solid var(--border);
-  border-radius: 999px; /* Formato de pílula (igual a contadores e badges) */
-  background: var(--accent);
-  color: var(--accent-foreground);
-  font-size: 13px; /* Fonte levemente menor */
+  gap: 8px; /* Espaço entre a seta e o texto */
+  padding: 8px 16px;
+  border: 1px solid var(--primary); /* Borda verde com a cor primária */
+  border-radius: 8px; /* Cantos arredondados padrão da aplicação */
+  background: var(--card); /* Fundo branco/cartão */
+  color: var(--primary); /* Texto e ícone na cor verde */
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   width: auto;
   height: auto;
-  line-height: normal;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-back:hover {
-  border-color: rgba(47, 125, 93, 0.4);
-  filter: brightness(0.97);
+  background: var(--accent); /* Leve tom esverdeado ao passar o mouse */
+  border-color: var(--primary-dark);
 }
 
 .select[id="1"] {

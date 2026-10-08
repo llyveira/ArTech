@@ -64,6 +64,12 @@ function openViewMaterialModal(data) {
   document.getElementById('viewModalDescription').textContent = data.description || 'Nenhuma descrição fornecida.';
   document.getElementById('viewModalNotes').textContent = data.notes || 'Nenhuma observação.';
 
+  // Armazena o ID no campo oculto do modal de solicitação
+  const idInput = document.getElementById('requestMaterialIdInput');
+  if (idInput) {
+    idInput.value = data.id || '';
+  }
+
   const photoImg = document.getElementById('viewModalPhoto');
   const photoContainer = document.getElementById('viewModalPhotoContainer');
   
@@ -147,7 +153,7 @@ function switchView(mode) {
 
 async function fetchUserRequests() {
   try {
-    const response = await fetch('/api/my-requests'); 
+    const response = await fetch('/requests/my-requests'); 
     const requests = await response.json();
     
     const tbody = document.getElementById('myRequestsTableBody');
@@ -166,19 +172,42 @@ async function fetchUserRequests() {
     requests.forEach(req => {
       tbody.innerHTML += `
         <tr>
-          <td class="table-name">${req.materialName}</td>
+          <td class="table-name">${req.materialName || 'Material #' + req.materialId}</td>
           <td>${req.matricula}</td>
           <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
           <td>${req.dataDevolucao}</td>
-          <td><span class="tag tag-emprestado">${req.status}</span></td>
+          <td><span class="tag tag-${req.status}">${req.status}</span></td>
           <td class="text-right">
-            <button class="btn-outline btn-sm" onclick="cancelRequest('${req.id}')">Cancelar</button>
+            ${req.status === 'pendente' ? `<button class="btn-outline btn-sm" onclick="cancelRequest('${req.id}')">Cancelar</button>` : '-'}
           </td>
         </tr>
       `;
     });
   } catch (err) {
     console.error('Erro ao carregar reservas:', err);
+  }
+}
+
+// Função para cancelar solicitação/reserva
+async function cancelRequest(requestId) {
+  if (!confirm("Tem certeza que deseja cancelar esta reserva?")) return;
+
+  try {
+    const response = await fetch(`/requests/${requestId}/cancel`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (response.ok) {
+      alert("Reserva cancelada com sucesso!");
+      fetchUserRequests();
+    } else {
+      const err = await response.json();
+      alert(err.message || "Erro ao cancelar reserva.");
+    }
+  } catch (error) {
+    console.error("Erro:", error);
+    alert("Erro de conexão ao tentar cancelar a reserva.");
   }
 }
 
@@ -275,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.btn-view-material').forEach(button => {
     button.addEventListener('click', () => {
       const materialData = {
+        id: button.getAttribute('data-id'), // Captura o ID corretamente
         name: button.getAttribute('data-name'),
         category: button.getAttribute('data-category'),
         qty: button.getAttribute('data-qty'),
@@ -339,8 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Lógica de Alternância: Minhas Reservas <-> Painel Principal ---
-  const btnMyRequests = document.querySelector('.controls button:nth-child(3)'); 
-  const mainMaterialsPanel = document.querySelector('.main > .panel:nth-child(2)'); 
+  const btnMyRequests = document.getElementById('btnMyRequests'); 
+  const mainMaterialsPanel = document.getElementById('materialsPanel'); 
   const myRequestsSection = document.getElementById('myRequestsSection');
   const backToMaterialsBtn = document.getElementById('backToMaterialsBtn');
 
@@ -356,3 +386,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+// Abre o modal de edição preenchendo os campos com os dados passados
+function openEditMaterialModal(materialData) {
+  document.getElementById('editModalId').value = materialData.id || '';
+  document.getElementById('editModalName').value = materialData.name || '';
+  document.getElementById('editModalCategory').value = materialData.category || '';
+  document.getElementById('editModalQty').value = materialData.qty || '';
+  document.getElementById('editModalDescription').value = materialData.description || '';
+  document.getElementById('editModalNotes').value = materialData.notes || '';
+  document.getElementById('editModalPhoto').value = materialData.photo || '';
+
+  document.getElementById('editMaterialModalOverlay').classList.remove('hidden');
+}
+
+// Fecha o modal de edição
+function closeEditMaterialModal() {
+  document.getElementById('editMaterialModalOverlay').classList.add('hidden');
+}

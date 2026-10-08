@@ -30,9 +30,34 @@ router.post('/', async (req, res) => {
       notes: form.notes,
       photo: form.photo || null,
       category: form.category
-      // ATUALIZADO (Passo 3): form.category agora é salvo, pois o model
-      // Materials já tem a coluna "category" (ENUM) desde o Passo 2.
     });
+    res.redirect('/materials');
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+});
+
+/* POST update material */
+router.post('/update', async (req, res) => {
+  let form = req.body;
+  try {
+    // Localiza o material pelo ID enviado pelo campo oculto do modal
+    let material = await Materials.findByPk(form.materialId);
+    
+    if (!material) {
+      return res.status(404).send('Material não encontrado.');
+    }
+
+    // Atualiza os dados com os novos valores do formulário
+    await material.update({
+      name: form.name,
+      description: form.description,
+      qty: form.qty,
+      notes: form.notes,
+      photo: form.photo || null,
+      category: form.category
+    });
+
     res.redirect('/materials');
   } catch (err) {
     res.status(400).send(err.message);

@@ -96,6 +96,7 @@
             <button
               class="btn-outline btn-view-material"
               type="button"
+              data-id="{{this.id}}"
               data-name="{{this.name}}"
               data-category="{{this.category}}"
               data-qty="{{this.qty}}"
@@ -103,7 +104,19 @@
               data-notes="{{this.notes}}"
               data-photo="{{this.photo}}"
             >Visualizar</button>
-            <button class="btn-outline" type="button">Editar</button>
+            <button 
+              class="btn-outline" 
+              type="button" 
+              onclick='openEditMaterialModal({
+                id: "{{this.id}}",
+                name: "{{this.name}}",
+                category: "{{this.category}}",
+                qty: "{{this.qty}}",
+                description: "{{this.description}}",
+                notes: "{{this.notes}}",
+                photo: "{{this.photo}}"
+              })'
+            >Editar</button>
             <button
               class="btn-danger"
               type="button"
@@ -142,6 +155,7 @@
               <button
                 class="btn-outline btn-view-material btn-table-view"
                 type="button"
+                data-id="{{this.id}}"
                 data-name="{{this.name}}"
                 data-category="{{this.category}}"
                 data-qty="{{this.qty}}"
@@ -176,7 +190,9 @@
       Minhas Reservas
       <span class="badge" id="requestsCountBadge">0 itens</span>
     </h2>
-    <button class="btn-back" type="button" id="backToMaterialsBtn">Voltar</button>
+    <button class="btn-back" type="button" id="backToMaterialsBtn">
+      &larr; Voltar
+    </button>
   </div>
 
   <div class="table-container">
@@ -192,7 +208,6 @@
         </tr>
       </thead>
       <tbody id="myRequestsTableBody">
-        <!-- Exemplo de item estático por enquanto para testar o layout -->
         <tr>
           <td class="table-name">Notebook Dell</td>
           <td>20231024</td>
@@ -306,6 +321,67 @@
   </div>
 </div>
 
+<!-- ===== Modal: Editar Material (Corrigido para /materials/update) ===== -->
+<div class="modal-overlay hidden" id="editMaterialModalOverlay" onclick="closeEditMaterialModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editMaterialModalTitle" onclick="event.stopPropagation()">
+    
+    <div class="modal-head">
+      <h2 id="editMaterialModalTitle">Editar Material</h2>
+      <button class="modal-close" type="button" aria-label="Fechar" onclick="closeEditMaterialModal()">✕</button>
+    </div>
+
+    <form class="modal-form" id="editMaterialForm" action="/materials/update" method="POST">
+      
+      <input type="hidden" name="materialId" id="editModalId" />
+
+      <label class="field">
+        <span>Nome</span>
+        <input type="text" name="name" id="editModalName" required />
+      </label>
+
+      <label class="field">
+        <span>Categoria</span>
+        <select name="category" id="editModalCategory" required>
+          <option value="" disabled>Selecione uma categoria</option>
+          <option value="figurino">Figurino</option>
+          <option value="adereços">Adereços</option>
+          <option value="tecidos">Tecidos</option>
+          <option value="material_cenografico">Material Cenográfico</option>
+          <option value="livros">Livros</option>
+          <option value="sala_de_isntrumentos">Sala de Instrumentos</option>
+          <option value="laboratorio_de_musica">Laboratório de Música</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Quantidade em estoque</span>
+        <input type="number" name="qty" id="editModalQty" min="0" required />
+      </label>
+
+      <label class="field">
+        <span>Descrição</span>
+        <textarea name="description" id="editModalDescription" rows="3" required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Observações</span>
+        <textarea name="notes" id="editModalNotes" rows="2" required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Foto (link da imagem)</span>
+        <input type="url" name="photo" id="editModalPhoto" />
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="closeEditMaterialModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Salvar Alterações</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
 <!-- ===== Modal: Visualizar Material ===== -->
 <div
   class="modal-overlay hidden"
@@ -407,8 +483,7 @@
 
     <form class="modal-form" action="/requests" method="POST">
 
-      <!-- Campo oculto opcional para preencher o nome do material automaticamente via JS se precisar -->
-      <input type="hidden" name="materialName" id="requestMaterialNameInput" />
+      <input type="hidden" name="materialId" id="requestMaterialIdInput" />
 
       <label class="field">
         <span>Matrícula</span>
