@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/stylesheets/events.css" />
     <link rel="stylesheet" href="/stylesheets/auth.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   </head>
 
   <body>
@@ -128,7 +128,26 @@
 
         <main class="main">
           {{! Não deletar }}
-          {{{body}}}
+          {{#if restricted}}
+          {{!-- No próximo teste, verificar se o "profile" é maior que 0 --}}
+            {{#if currentUser}} 
+              {{{body}}}
+            {{else}}
+              <section class="restricted-page">
+  <div class="restricted-card">
+    <div class="restricted-icon"><i class="bi bi-lock"></i></div>
+    <h2>Acesso restrito</h2>
+    <p>Para acessar a Reserva de Salas e acompanhar suas reservas, você precisa estar logado.</p>
+    <div class="restricted-actions">
+      <button type="button" class="btn-outline" onclick="openRegisterModal()">Criar conta</button>
+      <button type="button" class="btn-primary" onclick="openLoginModal()">Entrar</button>
+    </div>
+  </div>
+</section>
+            {{/if}}
+          {{else}}
+            {{{body}}}
+          {{/if}}
         </main>
 
         <footer class="site-footer">

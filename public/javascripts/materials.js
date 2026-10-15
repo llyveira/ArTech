@@ -320,29 +320,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === 'Escape') closeAllModals();
   });
 
-  function configurePasswordToggle(buttonId, inputId) {
-    const toggleButton = document.getElementById(buttonId);
-    const passwordInput = document.getElementById(inputId);
-
-    if (!toggleButton || !passwordInput) return;
-
-    toggleButton.addEventListener('click', () => {
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-
-      const icon = toggleButton.querySelector('i');
-      if (icon) {
-        icon.classList.toggle('bi-eye', !isPassword);
-        icon.classList.toggle('bi-eye-slash', isPassword);
-      }
-
-      toggleButton.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
-    });
-  }
-
-  configurePasswordToggle('toggleLoginPassword', 'password');
-  configurePasswordToggle('toggleRegisterPassword', 'registerPassword');
-  configurePasswordToggle('toggleRegisterConfirmPassword', 'registerConfirmPassword');
+  // O botão de mostrar/ocultar senha é tratado só em auth.js. Como o layout.hbs
+  // carrega materials.js e auth.js juntos, registrar o mesmo listener aqui
+  // faria cada clique alternar duas vezes (e o campo nunca mudaria).
 
   const forgotPasswordLink = document.getElementById('forgotPasswordLink');
   forgotPasswordLink?.addEventListener('click', (event) => {
