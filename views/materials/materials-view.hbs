@@ -1,17 +1,19 @@
 <section class="material-view">
-  <a href="/materials" class="back-link"><i class="bi bi-arrow-left"></i> Voltar para Materiais</a>
+  <a href="/materials" class="back-link"><i class="bi bi-arrow-left"></i>
+    Voltar para Materiais</a>
 
   <div class="material-view-card">
     <div class="material-view-media">
       {{#if material.photo}}
-        <img src="{{material.photo}}" alt="{{material.name}}">
+        <img src="{{material.photo}}" alt="{{material.name}}" />
       {{else}}
-        <img src="/images/sem-foto.jpg" alt="{{material.name}}">
+        <img src="/images/sem-foto.jpg" alt="{{material.name}}" />
       {{/if}}
 
       {{#if material.status}}
         <span class="tag material-tag tag-{{material.status}}">
-          <i class="bi bi-check2"></i> {{statusLabel material.status}}
+          <i class="bi bi-check2"></i>
+          {{statusLabel material.status}}
         </span>
       {{/if}}
     </div>
@@ -20,10 +22,16 @@
       <h1>{{material.name}}</h1>
 
       <ul class="material-details">
-        <li><i class="bi bi-tag"></i> <strong>Categoria:</strong> {{material.category}}</li>
-        <li><i class="bi bi-box"></i> <strong>Quantidade:</strong> {{material.qty}}</li>
+        <li><i class="bi bi-tag"></i>
+          <strong>Categoria:</strong>
+          {{material.category}}</li>
+        <li><i class="bi bi-box"></i>
+          <strong>Quantidade:</strong>
+          {{material.qty}}</li>
         {{#if material.notes}}
-          <li><i class="bi bi-clipboard"></i> <strong>Notas:</strong> {{material.notes}}</li>
+          <li><i class="bi bi-clipboard"></i>
+            <strong>Notas:</strong>
+            {{material.notes}}</li>
         {{/if}}
       </ul>
 
@@ -51,7 +59,8 @@
           class="btn-primary btn-reservar"
           onclick="openRequestModalForMaterial('{{material.id}}')"
         >
-          <i class="bi bi-calendar-plus"></i> Reservar
+          <i class="bi bi-calendar-plus"></i>
+          Reservar
         </button>
       </div>
     </div>

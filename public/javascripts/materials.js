@@ -99,6 +99,23 @@ function solicitarMaterialPopup() {
   const requestModal = document.getElementById('requestMaterialModalOverlay');
   if (requestModal) {
     requestModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
+  }
+}
+
+// Abre o modal global de reserva injetando o ID do material correspondente
+function openRequestModalForMaterial(materialId) {
+  const idInput = document.getElementById('requestMaterialIdInput');
+  if (idInput) {
+    idInput.value = materialId || '';
+  }
+
+  const requestModal = document.getElementById('requestMaterialModalOverlay');
+  if (requestModal) {
+    requestModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
   }
 }
 
@@ -106,6 +123,8 @@ function closeRequestModal() {
   const requestModal = document.getElementById('requestMaterialModalOverlay');
   if (requestModal) {
     requestModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    document.body.classList.remove('modal-open');
   }
 }
 
@@ -314,30 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === 'Escape') closeAllModals();
   });
 
-  function configurePasswordToggle(buttonId, inputId) {
-    const toggleButton = document.getElementById(buttonId);
-    const passwordInput = document.getElementById(inputId);
-
-    if (!toggleButton || !passwordInput) return;
-
-    toggleButton.addEventListener('click', () => {
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-
-      const icon = toggleButton.querySelector('i');
-      if (icon) {
-        icon.classList.toggle('bi-eye', !isPassword);
-        icon.classList.toggle('bi-eye-slash', isPassword);
-      }
-
-      toggleButton.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
-    });
-  }
-
-  configurePasswordToggle('toggleLoginPassword', 'password');
-  configurePasswordToggle('toggleRegisterPassword', 'registerPassword');
-  configurePasswordToggle('toggleRegisterConfirmPassword', 'registerConfirmPassword');
-
   const forgotPasswordLink = document.getElementById('forgotPasswordLink');
   forgotPasswordLink?.addEventListener('click', (event) => {
     event.preventDefault();
@@ -397,4 +392,16 @@ function openEditMaterialModal(materialData) {
 // Fecha o modal de edição
 function closeEditMaterialModal() {
   document.getElementById('editMaterialModalOverlay').classList.add('hidden');
+}
+
+// Função global para limpar os filtros de pesquisa e categoria
+function clearFilters() {
+  // 1. Se houver algum elemento select de categoria visível na página, reseta o valor dele
+  const categorySelect = document.querySelector('select[name="category"]') || document.getElementById('categoryFilter');
+  if (categorySelect) {
+    categorySelect.value = '';
+  }
+
+  // 2. Redireciona para a rota base dos materiais, limpando automaticamente quaisquer query parameters (como ?category=... ou ?search=...)
+  window.location.href = '/materials';
 }
