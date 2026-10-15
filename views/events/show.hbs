@@ -1,5 +1,3 @@
-
-<link rel="stylesheet" href="/stylesheets/style.css" />
 <section class="event-view">
   <a href="/events" class="back-link">← Voltar para Eventos</a>
 
@@ -13,17 +11,73 @@
       <h1>{{evento.titulo}}</h1>
 
       <ul class="event-details">
-        <li>📅 {{evento.data}}</li>
-        <li>⏰ {{evento.horario}}</li>
-        <li>📍 {{evento.local}}</li>
-        <li>👤 Responsável: {{evento.responsavel}}</li>
-        <li>👥 Vagas: {{evento.vagas}}</li>
-        <li>📞 Contato: {{evento.contato}}</li>
+        <li><i class="fa-regular fa-calendar-days"></i> <strong>Data de entrada:</strong> {{evento.dataEntrada}}</li>
+        <li><i class="fa-regular fa-clock"></i> <strong>Horário de entrada:</strong> {{evento.horaEntrada}}</li>
+        <li><i class="fa-regular fa-calendar-days"></i> <strong>Data de saída:</strong> {{evento.dataSaida}}</li>
+        <li><i class="fa-regular fa-clock"></i> <strong>Horário de saída:</strong> {{evento.horaSaida}}</li>
+        <li><i class="fa-solid fa-location-dot"></i> <strong>Local:</strong> {{evento.localNome}}</li>
+        <li><i class="fa-solid fa-users"></i> <strong>Vagas:</strong> {{evento.vagas}}</li>
+        {{#if evento.sala}}
+          <li><i class="fa-solid fa-door-open"></i> <strong>Sala:</strong> {{evento.sala}}</li>
+        {{/if}}
+        {{#if evento.finalidade}}
+          <li><i class="fa-regular fa-clipboard"></i> <strong>Finalidade:</strong> {{evento.finalidade}}</li>
+        {{/if}}
+        {{#if evento.statusReserva}}
+          <li><i class="fa-solid fa-circle-check"></i> <strong>Reserva:</strong> {{evento.statusReserva}}</li>
+        {{/if}}
+        {{#if evento.responsible}}
+          <li><i class="fa-regular fa-user"></i> <strong>Responsável:</strong> {{evento.responsible}}</li>
+        {{/if}}
+        {{#if evento.contact}}
+          <li><i class="fa-regular fa-envelope"></i> <strong>Contato:</strong> {{evento.contact}}</li>
+        {{/if}}
+        <li><i class="fa-solid fa-tag"></i> <strong>Categoria:</strong> {{evento.categoria}}</li>
+        {{#if evento.criador}}
+          <li><i class="fa-regular fa-user"></i> <strong>Criado por:</strong> {{evento.criador}}</li>
+        {{/if}}
       </ul>
 
       <p class="event-view-description">{{evento.descricao}}</p>
 
-      <button type="button" class="btn-primary btn-inscrever">Inscrever-se</button>
+      <div class="event-view-actions">
+        {{!-- "Se inscrever" só aparece quando o status é Aprovado --}}
+        {{#if evento.podeInscrever}}
+          <button type="button" class="btn-primary btn-inscrever">Inscrever-se</button>
+        {{/if}}
+
+        {{!-- Editar e "Criar Evento" só aparecem quando o status é Rascunho --}}
+        {{#if evento.podeEditar}}
+          <button
+            type="button"
+            class="btn-outline btn-editar"
+            data-name="{{evento.titulo}}"
+            data-description="{{evento.descricao}}"
+            data-category="{{evento.categoriaValor}}"
+            data-image="{{evento.imagemUrl}}"
+            data-start-date="{{evento.form.startDate}}"
+            data-start-time="{{evento.form.startTime}}"
+            data-end-date="{{evento.form.endDate}}"
+            data-end-time="{{evento.form.endTime}}"
+            data-location="{{evento.local}}"
+            data-spots="{{evento.vagas}}"
+            data-classroom-id="{{evento.form.classroomId}}"
+            onclick="abrirModalEditarEvento(this)"
+          ><i class="fa-solid fa-pen-to-square"></i> Editar</button>
+        {{/if}}
+
+        {{#if evento.podeSolicitar}}
+          <form action="/events/{{evento.id}}/solicitar" method="POST">
+            <button type="submit" class="btn-primary">Criar Evento</button>
+          </form>
+        {{/if}}
+      </div>
     </div>
   </div>
 </section>
+
+{{#if evento.podeEditar}}
+  {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction=evento.editAction}}
+{{/if}}
+
+<script src="/javascripts/events.js" defer></script>

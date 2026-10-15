@@ -42,6 +42,14 @@ hbs.registerPartial(
   )
 );
 
+hbs.registerPartial(
+  'event-modal',
+  fs.readFileSync(
+    path.join(__dirname, 'views', 'partials', 'event-modal.hbs'),
+    'utf8'
+  )
+);
+
 // Helper pra traduzir o status do material pro rótulo em português
 hbs.registerHelper('statusLabel', function (status) {
   const labels = {
@@ -148,8 +156,59 @@ app.use(function (err, req, res, next) {
 // Conexão com o banco de dados
 var db = require('./config/database.js');
 
-db.sync().then(() => {
-  console.log('Banco de dados sincronizado!');
-});
+db.sync()
+  .then(async () => {
+    const { DataTypes } = require('sequelize');
+    const queryInterface = db.getQueryInterface();
+    const { Reservations } = require('./models/rooms');
+    const Event = require('./models/events');
 
+    // Garante a coluna "image" na tabela de salas (só cria se não existir).
+    const colunasSalas = await queryInterface.describeTable('classrooms');
+    if (!colunasSalas.image) {
+      await queryInterface.addColumn('classrooms', 'image', {
+        type: DataTypes.STRING(2048),
+        allowNull: true
+      });
+    }
+
+    // Só altera as tabelas quando elas ainda estão no formato antigo.
+    // Assim a migração roda uma vez e não apaga a ligação evento <-> reserva
+    // a cada reinício do servidor.
+    const colunasReservas = await queryInterface.describeTable('reservations');
+    const precisaAlterarReservas =
+      colunasReservas.orderById.allowNull === false ||
+      colunasReservas.classroomId.allowNull === false ||
+      colunasReservas.maxParticipants.allowNull === false;
+
+    const colunasEventos = await queryInterface.describeTable('events');
+    const precisaAlterarEventos =
+      !colunasEventos.description ||
+      !colunasEventos.category ||
+      !colunasEventos.reservationId ||
+      !colunasEventos.createdById ||
+      colunasEventos.responsible.allowNull === false ||
+      colunasEventos.contact.allowNull === false;
+
+    if (precisaAlterarReservas || precisaAlterarEventos) {
+      // Desliga as chaves estrangeiras durante a migração para o SQLite
+      // não zerar o reservationId dos eventos ao recriar a tabela.
+      await db.query('PRAGMA foreign_keys = OFF');
+      try {
+        if (precisaAlterarReservas) await Reservations.sync({ alter: true });
+        if (precisaAlterarEventos) await Event.sync({ alter: true });
+      } finally {
+        await db.query('PRAGMA foreign_keys = ON');
+      }
+    }
+
+    console.log('Banco de dados sincronizado!');
+
+    // Eventos antigos com status "Publicado" passam a ser "Aprovado"
+    await Event.update({ status: 'Aprovado' }, { where: { status: 'Publicado' } });
+  })
+  .catch((err) => {
+    console.error('Erro ao sincronizar o banco de dados:', err);
+  });
+  
 module.exports = app;

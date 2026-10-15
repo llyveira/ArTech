@@ -3,10 +3,19 @@ const sequelize = require('../config/database'); // Instância de conexão
 
 class Event extends Model {
   /**
-   * Método de Instância: verifica se o evento está com status publicado.
+   * Métodos de Instância: verificam o status atual do evento.
+   * Fluxo: Rascunho -> Solicitado -> Aprovado
    */
-  isPublished() {
-    return this.status === 'Publicado';
+  isDraft() {
+    return this.status === 'Rascunho';
+  }
+
+  isRequested() {
+    return this.status === 'Solicitado';
+  }
+
+  isApproved() {
+    return this.status === 'Aprovado';
   }
 
   /**
@@ -37,11 +46,11 @@ class Event extends Model {
   }
 
   /**
-   * Método Estático: lista apenas eventos publicados.
+   * Método Estático: lista apenas eventos aprovados.
    */
-  static async findPublished() {
+  static async findApproved() {
     return await this.findAll({
-      where: { status: 'Publicado' }
+      where: { status: 'Aprovado' }
     });
   }
 }
@@ -66,14 +75,18 @@ Event.init(
       type: DataTypes.STRING, // Guarda o caminho/URL do arquivo de imagem do card
       allowNull: true,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'Rascunho',
       validate: {
         isIn: {
-          args: [['Publicado', 'Rascunho']],
-          msg: 'O status deve ser Publicado ou Rascunho.'
+          args: [['Rascunho', 'Solicitado', 'Aprovado']],
+          msg: 'O status deve ser Rascunho, Solicitado ou Aprovado.'
         }
       }
     },
@@ -99,23 +112,29 @@ Event.init(
       }
     },
     responsible: {
-      type: DataTypes.STRING, // Responsável (ex: "João Silva")
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: 'O campo responsável não pode ser vazio.' }
-      }
+      type: DataTypes.STRING, // Responsável (não é mais pedido no formulário)
+      allowNull: true,
     },
     vacancies: {
       type: DataTypes.STRING, // Suporta tanto números quanto o texto "Livre"
       allowNull: false,
       defaultValue: 'Livre',
     },
+    category: {
+      type: DataTypes.STRING, // Categoria do evento (valor do select, ex: "ensaios")
+      allowNull: true,
+    },
+    reservationId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    createdById: {
+      type: DataTypes.INTEGER, // Usuário logado que criou o evento
+      allowNull: true,
+    },
     contact: {
-      type: DataTypes.STRING, // Contato telefônico (ex: "(84) 99999-9999")
-      allowNull: false,
-      validate: {
-        notEmpty: { msg: 'O campo contato não pode ser vazio.' }
-      }
+      type: DataTypes.STRING, // Contato (não é mais pedido no formulário)
+      allowNull: true,
     }
   },
   {
@@ -127,3 +146,13 @@ Event.init(
 );
 
 module.exports = Event;
+
+// Associação com Reservations
+const { Reservations } = require('./rooms');
+Event.belongsTo(Reservations,{foreignKey:'reservationId',as:'reservation'});
+Reservations.hasOne(Event,{foreignKey:'reservationId',as:'event'});
+
+// Associação com o usuário que criou o evento
+const Users = require('./users');
+Event.belongsTo(Users, { foreignKey: 'createdById', as: 'creator' });
+Users.hasMany(Event, { foreignKey: 'createdById', as: 'events' });

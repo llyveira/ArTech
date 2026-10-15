@@ -153,6 +153,19 @@ class Reservations extends Model {
     }
     return await this.save();
   }
+
+    // Cria uma reserva reutilizando esta mesma classe para um evento.
+  static async createForEvent({ purpose, maxParticipants, pickup, returnDate, classroomId = null, orderById = null, status = 'EDITING', transaction }) {
+    return await this.create({
+      orderById: orderById ?? null,
+      classroomId: classroomId ?? null,
+      purpose,
+      maxParticipants: maxParticipants ?? null,
+      pickup,
+      return: returnDate,
+      status
+    }, { transaction });
+  }
 }
 
 
@@ -167,7 +180,7 @@ Reservations.init(
 
     orderById: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
 
 
@@ -179,7 +192,7 @@ Reservations.init(
 
     classroomId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     purpose: {
       type: DataTypes.STRING,
@@ -190,7 +203,7 @@ Reservations.init(
     },
     maxParticipants: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       validate: {
         min: { args: [1], msg: 'O número máximo de participantes deve ser pelo menos 1.' }
       }

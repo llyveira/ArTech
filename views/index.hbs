@@ -1,4 +1,33 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<a href="/materials">Ir para página de Materiais</a>
-<p><a href="/users/login">Ir para página de login</a></p>
+<section class="panel">
+  <div class="panel-head">
+    <h2>Eventos Aprovados</h2>
+    <span class="badge">{{quantidadeEventos}} eventos encontrados</span>
+  </div>
+
+  <div class="grid">
+    {{#if eventos.length}}
+      {{#each eventos}}
+        <article class="card">
+          <div class="card-media">
+            <img src="{{imagem}}" alt="{{titulo}}" loading="lazy" />
+            <span class="tag tag-{{statusClass}}">{{status}}</span>
+          </div>
+          <div class="card-body">
+            <h3>{{titulo}}</h3>
+            <ul class="event-details">
+              <li><i class="fa-regular fa-calendar-days"></i> {{data}}</li>
+              <li><i class="fa-regular fa-clock"></i> {{horario}}</li>
+              <li><i class="fa-solid fa-location-dot"></i> {{localNome}}</li>
+              <li><i class="fa-solid fa-users"></i> Vagas: {{vagas}}</li>
+            </ul>
+            <div class="card-actions">
+              <button class="btn-outline" type="button" onclick="location.href='/events/{{id}}'"><i class="fa-regular fa-eye"></i>Visualizar</button>
+            </div>
+          </div>
+        </article>
+      {{/each}}
+    {{else}}
+      <p>Nenhum evento aprovado no momento.</p>
+    {{/if}}
+  </div>
+</section>

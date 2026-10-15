@@ -1,0 +1,96 @@
+{{!-- Modal de evento reutilizado em "Novo Evento" (lista) e "Editar Evento" (detalhes) --}}
+<div class="modal-overlay hidden" id="{{modalId}}" onclick="fecharModalEvento('{{modalId}}')">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="{{modalId}}Title" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h2 id="{{modalId}}Title">{{modalTitle}}</h2>
+      <button class="modal-close" type="button" aria-label="Fechar" onclick="fecharModalEvento('{{modalId}}')">✕</button>
+    </div>
+
+    <form class="modal-form" action="{{formAction}}" method="POST" onsubmit="return cadastrarEvento(event)">
+      <input type="hidden" name="userID" value="{{currentUser.id}}">
+      <label class="field">
+        <span>Nome do evento</span>
+        <input type="text" name="name" placeholder="Ex: Oficina de Teatro" required />
+      </label>
+
+      <label class="field">
+        <span>Descrição</span>
+        <textarea name="description" rows="3" placeholder="Descreva o evento..." required></textarea>
+      </label>
+
+      <label class="field">
+        <span>Categoria</span>
+        <select name="category">
+          <option value="" disabled selected>Selecione uma categoria</option>
+          <option value="oficinas-artisticas">Oficinas artísticas</option>
+          <option value="apresentacoes-culturais">Apresentações culturais</option>
+          <option value="ensaios">Ensaios</option>
+          <option value="exposicoes">Exposições</option>
+          <option value="reunioes">Reuniões</option>
+          <option value="projetos-culturais">Projetos culturais</option>
+          <option value="aulas-musicais">Aulas e atividades musicais</option>
+          <option value="palestras">Palestras</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Imagem (URL)</span>
+        <input type="url" name="image" placeholder="https://exemplo.com/imagem.jpg" />
+      </label>
+
+      <fieldset class="modal-fieldset">
+  <legend>Reserva</legend>
+
+  <div class="modal-grid-2">
+    <label class="field">
+      <span>Data de entrada</span>
+      <input type="date" name="reservation_start_date" required />
+    </label>
+    <label class="field">
+      <span>Horário de entrada</span>
+      <input type="time" name="reservation_start_time" required />
+    </label>
+  </div>
+
+  <div class="modal-grid-2">
+    <label class="field">
+      <span>Data de saída</span>
+      <input type="date" name="reservation_end_date" required />
+    </label>
+    <label class="field">
+      <span>Horário de saída</span>
+      <input type="time" name="reservation_end_time" required />
+    </label>
+  </div>
+
+  <label class="field">
+    <span>Local</span>
+    <select name="reservation_location" required>
+      <option value="" disabled selected>Selecione o local</option>
+      <option value="nuarte">NUARTE</option>
+      <option value="biblioteca-ifrn">Biblioteca IFRN</option>
+      <option value="espaco-cultural">Espaço Cultural</option>
+      <option value="auditorio-ifrn">Auditório IFRN</option>
+    </select>
+  </label>
+
+  <label class="field">
+    <span>Vagas</span>
+    <input type="text" name="reservation_spots" placeholder="Ex: 20 ou Livre" />
+  </label>
+
+  <!-- Sala (classroomId) da reserva: opcional, enviada à Reservations.createForEvent() -->
+  <input type="hidden" name="classroomId" />
+
+  <!-- Finalidade da reserva: preenchida automaticamente por cadastrarEvento() -->
+  <input type="hidden" name="reservation_purpose" id="reservation_purpose" />
+</fieldset>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-outline" onclick="fecharModalEvento('{{modalId}}')">Cancelar</button>
+        <button type="submit" name="action" value="salvar" class="btn-outline btn-salvar">Salvar</button>
+        <button type="submit" name="action" value="criar" class="btn-primary">Criar Evento</button>
+      </div>
+    </form>
+  </div>
+</div>

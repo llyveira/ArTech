@@ -26,15 +26,15 @@ router.get('/', async (req, res) => {
   try {
     // Eventos: visíveis para todo mundo.
     const events = await Event.findAll({
-      where: {
-        [Op.or]: [
-          { name: { [Op.like]: `%${q}%` } },
-          { location: { [Op.like]: `%${q}%` } },
-          { responsible: { [Op.like]: `%${q}%` } },
-        ],
-      },
-      limit: 5,
-    });
+  where: {
+    status: 'Aprovado',
+    [Op.or]: [
+      { name: { [Op.like]: `%${q}%` } },
+      { location: { [Op.like]: `%${q}%` } },
+    ],
+  },
+  limit: 5,
+});
     results.events = events.map((e) => ({
       id: e.id,
       title: e.name,

@@ -28,7 +28,9 @@
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-/* ========== Barra de filtros (.filters-section) ========== */
+/* ---------------------------------------------------------
+   Barra de filtros (.filters-section)
+   --------------------------------------------------------- */
 
 .filters-section {
   display: flex;
@@ -113,7 +115,9 @@
   background: var(--color-primary-light);
 }
 
-/* ========== Painel "Lista de Eventos" (.panel) ==========*/
+/* ---------------------------------------------------------
+   Painel "Lista de Eventos" (.panel)
+   --------------------------------------------------------- */
 
 .panel {
   margin: 0 32px 32px;
@@ -147,7 +151,9 @@
   border-radius: var(--radius-pill);
 }
 
-/* ========== Grid de cards (.grid > .card) ========== */
+/* ---------------------------------------------------------
+   Grid de cards (.grid > .card)
+   --------------------------------------------------------- */
 
 .grid {
   display: grid;
@@ -210,8 +216,13 @@
   background: var(--color-text-muted);
 }
 
+.tag-aprovado,
 .tag-publicado {
   background: var(--color-primary);
+}
+
+.tag-solicitado {
+  background: #2f80c9;
 }
 
 .tag-rascunho {
@@ -275,6 +286,10 @@
   border-color: var(--color-primary-light);
 }
 
+.btn-outline i {
+  margin-right: 6px;
+}
+
 .btn-outline:hover {
   background: var(--color-primary-light);
 }
@@ -291,7 +306,9 @@
   background: #f8d9d7;
 }
 
-/* ========== Paginhação ==========*/
+/* ---------------------------------------------------------
+   Paginação
+   --------------------------------------------------------- */
 
 .pagination {
   display: flex;
@@ -331,7 +348,9 @@
   color: #fff;
 }
 
-/* ========== Responsivel ==========*/
+/* ---------------------------------------------------------
+   Responsivo
+   --------------------------------------------------------- */
 
 @media (max-width: 640px) {
   .filters-section,
@@ -348,5 +367,350 @@
   .btn-limpar {
     margin-left: 0;
     width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   Modal "Novo Evento"
+   --------------------------------------------------------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 40, 30, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 40px rgba(20, 40, 30, 0.25);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.modal-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 4px;
+}
+
+.modal-close:hover {
+  color: var(--color-danger);
+}
+
+.modal-form {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 0;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+}
+
+.modal-form input:focus-visible,
+.modal-form select:focus-visible,
+.modal-form textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.modal-form textarea {
+  resize: vertical;
+}
+
+.modal-fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-fieldset legend {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  padding: 0 6px;
+}
+
+.modal-grid-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.modal .btn-primary,
+.event-view .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #219a63, var(--color-primary-dark));
+  color: #fff;
+  border: none;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(19, 92, 60, 0.25);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.modal .btn-primary:hover,
+.event-view .btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 3px 10px rgba(19, 92, 60, 0.32);
+}
+
+.modal .btn-primary:active,
+.event-view .btn-primary:active {
+  filter: brightness(0.96);
+}
+
+/* ---------------------------------------------------------
+   Página "Visualizar Evento"
+   --------------------------------------------------------- */
+
+.event-view {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 960px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 8px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.back-link:visited {
+  color: var(--color-primary-dark);
+}
+
+/* Card em duas colunas: imagem à esquerda, informações à direita */
+.event-view-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.event-view-media {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  background: var(--color-primary-lighter);
+}
+
+.event-view-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.event-view-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.event-view-body h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.event-view-body .event-details {
+  padding: 16px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  gap: 10px;
+}
+
+.event-view-body .event-details li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--color-text);
+}
+
+.event-view-body .event-details i {
+  width: 18px;
+  text-align: center;
+  color: var(--color-primary);
+}
+
+.event-view-description {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* Botões de ação (Inscrever-se / Editar / Criar Evento) */
+.event-view-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.event-view-actions form {
+  margin: 0;
+}
+
+.event-view-actions .btn-outline {
+  flex: 0 0 auto;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+}
+
+.btn-inscrever {
+  padding: 13px 26px;
+  font-size: 15px;
+}
+
+/* Botão "Salvar" do modal de evento (rascunho) */
+.modal-actions .btn-salvar {
+  flex: 0 0 auto;
+  padding: 11px 18px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 800px) {
+  .event-view-card {
+    grid-template-columns: 1fr;
+  }
+
+  .event-view-media {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+
+  .event-view-body {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-view {
+    padding: 0 14px;
+  }
+
+  .event-view-actions > *,
+  .event-view-actions .btn-primary,
+  .event-view-actions .btn-outline {
+    width: 100%;
+  }
+
+  .modal-actions {
+    flex-wrap: wrap;
+  }
+
+  .modal-grid-2 {
+    grid-template-columns: 1fr;
   }
 }
