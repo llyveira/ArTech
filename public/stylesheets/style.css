@@ -1230,51 +1230,198 @@ th .tag {
   text-align: right;
 }
 
+/* =========================================================
+   Página "Visualizar Material" (Com Bootstrap Icons e Layout Proporcional)
+   ========================================================= */
+
+.material-view {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 960px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+  font-family: inherit;
+  color: var(--foreground);
+}
+
+.material-view .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 8px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-decoration: none;
+}
+
+.material-view .back-link:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.material-view .back-link i {
+  font-size: 15px;
+}
+
+.material-view-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: stretch;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.material-view-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  background: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.material-view-media img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}
+
+.material-view-media .material-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.material-view-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.material-view-body h1 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--sidebar);
+  overflow-wrap: anywhere;
+}
+
+.material-view-body .material-details {
+  list-style: none;
+  margin: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.material-view-body .material-details li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--foreground);
+}
+
+.material-view-body .material-details i {
+  width: 18px;
+  text-align: center;
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.material-view-description {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+
+/* Botões proporcionais preenchendo o espaço uniformemente */
+.material-view-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.material-view-actions .btn-outline,
+.material-view-actions .btn-primary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Remove o sublinhado dos links/botões na listagem de cartões */
+.card-actions a,
+.card-actions .btn-outline,
+.card-actions .btn-danger,
+.card-actions button {
+  text-decoration: none !important;
+}
+
+.card-actions a:hover,
+.card-actions .btn-outline:hover {
+  text-decoration: none !important;
+}
+
 /* ===== Responsivo ===== */
 
-@media (max-width: 1280px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 900px) {
+  .material-view-card {
+    grid-template-columns: 1fr;
+  }
+
+  .material-view-media {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .material-view-body {
+    padding: 22px;
   }
 }
 
-@media (max-width: 900px) {
-  .sidebar {
-    display: none;
+@media (max-width: 480px) {
+  .material-view {
+    padding: 0 14px;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .controls {
+  .material-view-actions {
     flex-direction: column;
-    align-items: stretch;
   }
 
-  .controls .select,
-  .controls .btn-muted,
-  .controls .btn-primary {
-    flex: 1 1 auto;
-    max-width: none;
-  }
-
-  .main,
-  .topbar {
-    padding: 20px;
-  }
-
-  .search {
+  .material-view-actions > * {
     width: 100%;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .view-material-body {
-    grid-template-columns: 1fr;
   }
 }
 

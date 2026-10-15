@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/stylesheets/events.css" />
     <link rel="stylesheet" href="/stylesheets/auth.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   </head>
 
   <body>
@@ -71,7 +71,7 @@
 
             <div>
               <p class="user-name" title="{{currentUser.email}}">{{shortName currentUser.name}}</p>
-              <p class="user-role">ARTECH</p>
+              <p class="user-role">{{roleName currentUser.profile}}</p>
             </div>
 
           </div>
@@ -276,6 +276,67 @@
     <button class="help" type="button" aria-label="Ajuda">?</button>
     {{> login-modal}}
     {{> register-modal}}
+
+    <!-- ===== Modal Global: Editar Material ===== -->
+    <div class="modal-overlay hidden" id="editMaterialModalOverlay" onclick="closeEditMaterialModal()">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editMaterialModalTitle" onclick="event.stopPropagation()">
+        
+        <div class="modal-head">
+          <h2 id="editMaterialModalTitle">Editar Material</h2>
+          <button class="modal-close" type="button" aria-label="Fechar" onclick="closeEditMaterialModal()">✕</button>
+        </div>
+
+        <form class="modal-form" id="editMaterialForm" action="/materials/update" method="POST">
+          
+          <input type="hidden" name="materialId" id="editModalId" />
+
+          <label class="field">
+            <span>Nome</span>
+            <input type="text" name="name" id="editModalName" required />
+          </label>
+
+          <label class="field">
+            <span>Categoria</span>
+            <select name="category" id="editModalCategory" required>
+              <option value="" disabled>Selecione uma categoria</option>
+              <option value="figurino">Figurino</option>
+              <option value="adereços">Adereços</option>
+              <option value="tecidos">Tecidos</option>
+              <option value="material_cenografico">Material Cenográfico</option>
+              <option value="livros">Livros</option>
+              <option value="sala_de_isntrumentos">Sala de Instrumentos</option>
+              <option value="laboratorio_de_musica">Laboratório de Música</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Quantidade em estoque</span>
+            <input type="number" name="qty" id="editModalQty" min="0" required />
+          </label>
+
+          <label class="field">
+            <span>Descrição</span>
+            <textarea name="description" id="editModalDescription" rows="3" required></textarea>
+          </label>
+
+          <label class="field">
+            <span>Observações</span>
+            <textarea name="notes" id="editModalNotes" rows="2" required></textarea>
+          </label>
+
+          <label class="field">
+            <span>Foto (link da imagem)</span>
+            <input type="url" name="photo" id="editModalPhoto" />
+          </label>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-outline" onclick="closeEditMaterialModal()">Cancelar</button>
+            <button type="submit" class="btn-primary">Salvar Alterações</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
 
     <script src="/javascripts/materials.js"></script>
     <script src="/javascripts/auth.js"></script>

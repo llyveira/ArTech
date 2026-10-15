@@ -303,16 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.btn-view-material').forEach(button => {
     button.addEventListener('click', () => {
-      const materialData = {
-        id: button.getAttribute('data-id'), // Captura o ID corretamente
-        name: button.getAttribute('data-name'),
-        category: button.getAttribute('data-category'),
-        qty: button.getAttribute('data-qty'),
-        description: button.getAttribute('data-description'),
-        notes: button.getAttribute('data-notes'),
-        photo: button.getAttribute('data-photo')
-      };
-      openViewMaterialModal(materialData);
+      const materialId = button.getAttribute('data-id');
+      if (materialId) {
+        window.location.href = `/materials/${materialId}`;
+      }
     });
   });
 

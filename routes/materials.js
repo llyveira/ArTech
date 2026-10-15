@@ -85,4 +85,21 @@ router.post('/update', async (req, res) => {
   }
 });
 
+router.get('/:id', async function(req, res, next) {
+  try {
+    const material = await Materials.findByPk(req.params.id);
+    
+    if (!material) {
+      return res.status(404).send('Material não encontrado.');
+    }
+
+    res.render('materials/materials-view', { // <-- ALTERADO AQUI
+      title: material.name,
+      material: material
+    });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 module.exports = router;

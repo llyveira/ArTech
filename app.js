@@ -79,6 +79,17 @@ hbs.registerHelper('shortName', function (name) {
   return name.trim().split(/\s+/).slice(0, 2).join(' ');
 });
 
+// Helper que traduz o nível numérico do perfil para o nome correspondente
+hbs.registerHelper('roleName', function (profile) {
+  const roles = {
+    0: 'EXTERNO',
+    1: 'INTERNO',
+    2: 'PRO',
+    3: 'COORDENADOR'
+  };
+  return roles[profile] ?? 'Utilizador';
+});
+
 // Middlewares
 app.use(logger('dev'));
 app.use(express.json());
