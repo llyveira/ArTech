@@ -7,7 +7,7 @@
   <select class="select" id="categoryFilter" aria-label="Filtrar por categoria" onchange="filterByCategory(this.value)">
     <option value="">Categorias</option>
     {{#each categorias}}
-      <option value="{{this}}">{{this}}</option>
+      <option value="{{this}}">{{categoryLabel this}}</option>
     {{/each}}
   </select>
  <button class="btn-muted" type="button" onclick="clearFilters()">Limpar Filtro</button>
@@ -157,7 +157,7 @@
         {{#each dados}}
           <tr>
             <td class="table-name">{{this.name}}</td>
-            <td class="table-muted">{{this.category}}</td>
+            <td class="table-muted">{{categoryLabel this.category}}</td>
             <td>{{this.qty}}</td>
             <td><span class="tag tag-{{this.status}}">{{statusLabel
                   this.status

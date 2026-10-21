@@ -62,6 +62,20 @@ hbs.registerHelper('statusLabel', function (status) {
   return labels[status] || status;
 });
 
+// Helper pra traduzir a categoria do material pro rótulo exibido na tela
+hbs.registerHelper('categoryLabel', function (category) {
+  const labels = {
+    figurino: 'Figurino',
+    'adereços': 'Adereços',
+    tecidos: 'Tecidos',
+    material_cenografico: 'Material Cenográfico',
+    livros: 'Livros',
+    sala_de_instrumentos: 'Sala de Instrumentos',
+    laboratorio_de_musica: 'Laboratório de Música',
+  };
+  return labels[category] || category;
+});
+
 // Helper que gera as iniciais do usuário logado, para o avatar (ex: "Maria Isabelly" -> "MI")
 hbs.registerHelper('initials', function (name) {
   if (!name) return '';
