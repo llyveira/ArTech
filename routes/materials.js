@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 // Importação do modelo
 let Materials = require("../models/materials");
+let MaterialRequest = require("../models/materialRequest");
 let materialCategory = require("../models/materialCategory");
 const { Op } = require("sequelize");
 
@@ -11,41 +12,57 @@ const { Op } = require("sequelize");
 const userLevel = require("../models/userLevel");
 // router.use(requireLevel(userLevel.INTERNAL));
 
+// PRO e COORDINATOR podem gerenciar materiais (cadastrar, editar, excluir).
+// INTERNAL só consulta e visualiza.
+function canManageMaterials(res) {
+  const user = res.locals.currentUser;
+  return !!user && user.profile >= userLevel.PRO;
+}
+
 /* GET materials listing. */
 router.get("/", async function (req, res, next) {
-  const selectedCategory = req.query.category || null;
-  const searchTerm = (req.query.search || "").trim();
+  try {
+    const selectedCategory = req.query.category || null;
+    const searchTerm = (req.query.search || "").trim();
 
-  // Monta o filtro dinamicamente: categoria e/ou busca por nome podem
-  // vir juntos (ex: veio da busca global já filtrado por categoria).
-  const where = {};
+    // Monta o filtro dinamicamente: categoria e/ou busca por nome podem
+    // vir juntos (ex: veio da busca global já filtrado por categoria).
+    const where = {};
 
-  if (
-    selectedCategory &&
-    Object.values(materialCategory).includes(selectedCategory)
-  ) {
-    where.category = selectedCategory;
+    if (
+      selectedCategory &&
+      Object.values(materialCategory).includes(selectedCategory)
+    ) {
+      where.category = selectedCategory;
+    }
+
+    if (searchTerm) {
+      where.name = { [Op.like]: `%${searchTerm}%` };
+    }
+
+    const materials = await Materials.findAll({ where });
+
+    res.render("materials/index", {
+      title: "Materiais do NUARTE",
+      subtitle: "Consulte os materiais disponíveis no acervo do NUARTE.",
+      dados: materials,
+      categorias: materialCategory, // disponibiliza o enum para o template
+      selectedCategory: selectedCategory,
+      searchTerm: searchTerm,
+      canManage: canManageMaterials(res), // controla o que aparece na tela
+      restricted: true,
+    });
+  } catch (err) {
+    next(err); // evita derrubar o servidor se a consulta falhar
   }
-
-  if (searchTerm) {
-    where.name = { [Op.like]: `%${searchTerm}%` };
-  }
-
-  const materials = await Materials.findAll({ where });
-
-  res.render("materials/index", {
-    title: "Materiais do NUARTE",
-    subtitle: "Consulte os materiais disponíveis no acervo do NUARTE.",
-    dados: materials,
-    categorias: materialCategory, // disponibiliza o enum para o template
-    selectedCategory: selectedCategory,
-    searchTerm: searchTerm,
-    restricted: true,
-  });
 });
 
 /* POST create material */
 router.post("/", async (req, res) => {
+  if (!canManageMaterials(res)) {
+    return res.status(403).send("Você não tem permissão para cadastrar materiais.");
+  }
+
   let form = req.body;
   try {
     await Materials.create({
@@ -64,6 +81,10 @@ router.post("/", async (req, res) => {
 
 /* POST update material */
 router.post("/update", async (req, res) => {
+  if (!canManageMaterials(res)) {
+    return res.status(403).send("Você não tem permissão para editar materiais.");
+  }
+
   let form = req.body;
   try {
     // Localiza o material pelo ID enviado pelo campo oculto do modal
@@ -73,7 +94,9 @@ router.post("/update", async (req, res) => {
       return res.status(404).send("Material não encontrado.");
     }
 
-    // Atualiza os dados com os novos valores do formulário
+    // Atualiza os dados com os novos valores do formulário.
+    // O status acompanha o estoque: qty 0 -> indisponível, qty > 0 -> disponível
+    // (status como "defeito" não é alterado).
     await material.update({
       name: form.name,
       description: form.description,
@@ -81,11 +104,41 @@ router.post("/update", async (req, res) => {
       notes: form.notes,
       photo: form.photo || null,
       category: form.category,
+      status: material.statusForQty(Number(form.qty)),
     });
 
     res.redirect("/materials");
   } catch (err) {
     res.status(400).send(err.message);
+  }
+});
+
+/* POST delete material (exclusão lógica: oculta, não apaga do banco) */
+router.post("/:id/delete", async (req, res) => {
+  if (!canManageMaterials(res)) {
+    return res.status(403).json({ error: "Você não tem permissão para excluir materiais." });
+  }
+
+  try {
+    const material = await Materials.findByPk(req.params.id);
+
+    if (!material) {
+      return res.status(404).json({ error: "Material não encontrado." });
+    }
+
+    // Não faz sentido excluir material que está em uso ou aguardando retirada.
+    if (await MaterialRequest.hasActiveForMaterial(material.id)) {
+      return res.status(409).json({
+        error:
+          "Não é possível excluir: este material tem reservas em andamento (pendentes, aprovadas ou emprestadas).",
+      });
+    }
+
+    await material.softDelete();
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Erro ao excluir material:", err);
+    res.status(500).json({ error: "Erro ao excluir material." });
   }
 });
 
@@ -98,9 +151,10 @@ router.get("/:id", async function (req, res, next) {
     }
 
     res.render("materials/materials-view", {
-      // <-- ALTERADO AQUI
       title: material.name,
       material: material,
+      canManage: canManageMaterials(res),
+      restricted: true,
     });
   } catch (err) {
     res.status(500).send(err.message);

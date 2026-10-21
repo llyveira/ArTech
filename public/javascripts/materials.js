@@ -170,17 +170,24 @@ function switchView(mode) {
   }
 }
 
-async function fetchUserRequests() {
-  try {
-    const response = await fetch('/requests/my-requests'); 
-    const requests = await response.json();
-    
-    const tbody = document.getElementById('myRequestsTableBody');
-    const badge = document.getElementById('requestsCountBadge');
-    
-    if (!tbody) return;
+// Evita que textos vindos do banco quebrem o HTML da tabela
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
 
-    tbody.innerHTML = '';
+// Lista as reservas do usuário logado (botão "Minhas reservas")
+async function fetchUserRequests() {
+  const tbody = document.getElementById('myRequestsTableBody');
+  const badge = document.getElementById('requestsCountBadge');
+  if (!tbody) return;
+
+  try {
+    const response = await fetch('/requests/my-requests');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const requests = await response.json();
+
     if (badge) badge.textContent = `${requests.length} itens`;
 
     if (requests.length === 0) {
@@ -188,22 +195,23 @@ async function fetchUserRequests() {
       return;
     }
 
-    requests.forEach(req => {
-      tbody.innerHTML += `
-        <tr>
-          <td class="table-name">${req.materialName || 'Material #' + req.materialId}</td>
-          <td>${req.matricula}</td>
-          <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
-          <td>${req.dataDevolucao}</td>
-          <td><span class="tag tag-${req.status}">${req.status}</span></td>
-          <td class="text-right">
-            ${req.status === 'pendente' ? `<button class="btn-outline btn-sm" onclick="cancelRequest('${req.id}')">Cancelar</button>` : '-'}
-          </td>
-        </tr>
-      `;
-    });
+    tbody.innerHTML = requests.map((req) => `
+      <tr>
+        <td class="table-name">${escapeHtml(req.materialName)}</td>
+        <td>${escapeHtml(req.matricula)}</td>
+        <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
+        <td>${escapeHtml(req.dataDevolucao)}</td>
+        <td><span class="tag tag-${escapeHtml(req.status)}">${escapeHtml(req.status)}</span></td>
+        <td class="text-right">
+          ${req.status === 'pendente'
+            ? `<button class="btn-outline btn-sm" type="button" onclick="cancelRequest('${escapeHtml(req.id)}')">Cancelar</button>`
+            : '-'}
+        </td>
+      </tr>
+    `).join('');
   } catch (err) {
     console.error('Erro ao carregar reservas:', err);
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Não foi possível carregar as reservas.</td></tr>`;
   }
 }
 
@@ -222,11 +230,114 @@ async function cancelRequest(requestId) {
       fetchUserRequests();
     } else {
       const err = await response.json();
-      alert(err.message || "Erro ao cancelar reserva.");
+      alert(err.error || "Erro ao cancelar reserva.");
     }
   } catch (error) {
     console.error("Erro:", error);
     alert("Erro de conexão ao tentar cancelar a reserva.");
+  }
+}
+
+// Exclui (oculta) um material, pedindo confirmação antes.
+// A exclusão é lógica e o servidor recusa se houver reserva em andamento.
+async function deleteMaterial(materialId, materialName) {
+  if (!confirm(`Excluir o material "${materialName}"? Ele deixará de aparecer na lista.`)) return;
+
+  try {
+    const response = await fetch(`/materials/${materialId}/delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.ok) {
+      window.location.reload();
+    } else {
+      const err = await response.json().catch(() => ({}));
+      alert(err.error || 'Erro ao excluir material.');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro de conexão ao tentar excluir o material.');
+  }
+}
+
+// Ações possíveis na coluna "Ações" de Ver reservas
+const REQUEST_ACTIONS = {
+  approve: { label: 'Aprovar', confirm: 'Aprovar esta reserva?' },
+  reject: { label: 'Recusar', confirm: 'Recusar esta reserva?' },
+  borrow: { label: 'Marcar retirada', confirm: 'Confirmar que o material foi retirado?' },
+  return: { label: 'Marcar devolução', confirm: 'Confirmar a devolução do material?' }
+};
+
+// Lista as reservas de TODOS os usuários (botão "Ver reservas")
+async function fetchAllRequests() {
+  const tbody = document.getElementById('allRequestsTableBody');
+  const badge = document.getElementById('allRequestsCountBadge');
+  if (!tbody) return;
+
+  try {
+    const response = await fetch('/requests/all');
+
+    if (response.status === 403) {
+      tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Você não tem permissão para ver todas as reservas.</td></tr>`;
+      if (badge) badge.textContent = '0 itens';
+      return;
+    }
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+
+    const requests = await response.json();
+    if (badge) badge.textContent = `${requests.length} itens`;
+
+    if (requests.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Nenhuma reserva encontrada.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = requests.map((req) => {
+      // Uma reserva pode ter mais de uma ação (ex.: pendente -> Aprovar e Recusar)
+      const buttons = (req.actions || [])
+        .filter((key) => REQUEST_ACTIONS[key])
+        .map((key) => `<button class="btn-outline btn-sm" type="button" onclick="runRequestAction('${escapeHtml(req.id)}', '${key}')">${REQUEST_ACTIONS[key].label}</button>`)
+        .join(' ');
+
+      return `
+        <tr>
+          <td class="table-name">${escapeHtml(req.materialName)}</td>
+          <td>${escapeHtml(req.requesterName)}</td>
+          <td>${escapeHtml(req.matricula)}</td>
+          <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
+          <td>${escapeHtml(req.dataDevolucao)}</td>
+          <td><span class="tag tag-${escapeHtml(req.status)}">${escapeHtml(req.status)}</span></td>
+          <td class="text-right">${buttons || '-'}</td>
+        </tr>
+      `;
+    }).join('');
+  } catch (err) {
+    console.error('Erro ao carregar todas as reservas:', err);
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Não foi possível carregar as reservas.</td></tr>`;
+  }
+}
+
+// Executa a ação (aprovar, recusar, retirada ou devolução) de uma reserva
+async function runRequestAction(requestId, action) {
+  const config = REQUEST_ACTIONS[action];
+  if (!config || !confirm(config.confirm)) return;
+
+  try {
+    const response = await fetch(`/requests/${requestId}/${action}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.ok) {
+      fetchAllRequests();
+    } else {
+      const err = await response.json();
+      alert(err.error || 'Erro ao atualizar a reserva.');
+    }
+  } catch (error) {
+    console.error('Erro:', error);
+    alert('Erro de conexão ao atualizar a reserva.');
   }
 }
 
@@ -329,8 +440,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Botões "Editar" e "Excluir": leem os dados dos atributos data-*
+  // (seguros contra aspas e quebras de linha)
+  document.addEventListener('click', (event) => {
+    const editButton = event.target.closest('.btn-edit-material');
+    if (editButton) {
+      openEditMaterialModal({ ...editButton.dataset });
+      return;
+    }
+
+    const deleteButton = event.target.closest('.btn-delete-material');
+    if (deleteButton) {
+      deleteMaterial(deleteButton.dataset.id, deleteButton.dataset.name);
+    }
+  });
+
+  // Esc fecha qualquer modal aberto
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeAllModals();
+    if (event.key !== 'Escape') return;
+    closeAllModals();
+    closeRequestModal();
+    closeEditMaterialModal();
   });
 
   const forgotPasswordLink = document.getElementById('forgotPasswordLink');
@@ -357,21 +487,44 @@ document.addEventListener('DOMContentLoaded', () => {
     window.history.replaceState({}, '', url);
   }
 
-  // --- Lógica de Alternância: Minhas Reservas <-> Painel Principal ---
-  const btnMyRequests = document.getElementById('btnMyRequests'); 
-  const mainMaterialsPanel = document.getElementById('materialsPanel'); 
+  // Mantém o select de categoria na categoria atual depois de filtrar
+  const categorySelect = document.getElementById('categoryFilter');
+  const currentCategory = params.get('category');
+  if (categorySelect && currentCategory) {
+    categorySelect.value = currentCategory;
+  }
+
+  // --- Lógica de Alternância: Minhas Reservas / Ver Reservas <-> Painel Principal ---
+  const btnMyRequests = document.getElementById('btnMyRequests');
+  const btnAllRequests = document.getElementById('btnAllRequests');
+  const mainMaterialsPanel = document.getElementById('materialsPanel');
   const myRequestsSection = document.getElementById('myRequestsSection');
+  const allRequestsSection = document.getElementById('allRequestsSection');
   const backToMaterialsBtn = document.getElementById('backToMaterialsBtn');
+  const backFromAllRequestsBtn = document.getElementById('backFromAllRequestsBtn');
 
   btnMyRequests?.addEventListener('click', () => {
-    if (mainMaterialsPanel) mainMaterialsPanel.classList.add('hidden');
-    if (myRequestsSection) myRequestsSection.classList.remove('hidden');
+    mainMaterialsPanel?.classList.add('hidden');
+    allRequestsSection?.classList.add('hidden');
+    myRequestsSection?.classList.remove('hidden');
     fetchUserRequests();
   });
 
+  btnAllRequests?.addEventListener('click', () => {
+    mainMaterialsPanel?.classList.add('hidden');
+    myRequestsSection?.classList.add('hidden');
+    allRequestsSection?.classList.remove('hidden');
+    fetchAllRequests();
+  });
+
   backToMaterialsBtn?.addEventListener('click', () => {
-    if (myRequestsSection) myRequestsSection.classList.add('hidden');
-    if (mainMaterialsPanel) mainMaterialsPanel.classList.remove('hidden');
+    myRequestsSection?.classList.add('hidden');
+    mainMaterialsPanel?.classList.remove('hidden');
+  });
+
+  backFromAllRequestsBtn?.addEventListener('click', () => {
+    allRequestsSection?.classList.add('hidden');
+    mainMaterialsPanel?.classList.remove('hidden');
   });
 
 });
@@ -391,7 +544,14 @@ function openEditMaterialModal(materialData) {
 
 // Fecha o modal de edição
 function closeEditMaterialModal() {
-  document.getElementById('editMaterialModalOverlay').classList.add('hidden');
+  document.getElementById('editMaterialModalOverlay')?.classList.add('hidden');
+}
+
+// Filtra a listagem pela categoria escolhida no select
+function filterByCategory(category) {
+  window.location.href = category
+    ? `/materials?category=${encodeURIComponent(category)}`
+    : '/materials';
 }
 
 // Função global para limpar os filtros de pesquisa e categoria

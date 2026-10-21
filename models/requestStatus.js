@@ -4,6 +4,7 @@ const requestStatus = Object.freeze({
   EMPRESTADO: 'emprestado', // material já está com o solicitante
   DEVOLVIDO: 'devolvido',   // ciclo completo, material de volta
   CANCELADO: 'cancelado',   // solicitante cancelou antes da aprovação
+  RECUSADO: 'recusado',     // quem aprova recusou a solicitação pendente
 });
 
 module.exports = requestStatus;

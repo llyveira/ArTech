@@ -2,36 +2,48 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const requestStatus = require('./requestStatus.js');
 
+// Os métodos que mudam o status aceitam "options" (ex.: { transaction })
+// para poderem rodar dentro de uma transação junto com o ajuste de estoque.
 class MaterialRequest extends Model {
   /**
    * Cancela a solicitação (usuário desistiu antes da aprovação).
    */
-  async cancel() {
-    return await this.update({ status: requestStatus.CANCELADO });
+  async cancel(options) {
+    return await this.update({ status: requestStatus.CANCELADO }, options);
+  }
+
+  /**
+   * Recusa a solicitação pendente (decisão de quem aprova).
+   */
+  async reject(options) {
+    return await this.update({ status: requestStatus.RECUSADO }, options);
   }
 
   /**
    * Marca a solicitação como aprovada (ainda não retirada).
    */
-  async approve() {
-    return await this.update({ status: requestStatus.APROVADO });
+  async approve(options) {
+    return await this.update({ status: requestStatus.APROVADO }, options);
   }
 
   /**
    * Marca o material como retirado de fato pelo solicitante.
    */
-  async markBorrowed() {
-    return await this.update({ status: requestStatus.EMPRESTADO });
+  async markBorrowed(options) {
+    return await this.update({ status: requestStatus.EMPRESTADO }, options);
   }
 
   /**
    * Marca a devolução do material, registrando a data/hora exata.
    */
-  async markReturned() {
-    return await this.update({
-      status: requestStatus.DEVOLVIDO,
-      returnedAt: new Date(),
-    });
+  async markReturned(options) {
+    return await this.update(
+      {
+        status: requestStatus.DEVOLVIDO,
+        returnedAt: new Date(),
+      },
+      options
+    );
   }
 
   /**
@@ -43,6 +55,28 @@ class MaterialRequest extends Model {
       where: { userId },
       order: [['createdAt', 'DESC']],
     });
+  }
+
+  /**
+   * Informa se o material tem alguma reserva em andamento
+   * (pendente, aprovada ou emprestada). Usado para bloquear a exclusão
+   * de materiais que ainda estão em uso ou aguardando retirada.
+   */
+  static async hasActiveForMaterial(materialId) {
+    const { Op } = require('sequelize');
+    const total = await this.count({
+      where: {
+        materialId,
+        status: {
+          [Op.in]: [
+            requestStatus.PENDENTE,
+            requestStatus.APROVADO,
+            requestStatus.EMPRESTADO,
+          ],
+        },
+      },
+    });
+    return total > 0;
   }
 }
 

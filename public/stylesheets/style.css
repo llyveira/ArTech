@@ -1,4 +1,24 @@
-/* Cores e variáveis usadas em toda a página */
+/* =========================================================
+   ÍNDICE
+   1.  Variáveis e base
+   2.  Menu lateral
+   3.  Conteúdo principal (topbar, busca, main)
+   4.  Botões
+   5.  Painéis e filtros
+   6.  Cabeçalho do painel e seletor de visualização
+   7.  Tabela
+   8.  Cards de material
+   9.  Paginação
+   10. Busca global
+   11. Modais (cadastro e visualização)
+   12. Página "Visualizar Material"
+   13. Botão de ajuda e rodapé
+   14. Acesso restrito (usuário não logado)
+   15. Responsivo
+   ========================================================= */
+
+
+/* ===== 1. Variáveis e base ===== */
 
 :root {
   --background: #f4faf6;
@@ -36,7 +56,12 @@ body {
   min-height: 100vh;
 }
 
-/* ===== Menu lateral ===== */
+.hidden {
+  display: none !important;
+}
+
+
+/* ===== 2. Menu lateral ===== */
 
 .sidebar {
   position: sticky;
@@ -57,12 +82,23 @@ body {
   overflow: hidden;
 }
 
+.sidebar > a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .brand {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   padding-bottom: 24px;
+}
+
+.brand a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .brand-logo {
@@ -101,17 +137,6 @@ body {
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.04em;
-}
-
-.brand a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.sidebar > a {
-  display: block;
-  color: inherit;
-  text-decoration: none;
 }
 
 .nav {
@@ -212,6 +237,10 @@ body {
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
+.auth-button i {
+  font-size: 17px;
+}
+
 .register-button {
   background: transparent;
   color: #f4fbf7;
@@ -235,11 +264,8 @@ body {
   transform: translateY(-1px);
 }
 
-.auth-button i {
-  font-size: 17px;
-}
 
-/* ===== Conteúdo principal ===== */
+/* ===== 3. Conteúdo principal (topbar, busca, main) ===== */
 
 .content {
   flex: 1;
@@ -300,6 +326,16 @@ body {
   cursor: pointer;
 }
 
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+}
+
+
+/* ===== 4. Botões ===== */
+
 .btn-primary {
   padding: 12px 20px;
   border: none;
@@ -321,14 +357,77 @@ body {
   background: var(--primary-dark);
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 32px;
+.btn-muted {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-/* ===== Painéis e filtros ===== */
+.btn-muted:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.btn-outline {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(47, 125, 93, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: var(--accent);
+}
+
+.btn-danger {
+  padding: 8px 10px;
+  border: 1px solid rgba(217, 83, 79, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--destructive);
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: rgba(217, 83, 79, 0.1);
+}
+
+/* Botão Voltar (borda verde, fundo branco) */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Espaço entre a seta e o texto */
+  padding: 8px 16px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-back:hover {
+  background: var(--accent); /* Leve tom esverdeado ao passar o mouse */
+  border-color: var(--primary-dark);
+}
+
+
+/* ===== 5. Painéis e filtros ===== */
 
 .panel {
   background: var(--card);
@@ -365,30 +464,8 @@ body {
   cursor: pointer;
 }
 
-/* ===== Novo Estilo para o Botão Voltar (Igual ao "Ver reservas") ===== */
-/* ===== Estilo do Botão Voltar (Mais fino / Estilo Contador) ===== */
-/* ===== Estilo do Botão Voltar (Igual ao da imagem de referência) ===== */
-.btn-back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* Espaço entre a seta e o texto */
-  padding: 8px 16px;
-  border: 1px solid var(--primary); /* Borda verde com a cor primária */
-  border-radius: 8px; /* Cantos arredondados padrão da aplicação */
-  background: var(--card); /* Fundo branco/cartão */
-  color: var(--primary); /* Texto e ícone na cor verde */
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  width: auto;
-  height: auto;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.btn-back:hover {
-  background: var(--accent); /* Leve tom esverdeado ao passar o mouse */
-  border-color: var(--primary-dark);
+.select:hover {
+  border-color: rgba(47, 125, 93, 0.4);
 }
 
 .select[id="1"] {
@@ -398,27 +475,7 @@ body {
   gap: 8px;
 }
 
-.select:hover {
-  border-color: rgba(47, 125, 93, 0.4);
-}
-
-.btn-muted {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 8px;
-  background: var(--muted);
-  color: var(--muted-foreground);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.btn-muted:hover {
-  background: var(--accent);
-  color: var(--accent-foreground);
-}
-
-/* ===== Cabeçalho do Painel ===== */
+/* ===== 6. Cabeçalho do painel e seletor de visualização ===== */
 
 .panel-head {
   display: flex;
@@ -438,12 +495,6 @@ body {
   gap: 12px;
 }
 
-.panel-head h2 + .badge {
-  display: inline-block;
-  margin-left: 12px;
-  vertical-align: middle;
-}
-
 .badge {
   padding: 4px 12px;
   border-radius: 999px;
@@ -453,8 +504,14 @@ body {
   font-weight: 500;
 }
 
-/* ===== Seletor de Visualização (Pílula) ===== */
+.panel-head .badge {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
 
+/* Seletor de visualização (pílula Card / Tabela) */
 .view-switch {
   display: flex;
   align-items: center;
@@ -465,6 +522,10 @@ body {
   box-shadow: var(--shadow-card);
   width: 100px;
   flex-shrink: 0;
+}
+
+.panel-head .view-switch {
+  margin-left: auto;
 }
 
 .view-btn {
@@ -491,7 +552,8 @@ body {
   box-shadow: 0 1px 3px rgba(30, 70, 55, 0.08);
 }
 
-/* ===== Comportamento da Tabela ===== */
+
+/* ===== 7. Tabela ===== */
 
 .table-container {
   width: 100%;
@@ -526,7 +588,30 @@ tr:hover td, .table tr:hover td {
   background: rgba(244, 250, 246, 0.6);
 }
 
-/* ===== Cartões de material ===== */
+.table-name {
+  font-weight: 600;
+}
+
+.table-muted {
+  color: var(--muted-foreground);
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Alternância de visualização (Cards / Tabela) */
+#tableView {
+  width: 100%;
+  margin-top: 16px;
+}
+
+#tableView.hidden {
+  display: none !important;
+}
+
+
+/* ===== 8. Cards de material ===== */
 
 .grid {
   margin-top: 0;
@@ -549,6 +634,7 @@ tr:hover td, .table tr:hover td {
   box-shadow: 0 12px 28px rgba(30, 70, 55, 0.14);
 }
 
+/* Imagem do card: foto inteira, com a própria foto desfocada ao fundo */
 .card-media {
   position: relative;
   height: 176px;
@@ -556,26 +642,35 @@ tr:hover td, .table tr:hover td {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.card-media::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: var(--bg) center / cover no-repeat;
+  filter: blur(18px);
+  opacity: 0.6;
 }
 
 .card-media img {
+  position: relative;
+  z-index: 1;
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-/* ===== Tags e Situações ===== */
-
+/* Tags de situação */
 .tag {
   display: inline-block;
   padding: 4px 11px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
-  position: static; 
+  position: static;
 }
 
 .card .tag,
@@ -586,7 +681,7 @@ tr:hover td, .table tr:hover td {
   z-index: 2;
 }
 
-td .tag, 
+td .tag,
 th .tag {
   position: static !important;
   display: inline-block !important;
@@ -629,6 +724,32 @@ th .tag {
   color: var(--muted-foreground);
 }
 
+.tag-pendente {
+  background: #fff4cc;
+  color: #8a5a00;
+}
+
+.tag-aprovado {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.tag-devolvido {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tag-cancelado {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.tag-recusado {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Corpo do card */
 .card-body {
   padding: 20px;
 }
@@ -668,6 +789,42 @@ th .tag {
   color: var(--muted-foreground);
 }
 
+/* Informações do card com ícone (igual ao de eventos) */
+.card .card-info {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card .card-info li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+}
+
+.card .card-info i {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.card .card-info .description {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+/* Ações do card */
 .card-actions {
   display: flex;
   align-items: center;
@@ -675,33 +832,17 @@ th .tag {
   margin-top: 20px;
 }
 
-.btn-outline {
-  flex: 1;
-  padding: 8px;
-  border: 1px solid rgba(47, 125, 93, 0.3);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
+/* Remove o sublinhado dos links/botões na listagem de cartões */
+.card-actions a,
+.card-actions .btn-outline,
+.card-actions .btn-danger,
+.card-actions button {
+  text-decoration: none !important;
 }
 
-.btn-outline:hover {
-  background: var(--accent);
-}
-
-.btn-danger {
-  padding: 8px 10px;
-  border: 1px solid rgba(217, 83, 79, 0.3);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--destructive);
-  cursor: pointer;
-}
-
-.btn-danger:hover {
-  background: rgba(217, 83, 79, 0.1);
+.card-actions a:hover,
+.card-actions .btn-outline:hover {
+  text-decoration: none !important;
 }
 
 .empty-state {
@@ -711,7 +852,8 @@ th .tag {
   padding: 32px;
 }
 
-/* ===== Paginação ===== */
+
+/* ===== 9. Paginação ===== */
 
 .pagination {
   margin-top: 32px;
@@ -759,129 +901,85 @@ th .tag {
   font-weight: 600;
 }
 
-/* ===== Botão flutuante de ajuda ===== */
 
-.help {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 999px;
-  background: var(--muted);
-  color: var(--muted-foreground);
-  font-size: 18px;
-  cursor: pointer;
+/* ===== 10. Busca global ===== */
+
+.search-wrap {
+  position: relative;
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-card);
 }
 
-/* ===== Rodapé ===== */
-
-.site-footer {
-  background: var(--card);
-  color: var(--muted-foreground);
-  padding: 40px 32px 24px;
-  border-top: 1px solid var(--border);
+.search-results-dropdown.hidden {
+  display: none;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-heading {
-  margin: 0 0 16px;
-  font-size: 14px;
+.search-group-title {
+  margin: 8px 8px 4px;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--sidebar);
-}
-
-.footer-title {
-  margin: 0 0 8px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--foreground);
-}
-
-.footer-desc {
-  margin: 0 0 16px;
-  font-size: 13px;
-  line-height: 1.5;
   color: var(--muted-foreground);
 }
 
-.footer-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.search-group-title:first-child {
+  margin-top: 4px;
+}
+
+.search-result {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.footer-links a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted-foreground);
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--foreground);
   text-decoration: none;
+}
+
+.search-result:hover,
+.search-result:focus-visible {
+  background: var(--accent);
+  outline: none;
+}
+
+.search-result-name {
   font-size: 14px;
-}
-
-.footer-links a:hover {
-  color: var(--primary);
-  text-decoration: underline;
-}
-
-.footer-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-.footer-info {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--muted-foreground);
-}
-
-.footer-info strong {
-  color: var(--foreground);
   font-weight: 600;
 }
 
-.footer-bottom {
-  max-width: 1200px;
-  margin: 32px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-  text-align: center;
+.search-result-sub {
   font-size: 12px;
   color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.footer-bottom a {
-  color: var(--primary);
-  font-weight: 600;
-  text-decoration: none;
+.search-message {
+  margin: 0;
+  padding: 12px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--muted-foreground);
 }
 
-.footer-bottom a:hover {
-  text-decoration: underline;
-}
 
-/* ===== Modal ===== */
+/* ===== 11. Modais (cadastro e visualização) ===== */
 
 .modal-overlay {
   position: fixed;
@@ -988,12 +1086,7 @@ th .tag {
   margin-top: 8px;
 }
 
-.hidden {
-  display: none !important;
-}
-
-/* ===== Estilos Customizados para o Modal de Visualização de Material (2 Colunas) ===== */
-
+/* Modal de visualização de material (2 colunas) */
 .view-material-modal {
   max-width: 750px !important;
   width: 100%;
@@ -1095,144 +1188,8 @@ th .tag {
   border-top: 1px solid var(--border);
 }
 
-.panel-head {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex-wrap: wrap !important;
-  gap: 16px !important;
-}
 
-.panel-head h2 {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  margin: 0 !important;
-}
-
-.panel-head h2 + .badge,
-.panel-head .badge {
-  display: inline-block !important;
-  margin-left: 8px !important;
-  vertical-align: middle !important;
-  flex-shrink: 0 !important;
-}
-
-.panel-head .view-switch {
-  margin-left: auto !important;
-  flex-shrink: 0 !important;
-}
-
-/* ===== Busca global ===== */
-
-.search-wrap {
-  position: relative;
-}
-
-.search-results-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 50;
-  width: 360px;
-  max-width: calc(100vw - 40px);
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 8px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
-}
-
-.search-results-dropdown.hidden {
-  display: none;
-}
-
-.search-group-title {
-  margin: 8px 8px 4px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-
-.search-group-title:first-child {
-  margin-top: 4px;
-}
-
-.search-result {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  color: var(--foreground);
-  text-decoration: none;
-}
-
-.search-result:hover,
-.search-result:focus-visible {
-  background: var(--accent);
-  outline: none;
-}
-
-.search-result-name {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.search-result-sub {
-  font-size: 12px;
-  color: var(--muted-foreground);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-message {
-  margin: 0;
-  padding: 12px;
-  font-size: 13px;
-  text-align: center;
-  color: var(--muted-foreground);
-}
-
-@media (max-width: 900px) {
-  .search-results-dropdown {
-    left: 0;
-    right: auto;
-    width: min(360px, calc(100vw - 40px));
-  }
-}
-
-/* ===== Ajustes para alternância de Visualização (Cards / Tabela) ===== */
-
-#tableView.hidden {
-  display: none !important;
-}
-
-#tableView {
-  width: 100%;
-  margin-top: 16px;
-}
-
-.table-name {
-  font-weight: 600;
-}
-
-.table-muted {
-  color: var(--muted-foreground);
-}
-
-.text-right {
-  text-align: right;
-}
-
-/* =========================================================
-   Página "Visualizar Material" (Com Bootstrap Icons e Layout Proporcional)
-   ========================================================= */
+/* ===== 12. Página "Visualizar Material" ===== */
 
 .material-view {
   width: 100%;
@@ -1380,52 +1337,129 @@ th .tag {
   border-radius: 8px;
 }
 
-/* Remove o sublinhado dos links/botões na listagem de cartões */
-.card-actions a,
-.card-actions .btn-outline,
-.card-actions .btn-danger,
-.card-actions button {
-  text-decoration: none !important;
+
+/* ===== 13. Botão de ajuda e rodapé ===== */
+
+.help {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
 }
 
-.card-actions a:hover,
-.card-actions .btn-outline:hover {
-  text-decoration: none !important;
+.site-footer {
+  background: var(--card);
+  color: var(--muted-foreground);
+  padding: 40px 32px 24px;
+  border-top: 1px solid var(--border);
 }
 
-/* ===== Responsivo ===== */
-
-@media (max-width: 900px) {
-  .material-view-card {
-    grid-template-columns: 1fr;
-  }
-
-  .material-view-media {
-    min-height: 0;
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-
-  .material-view-body {
-    padding: 22px;
-  }
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-@media (max-width: 480px) {
-  .material-view {
-    padding: 0 14px;
-  }
-
-  .material-view-actions {
-    flex-direction: column;
-  }
-
-  .material-view-actions > * {
-    width: 100%;
-  }
+.footer-heading {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sidebar);
 }
 
-/* ===== Acesso restrito (usuário não logado) ===== */
+.footer-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.footer-desc {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.footer-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.footer-info {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+
+.footer-info strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+.footer-bottom a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+
+/* ===== 14. Acesso restrito (usuário não logado) ===== */
 
 .restricted-page {
   display: flex;
@@ -1475,4 +1509,45 @@ th .tag {
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+
+/* ===== 15. Responsivo ===== */
+
+@media (max-width: 900px) {
+  /* Busca global */
+  .search-results-dropdown {
+    left: 0;
+    right: auto;
+    width: min(360px, calc(100vw - 40px));
+  }
+
+  /* Página "Visualizar Material" */
+  .material-view-card {
+    grid-template-columns: 1fr;
+  }
+
+  .material-view-media {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .material-view-body {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .material-view {
+    padding: 0 14px;
+  }
+
+  .material-view-actions {
+    flex-direction: column;
+  }
+
+  .material-view-actions > * {
+    width: 100%;
+  }
 }

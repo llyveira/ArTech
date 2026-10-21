@@ -8,7 +8,7 @@ let Users = require('../models/users');
 const { Classrooms } = require('../models/rooms');
 const userLevel = require('../models/userLevel');
 
-/* GET /search?q=termo — busca global, respeitando o nível do usuário */
+/* GET /search?q=termo — busca global */
 router.get('/', async (req, res) => {
   const q = (req.query.q || '').trim();
 
@@ -18,23 +18,21 @@ router.get('/', async (req, res) => {
     return res.json(results);
   }
 
-  // Quem não está logado conta como EXTERNAL (mesma regra do resto do app).
   const currentLevel = res.locals.currentUser
     ? res.locals.currentUser.profile
     : userLevel.EXTERNAL;
 
   try {
-    // Eventos: visíveis para todo mundo.
+    // Eventos: qualquer status
     const events = await Event.findAll({
-  where: {
-    status: 'Aprovado',
-    [Op.or]: [
-      { name: { [Op.like]: `%${q}%` } },
-      { location: { [Op.like]: `%${q}%` } },
-    ],
-  },
-  limit: 5,
-});
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${q}%` } },
+          { location: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      limit: 5,
+    });
     results.events = events.map((e) => ({
       id: e.id,
       title: e.name,
@@ -42,7 +40,7 @@ router.get('/', async (req, res) => {
       url: '/events',
     }));
 
-    // Salas: visíveis para todo mundo.
+    // Salas
     const rooms = await Classrooms.findAll({
       where: {
         [Op.or]: [
@@ -59,26 +57,24 @@ router.get('/', async (req, res) => {
       url: '/rooms',
     }));
 
-    // Materiais: só para quem já pode acessar a página de Materiais (INTERNAL+).
-    if (currentLevel >= userLevel.INTERNAL) {
-      const materials = await Materials.findAll({
-        where: {
-          [Op.or]: [
-            { name: { [Op.like]: `%${q}%` } },
-            { description: { [Op.like]: `%${q}%` } },
-          ],
-        },
-        limit: 5,
-      });
-      results.materials = materials.map((m) => ({
-        id: m.id,
-        title: m.name,
-        subtitle: m.description,
-        url: `/materials?search=${encodeURIComponent(m.name)}`,
-      }));
-    }
+    // Materiais: sem restrição de nível
+    const materials = await Materials.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${q}%` } },
+          { description: { [Op.like]: `%${q}%` } },
+        ],
+      },
+      limit: 5,
+    });
+    results.materials = materials.map((m) => ({
+      id: m.id,
+      title: m.name,
+      subtitle: m.description,
+      url: `/materials?search=${encodeURIComponent(m.name)}`,
+    }));
 
-    // Usuários: só para COORDINATOR (dado sensível).
+    // Usuários: mantive só COORDINATOR (veja a observação abaixo)
     if (currentLevel >= userLevel.COORDINATOR) {
       const users = await Users.findAll({
         where: {

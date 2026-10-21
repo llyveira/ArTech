@@ -1,8 +1,15 @@
 <section class="panel controls">
-  <button class="btn-primary" type="button" onclick="openMaterialModal()">+ Novo Material</button>
-  <button class="select" type="button">Ver reservas</button>
+  {{#if canManage}}
+    <button class="btn-primary" type="button" onclick="openMaterialModal()">+ Novo Material</button>
+    <button class="select" type="button" id="btnAllRequests">Ver reservas</button>
+  {{/if}}
   <button class="select" type="button" id="btnMyRequests">Minhas reservas</button>
-  <button class="select" id="1" type="button">Categoria <span>▾</span></button>
+  <select class="select" id="categoryFilter" aria-label="Filtrar por categoria" onchange="filterByCategory(this.value)">
+    <option value="">Categorias</option>
+    {{#each categorias}}
+      <option value="{{this}}">{{this}}</option>
+    {{/each}}
+  </select>
  <button class="btn-muted" type="button" onclick="clearFilters()">Limpar Filtro</button>
 </section>
 
@@ -66,7 +73,7 @@
   <div class="grid" id="materialsGrid">
     {{#each dados}}
       <article class="card">
-        <div class="card-media">
+        <div class="card-media" {{#if this.photo}}style="--bg: url('{{this.photo}}')"{{/if}}>
           {{#if this.photo}}
             <img src="{{this.photo}}" alt="{{this.name}}" loading="lazy" />
           {{else}}
@@ -82,15 +89,17 @@
         </div>
         <div class="card-body">
           <h3>{{this.name}}</h3>
-          <p class="description">{{this.description}}</p>
 
-          <!-- Estoque reestruturado em badge moderna -->
-          <div class="card-meta">
-            <div class="meta-item">
-              <span class="meta-label">Estoque</span>
-              <span class="meta-value">{{this.qty}}</span>
-            </div>
-          </div>
+          <ul class="card-info">
+            <li>
+              <i class="bi bi-file-earmark-text"></i>
+              <span class="description">{{this.description}}</span>
+            </li>
+            <li>
+              <i class="bi bi-box-seam"></i>
+              <span>Quantidade: {{this.qty}}</span>
+            </li>
+          </ul>
 
           <div class="card-actions">
             <button
@@ -103,25 +112,27 @@
               data-description="{{this.description}}"
               data-notes="{{this.notes}}"
               data-photo="{{this.photo}}"
-            >Visualizar</button>
-            <button 
-              class="btn-outline" 
-              type="button" 
-              onclick='openEditMaterialModal({
-                id: "{{this.id}}",
-                name: "{{this.name}}",
-                category: "{{this.category}}",
-                qty: "{{this.qty}}",
-                description: "{{this.description}}",
-                notes: "{{this.notes}}",
-                photo: "{{this.photo}}"
-              })'
-            >Editar</button>
-            <button
-              class="btn-danger"
-              type="button"
-              aria-label="Excluir"
-            >🗑</button>
+            ><i class="bi bi-eye"></i> Visualizar</button>
+            {{#if @root.canManage}}
+              <button
+                class="btn-outline btn-edit-material"
+                type="button"
+                data-id="{{this.id}}"
+                data-name="{{this.name}}"
+                data-category="{{this.category}}"
+                data-qty="{{this.qty}}"
+                data-description="{{this.description}}"
+                data-notes="{{this.notes}}"
+                data-photo="{{this.photo}}"
+              ><i class="bi bi-pencil"></i> Editar</button>
+              <button
+                class="btn-danger btn-delete-material"
+                type="button"
+                aria-label="Excluir"
+                data-id="{{this.id}}"
+                data-name="{{this.name}}"
+              ><i class="bi bi-trash3"></i></button>
+            {{/if}}
           </div>
         </div>
       </article>
@@ -227,6 +238,37 @@
   </div>
 </section>
 
+{{#if canManage}}
+<!-- ===== Seção: Todas as Reservas ===== -->
+<section class="panel hidden" id="allRequestsSection">
+  <div class="panel-head">
+    <h2>
+      Reservas
+      <span class="badge" id="allRequestsCountBadge">0 itens</span>
+    </h2>
+    <button class="btn-back" type="button" id="backFromAllRequestsBtn">
+      &larr; Voltar
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Solicitante</th>
+          <th>Matrícula</th>
+          <th>Data da Solicitação</th>
+          <th>Devolução Prevista</th>
+          <th>Status</th>
+          <th class="text-right">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="allRequestsTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
 <!-- ===== Modal: Novo Material ===== -->
 <div
   class="modal-overlay hidden"
@@ -270,7 +312,7 @@
           <option value="tecidos">Tecidos</option>
           <option value="material_cenografico">Material Cenográfico</option>
           <option value="livros">Livros</option>
-          <option value="sala_de_isntrumentos">Sala de Instrumentos</option>
+          <option value="sala_de_instrumentos">Sala de Instrumentos</option>
           <option value="laboratorio_de_musica">Laboratório de Música</option>
         </select>
       </label>
@@ -320,3 +362,4 @@
     </form>
   </div>
 </div>
+{{/if}}

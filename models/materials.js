@@ -14,6 +14,47 @@ class Materials extends Model {
   }
 
   /**
+   * Método de Instância: exclusão lógica. Oculta o material das listagens
+   * sem apagá-lo do banco (o histórico de reservas continua íntegro).
+   */
+  async softDelete() {
+    return await this.update({ isDeleted: true });
+  }
+
+  /**
+   * Método de Instância: devolve o status que o material deve ter para uma
+   * determinada quantidade em estoque. Só alterna entre "disponivel" e
+   * "indisponivel"; status como "defeito", "emprestado" e "reservado"
+   * são mantidos como estão.
+   */
+  statusForQty(qty) {
+    if (
+      this.status === materialStatus.DISPONIVEL ||
+      this.status === materialStatus.INDISPONIVEL
+    ) {
+      return qty > 0 ? materialStatus.DISPONIVEL : materialStatus.INDISPONIVEL;
+    }
+    return this.status;
+  }
+
+  /**
+   * Método de Instância: ajusta o estoque (delta positivo ou negativo) e
+   * sincroniza o status junto, numa única atualização.
+   * Aceita { transaction } para participar de uma transação.
+   */
+  async adjustQty(delta, options = {}) {
+    const newQty = this.qty + delta;
+    if (newQty < 0) {
+      throw new Error('Estoque insuficiente.');
+    }
+
+    return await this.update(
+      { qty: newQty, status: this.statusForQty(newQty) },
+      options
+    );
+  }
+
+  /**
    * Método Estático: busca materiais pelo nome (busca parcial, ignorando maiúsculas/minúsculas).
    * Equivalente ao método search() do diagrama de classes.
    * Ex: Material.search('cadeira')
@@ -116,6 +157,13 @@ Materials.init(
           msg: 'Status inválido.'
         }
       }
+    },
+    // Flag de exclusão lógica: material com isDeleted = true fica oculto
+    // das listagens, mas continua no banco (mantém o histórico de reservas).
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     }
   },
   {
@@ -123,6 +171,9 @@ Materials.init(
     modelName: 'Materials',
     tableName: 'materials', // Define explicitamente o nome da tabela no plural (Boa prática)
     timestamps: true,       // Cria automaticamente as colunas createdAt e updatedAt
+    // Esconde automaticamente os materiais excluídos em findAll, findByPk, search etc.
+    // Para enxergar os ocultos: Materials.unscoped().findAll()
+    defaultScope: { where: { isDeleted: false } },
   }
 );
 

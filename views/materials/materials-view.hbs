@@ -38,19 +38,17 @@
       <p class="material-view-description">{{material.description}}</p>
 
       <div class="material-view-actions">
-        {{#if currentUser}}
+        {{#if canManage}}
           <button
             type="button"
-            class="btn-outline btn-editar"
-            onclick='openEditMaterialModal({
-              id: "{{material.id}}",
-              name: "{{material.name}}",
-              category: "{{material.category}}",
-              qty: "{{material.qty}}",
-              description: "{{material.description}}",
-              notes: "{{material.notes}}",
-              photo: "{{material.photo}}"
-            })'
+            class="btn-outline btn-editar btn-edit-material"
+            data-id="{{material.id}}"
+            data-name="{{material.name}}"
+            data-category="{{material.category}}"
+            data-qty="{{material.qty}}"
+            data-description="{{material.description}}"
+            data-notes="{{material.notes}}"
+            data-photo="{{material.photo}}"
           ><i class="bi bi-pencil-square"></i> Editar</button>
         {{/if}}
 
