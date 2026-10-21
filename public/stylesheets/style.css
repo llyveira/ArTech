@@ -689,16 +689,6 @@ th .tag {
   right: auto !important;
 }
 
-.tag-available {
-  background: var(--accent);
-  color: var(--accent-foreground);
-}
-
-.tag-borrowed {
-  background: var(--warning);
-  color: var(--warning-foreground);
-}
-
 .tag-disponivel {
   background: #dcf5e3;
   color: #1f7a3d;

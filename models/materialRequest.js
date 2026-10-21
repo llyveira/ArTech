@@ -2,48 +2,36 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const requestStatus = require('./requestStatus.js');
 
-// Os métodos que mudam o status aceitam "options" (ex.: { transaction })
-// para poderem rodar dentro de uma transação junto com o ajuste de estoque.
 class MaterialRequest extends Model {
   /**
    * Cancela a solicitação (usuário desistiu antes da aprovação).
    */
-  async cancel(options) {
-    return await this.update({ status: requestStatus.CANCELADO }, options);
-  }
-
-  /**
-   * Recusa a solicitação pendente (decisão de quem aprova).
-   */
-  async reject(options) {
-    return await this.update({ status: requestStatus.RECUSADO }, options);
+  async cancel() {
+    return await this.update({ status: requestStatus.CANCELADO });
   }
 
   /**
    * Marca a solicitação como aprovada (ainda não retirada).
    */
-  async approve(options) {
-    return await this.update({ status: requestStatus.APROVADO }, options);
+  async approve() {
+    return await this.update({ status: requestStatus.APROVADO });
   }
 
   /**
    * Marca o material como retirado de fato pelo solicitante.
    */
-  async markBorrowed(options) {
-    return await this.update({ status: requestStatus.EMPRESTADO }, options);
+  async markBorrowed() {
+    return await this.update({ status: requestStatus.EMPRESTADO });
   }
 
   /**
    * Marca a devolução do material, registrando a data/hora exata.
    */
-  async markReturned(options) {
-    return await this.update(
-      {
-        status: requestStatus.DEVOLVIDO,
-        returnedAt: new Date(),
-      },
-      options
-    );
+  async markReturned() {
+    return await this.update({
+      status: requestStatus.DEVOLVIDO,
+      returnedAt: new Date(),
+    });
   }
 
   /**
