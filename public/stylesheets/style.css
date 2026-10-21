@@ -17,7 +17,6 @@
    15. Responsivo
    ========================================================= */
 
-
 /* ===== 1. Variáveis e base ===== */
 
 :root {
@@ -36,8 +35,28 @@
   --destructive: #d9534f;
   --destructive-bg: #fceeed;
   --sidebar: #276a4f;
-  --shadow-card: 0 1px 2px rgba(30, 70, 55, 0.06), 0 8px 24px rgba(30, 70, 55, 0.07);
+  --shadow-card:
+    0 1px 2px rgba(30, 70, 55, 0.06), 0 8px 24px rgba(30, 70, 55, 0.07);
   --radius: 12px;
+
+  /* Tags de situação (materiais) */
+  --tag-disponivel: #dcf5e3;
+  --tag-disponivel-foreground: #1bb04d;
+  --tag-indisponivel: #fbe4ee;
+  --tag-indisponivel-foreground: #de0000;
+  --tag-reservado: #ece4fb;
+  --tag-reservado-foreground: #5808ad;
+  /* Tags de status (reservas) */
+  --tag-pendente: #fff4cc;
+  --tag-pendente-foreground: #f0c400;
+  --tag-aprovado: #d1fae5;
+  --tag-aprovado-foreground: #16a079;
+  --tag-devolvido: #dbeafe;
+  --tag-devolvido-foreground: #003ce1;
+  --tag-cancelado: #e5e7eb;
+  --tag-cancelado-foreground: #4b5563;
+  --tag-recusado: #fee2e2;
+  --tag-recusado-foreground: #e80202;
 }
 
 * {
@@ -46,7 +65,12 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Arial,
+    sans-serif;
   background: var(--background);
   color: var(--foreground);
 }
@@ -59,7 +83,6 @@ body {
 .hidden {
   display: none !important;
 }
-
 
 /* ===== 2. Menu lateral ===== */
 
@@ -234,7 +257,10 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .auth-button i {
@@ -263,7 +289,6 @@ body {
   filter: brightness(0.95);
   transform: translateY(-1px);
 }
-
 
 /* ===== 3. Conteúdo principal (topbar, busca, main) ===== */
 
@@ -332,7 +357,6 @@ body {
   gap: 24px;
   padding: 32px;
 }
-
 
 /* ===== 4. Botões ===== */
 
@@ -418,14 +442,15 @@ body {
   cursor: pointer;
   width: auto;
   height: auto;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .btn-back:hover {
   background: var(--accent); /* Leve tom esverdeado ao passar o mouse */
   border-color: var(--primary-dark);
 }
-
 
 /* ===== 5. Painéis e filtros ===== */
 
@@ -466,6 +491,22 @@ body {
 
 .select:hover {
   border-color: rgba(47, 125, 93, 0.4);
+}
+select.select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  text-align: center;
+  text-align-last: center;
+
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7d75' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 .select[id="1"] {
@@ -552,7 +593,6 @@ body {
   box-shadow: 0 1px 3px rgba(30, 70, 55, 0.08);
 }
 
-
 /* ===== 7. Tabela ===== */
 
 .table-container {
@@ -560,14 +600,16 @@ body {
   overflow-x: auto;
 }
 
-table, .table {
+table,
+.table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   margin-top: 8px;
 }
 
-th, .table th {
+th,
+.table th {
   padding: 12px 16px;
   font-size: 13px;
   font-weight: 600;
@@ -576,7 +618,8 @@ th, .table th {
   border-bottom: 1px solid var(--border);
 }
 
-td, .table td {
+td,
+.table td {
   padding: 14px 16px;
   font-size: 14px;
   color: var(--foreground);
@@ -584,7 +627,8 @@ td, .table td {
   vertical-align: middle;
 }
 
-tr:hover td, .table tr:hover td {
+tr:hover td,
+.table tr:hover td {
   background: rgba(244, 250, 246, 0.6);
 }
 
@@ -609,7 +653,6 @@ tr:hover td, .table tr:hover td {
 #tableView.hidden {
   display: none !important;
 }
-
 
 /* ===== 8. Cards de material ===== */
 
@@ -690,13 +733,13 @@ th .tag {
 }
 
 .tag-disponivel {
-  background: #dcf5e3;
-  color: #1f7a3d;
+  background: var(--tag-disponivel);
+  color: var(--tag-disponivel-foreground);
 }
 
 .tag-indisponivel {
-  background: #fbe4ee;
-  color: #a8285b;
+  background: var(--tag-indisponivel);
+  color: var(--tag-indisponivel-foreground);
 }
 
 .tag-emprestado {
@@ -705,8 +748,8 @@ th .tag {
 }
 
 .tag-reservado {
-  background: #ece4fb;
-  color: #5b3ea8;
+  background: var(--tag-reservado);
+  color: var(--tag-reservado-foreground);
 }
 
 .tag-defeito {
@@ -715,28 +758,33 @@ th .tag {
 }
 
 .tag-pendente {
-  background: #fff4cc;
-  color: #8a5a00;
+  background: var(--tag-pendente);
+  color: var(--tag-pendente-foreground);
 }
 
 .tag-aprovado {
-  background: #d1fae5;
-  color: #047857;
+  background: var(--tag-aprovado);
+  color: var(--tag-aprovado-foreground);
 }
 
 .tag-devolvido {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--tag-devolvido);
+  color: var(--tag-devolvido-foreground);
 }
 
 .tag-cancelado {
-  background: #e5e7eb;
-  color: #4b5563;
+  background: var(--tag-cancelado);
+  color: var(--tag-cancelado-foreground);
 }
 
 .tag-recusado {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: var(--tag-recusado);
+  color: var(--tag-recusado-foreground);
+}
+
+.tag-atrasado {
+  background: var(--destructive);
+  color: #fff;
 }
 
 /* Corpo do card */
@@ -842,7 +890,6 @@ th .tag {
   padding: 32px;
 }
 
-
 /* ===== 9. Paginação ===== */
 
 .pagination {
@@ -890,7 +937,6 @@ th .tag {
   color: #fff;
   font-weight: 600;
 }
-
 
 /* ===== 10. Busca global ===== */
 
@@ -967,7 +1013,6 @@ th .tag {
   text-align: center;
   color: var(--muted-foreground);
 }
-
 
 /* ===== 11. Modais (cadastro e visualização) ===== */
 
@@ -1178,7 +1223,6 @@ th .tag {
   border-top: 1px solid var(--border);
 }
 
-
 /* ===== 12. Página "Visualizar Material" ===== */
 
 .material-view {
@@ -1327,7 +1371,6 @@ th .tag {
   border-radius: 8px;
 }
 
-
 /* ===== 13. Botão de ajuda e rodapé ===== */
 
 .help {
@@ -1448,7 +1491,6 @@ th .tag {
   text-decoration: underline;
 }
 
-
 /* ===== 14. Acesso restrito (usuário não logado) ===== */
 
 .restricted-page {
@@ -1500,7 +1542,6 @@ th .tag {
   gap: 10px;
   flex-wrap: wrap;
 }
-
 
 /* ===== 15. Responsivo ===== */
 

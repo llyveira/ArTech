@@ -25,6 +25,14 @@ function todayIso() {
   return new Date().toLocaleDateString('en-CA');
 }
 
+// Reserva atrasada: o material está emprestado e a data de devolução já passou.
+// É calculado na hora, não existe como status no banco.
+function isOverdue(request) {
+  return request.status === requestStatus.EMPRESTADO &&
+    !!request.dueDate &&
+    request.dueDate < todayIso();
+}
+
 // Define quais ações são possíveis para cada status
 function nextActions(status) {
   if (status === requestStatus.PENDENTE) return ['approve', 'reject'];
@@ -90,6 +98,7 @@ router.get('/my-requests', async (req, res) => {
       createdAt: r.createdAt,
       dataDevolucao: toBrDate(r.dueDate),
       status: r.status,
+      overdue: isOverdue(r),
     }));
 
     res.json(data);
@@ -114,6 +123,7 @@ router.get('/all', requireLevel(userLevel.PRO), async (req, res) => {
       createdAt: r.createdAt,
       dataDevolucao: toBrDate(r.dueDate),
       status: r.status,
+      overdue: isOverdue(r),
       actions: nextActions(r.status),
     }));
 
@@ -134,7 +144,8 @@ router.post('/:id/cancel', async (req, res) => {
     }
 
     // Garante que a pessoa só cancela as próprias solicitações.
-    if (request.userId !== req.session.userId) {
+    // (String nos dois lados: o id da sessão e o do banco podem ter tipos diferentes)
+    if (String(request.userId) !== String(req.session.userId)) {
       return res.status(403).json({ error: 'Você não pode cancelar esta solicitação.' });
     }
 
@@ -164,21 +175,24 @@ router.post('/:id/approve', requireLevel(userLevel.PRO), async (req, res) => {
       return res.status(409).json({ error: 'Só é possível aprovar solicitações pendentes.' });
     }
 
-    // Estoque e status da reserva mudam juntos: se um falhar, nenhum vale.
+    // Reserva, estoque e status do material mudam juntos: se um falhar, nenhum vale.
     const approved = await sequelize.transaction(async (t) => {
       const material = await Materials.unscoped().findByPk(request.materialId, { transaction: t });
 
-      if (!material || !material.available()) {
+      if (!material || !material.available() || material.status === materialStatus.DEFEITO) {
         return false;
       }
 
-      await material.adjustQty(-1, { transaction: t });
+      // A reserva é atualizada ANTES, para o status do material já contá-la como aprovada.
       await request.approve({ transaction: t });
+      await material.adjustQty(-1, { transaction: t });
       return true;
     });
 
     if (!approved) {
-      return res.status(409).json({ error: 'Sem estoque disponível para aprovar esta reserva.' });
+      return res.status(409).json({
+        error: 'Este material não pode ser reservado agora (sem estoque ou com defeito).',
+      });
     }
 
     res.json({ success: true });
@@ -209,7 +223,7 @@ router.post('/:id/reject', requireLevel(userLevel.PRO), async (req, res) => {
   }
 });
 
-/* POST /requests/:id/borrow — marca que o material foi retirado (estoque já foi reservado na aprovação) */
+/* POST /requests/:id/borrow — marca a retirada (o estoque já saiu na aprovação) */
 router.post('/:id/borrow', requireLevel(userLevel.PRO), async (req, res) => {
   try {
     const request = await MaterialRequest.findByPk(req.params.id);
@@ -222,7 +236,16 @@ router.post('/:id/borrow', requireLevel(userLevel.PRO), async (req, res) => {
       return res.status(409).json({ error: 'Só é possível registrar a retirada de reservas aprovadas.' });
     }
 
-    await request.markBorrowed();
+    await sequelize.transaction(async (t) => {
+      await request.markBorrowed({ transaction: t });
+
+      // Estoque não muda, mas o status do material pode (reservado -> emprestado).
+      const material = await Materials.unscoped().findByPk(request.materialId, { transaction: t });
+      if (material) {
+        await material.refreshStatus({ transaction: t });
+      }
+    });
+
     res.json({ success: true });
   } catch (err) {
     console.error('Erro ao registrar retirada:', err);
@@ -244,13 +267,13 @@ router.post('/:id/return', requireLevel(userLevel.PRO), async (req, res) => {
     }
 
     await sequelize.transaction(async (t) => {
+      await request.markReturned({ transaction: t });
+
       // unscoped: o estoque volta mesmo se o material estiver oculto por algum motivo
       const material = await Materials.unscoped().findByPk(request.materialId, { transaction: t });
-
       if (material) {
         await material.adjustQty(1, { transaction: t });
       }
-      await request.markReturned({ transaction: t });
     });
 
     res.json({ success: true });

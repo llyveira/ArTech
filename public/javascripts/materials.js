@@ -1,4 +1,4 @@
-// --- Funções Globais (Acessíveis pelo HTML onclick) ---
+// --- Funções Globais (Acessíveis pelo HfetchUserRequestsML onclick) ---
 
 function openLoginModal() {
   const modal = document.getElementById('loginModalOverlay');
@@ -177,6 +177,13 @@ function escapeHtml(value) {
   }[c]));
 }
 
+// Etiqueta de status da reserva (+ "Atrasado" quando o empréstimo passou do prazo)
+function requestStatusTags(req) {
+  const status = `<span class="tag tag-${escapeHtml(req.status)}">${escapeHtml(req.status)}</span>`;
+  const late = req.overdue ? ' <span class="tag tag-atrasado">Atrasado</span>' : '';
+  return status + late;
+}
+
 // Lista as reservas do usuário logado (botão "Minhas reservas")
 async function fetchUserRequests() {
   const tbody = document.getElementById('myRequestsTableBody');
@@ -201,7 +208,7 @@ async function fetchUserRequests() {
         <td>${escapeHtml(req.matricula)}</td>
         <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
         <td>${escapeHtml(req.dataDevolucao)}</td>
-        <td><span class="tag tag-${escapeHtml(req.status)}">${escapeHtml(req.status)}</span></td>
+        <td>${requestStatusTags(req)}</td>
         <td class="text-right">
           ${req.status === 'pendente'
             ? `<button class="btn-outline btn-sm" type="button" onclick="cancelRequest('${escapeHtml(req.id)}')">Cancelar</button>`
@@ -307,7 +314,7 @@ async function fetchAllRequests() {
           <td>${escapeHtml(req.matricula)}</td>
           <td>${new Date(req.createdAt).toLocaleDateString('pt-BR')}</td>
           <td>${escapeHtml(req.dataDevolucao)}</td>
-          <td><span class="tag tag-${escapeHtml(req.status)}">${escapeHtml(req.status)}</span></td>
+          <td>${requestStatusTags(req)}</td>
           <td class="text-right">${buttons || '-'}</td>
         </tr>
       `;

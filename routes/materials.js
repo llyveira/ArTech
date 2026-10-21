@@ -95,8 +95,9 @@ router.post("/update", async (req, res) => {
     }
 
     // Atualiza os dados com os novos valores do formulário.
-    // O status acompanha o estoque: qty 0 -> indisponível, qty > 0 -> disponível
-    // (status como "defeito" não é alterado).
+    // O status é recalculado pelo estoque e pelas reservas ativas
+    // (qty > 0 -> disponível; qty 0 -> reservado, emprestado ou indisponível).
+    // "defeito" não é alterado automaticamente.
     await material.update({
       name: form.name,
       description: form.description,
@@ -104,7 +105,7 @@ router.post("/update", async (req, res) => {
       notes: form.notes,
       photo: form.photo || null,
       category: form.category,
-      status: material.statusForQty(Number(form.qty)),
+      status: await material.computeStatus(Number(form.qty)),
     });
 
     res.redirect("/materials");

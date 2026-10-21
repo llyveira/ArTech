@@ -2,6 +2,8 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Instância de conexão
 const materialCategory = require('./materialCategory'); // Enum de categorias (Passo 1)
 const materialStatus = require('./materialStatus'); // Enum de status do material
+const requestStatus = require('./requestStatus'); // Enum de status das reservas
+const MaterialRequest = require('./materialRequest'); // Para contar reservas ativas
 
 class Materials extends Model {
   /**
@@ -22,25 +24,33 @@ class Materials extends Model {
   }
 
   /**
-   * Método de Instância: devolve o status que o material deve ter para uma
-   * determinada quantidade em estoque. Só alterna entre "disponivel" e
-   * "indisponivel"; status como "defeito", "emprestado" e "reservado"
-   * são mantidos como estão.
+   * Método de Instância: calcula o status que o material deve ter a partir
+   * do estoque e das reservas ativas. "defeito" é manual e nunca é alterado.
+   *  - qty > 0 ........................ disponivel
+   *  - qty = 0 + reserva aprovada ..... reservado (aguardando retirada)
+   *  - qty = 0 + material emprestado .. emprestado
+   *  - qty = 0 sem reservas ativas .... indisponivel (estoque zerado)
+   * Chame DEPOIS de atualizar o status da reserva, para que ela já seja contada.
+   * Aceita { transaction } para enxergar as mudanças feitas dentro da transação.
    */
-  statusForQty(qty) {
-    if (
-      this.status === materialStatus.DISPONIVEL ||
-      this.status === materialStatus.INDISPONIVEL
-    ) {
-      return qty > 0 ? materialStatus.DISPONIVEL : materialStatus.INDISPONIVEL;
-    }
-    return this.status;
+  async computeStatus(qty, options = {}) {
+    if (this.status === materialStatus.DEFEITO) return this.status;
+    if (qty > 0) return materialStatus.DISPONIVEL;
+
+    const countBy = (status) =>
+      MaterialRequest.count({
+        where: { materialId: this.id, status },
+        transaction: options.transaction,
+      });
+
+    if ((await countBy(requestStatus.APROVADO)) > 0) return materialStatus.RESERVADO;
+    if ((await countBy(requestStatus.EMPRESTADO)) > 0) return materialStatus.EMPRESTADO;
+    return materialStatus.INDISPONIVEL;
   }
 
   /**
    * Método de Instância: ajusta o estoque (delta positivo ou negativo) e
-   * sincroniza o status junto, numa única atualização.
-   * Aceita { transaction } para participar de uma transação.
+   * recalcula o status, numa única atualização. Aceita { transaction }.
    */
   async adjustQty(delta, options = {}) {
     const newQty = this.qty + delta;
@@ -49,7 +59,18 @@ class Materials extends Model {
     }
 
     return await this.update(
-      { qty: newQty, status: this.statusForQty(newQty) },
+      { qty: newQty, status: await this.computeStatus(newQty, options) },
+      options
+    );
+  }
+
+  /**
+   * Método de Instância: recalcula só o status, sem mexer no estoque
+   * (usado na retirada, quando o estoque não muda). Aceita { transaction }.
+   */
+  async refreshStatus(options = {}) {
+    return await this.update(
+      { status: await this.computeStatus(this.qty, options) },
       options
     );
   }
