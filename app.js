@@ -197,6 +197,16 @@ db.sync()
       });
     }
 
+    // Garante a coluna "isDeleted" (flag de exclusão lógica) em reservations.
+    const colunasReservasFlag = await queryInterface.describeTable('reservations');
+    if (!colunasReservasFlag.isDeleted) {
+      await queryInterface.addColumn('reservations', 'isDeleted', {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      });
+    }
+
     // Só altera as tabelas quando elas ainda estão no formato antigo.
     // Assim a migração roda uma vez e não apaga a ligação evento <-> reserva
     // a cada reinício do servidor.

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/stylesheets/rooms.css" />
+<link rel="stylesheet" href="stylesheets/rooms.css" />
 
 <div class="rooms-page">
 
@@ -11,6 +11,9 @@
       <div class="rooms-tabs">
         <button type="button" class="rooms-tab active" data-tab="salas">Salas disponíveis</button>
         <button type="button" class="rooms-tab" data-tab="reservas">Minhas reservas</button>
+        {{#if podeGerenciar}}
+        <button type="button" class="rooms-tab" data-tab="gerenciar">Gerenciar reservas</button>
+        {{/if}}
       </div>
     </div>
 
@@ -99,7 +102,7 @@
           </div>
           <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
           {{#if podeCancelar}}
-          <form action="/rooms/{{id}}/cancel" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
+          <form action="rooms/{{id}}/cancel" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
             <button type="submit" class="reservation-cancel">Cancelar</button>
           </form>
           {{/if}}
@@ -110,6 +113,40 @@
       </div>
     </div>
   </section>
+
+  {{#if podeGerenciar}}
+  <!-- Painel: Gerenciar reservas (só PRO/Coordenador) -->
+  <section class="rooms-panel" id="panel-gerenciar" hidden>
+    <div class="rooms-section">
+      <div class="rooms-section-head">
+        <h2>Gerenciar reservas</h2>
+        <span class="rooms-section-count">{{totalGerenciar}}</span>
+      </div>
+
+      <div class="reservations-list">
+        {{#each gerenciar}}
+        <div class="reservation-row">
+          <div class="reservation-info">
+            <div class="reservation-room">{{sala}}</div>
+            <div class="reservation-time">{{horario}} · {{solicitante}}</div>
+          </div>
+          <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
+          {{#if podeDecidir}}
+          <form action="rooms/{{id}}/approve" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Aprovar esta reserva?')">
+            <button type="submit" class="reservation-approve">Aprovar</button>
+          </form>
+          <form action="rooms/{{id}}/cancel?tab=gerenciar" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
+            <button type="submit" class="reservation-cancel">Cancelar</button>
+          </form>
+          {{/if}}
+        </div>
+        {{else}}
+        <div class="reservation-empty">Nenhuma reserva para gerenciar.</div>
+        {{/each}}
+      </div>
+    </div>
+  </section>
+  {{/if}}
 
   </div>
   <!-- /rooms-main -->
@@ -122,7 +159,7 @@
         <button class="modal-close" type="button" aria-label="Fechar" onclick="closeRoomModal()">✕</button>
       </div>
 
-      <form class="modal-form" id="roomReservationForm" action="/rooms" method="POST">
+      <form class="modal-form" id="roomReservationForm" action="rooms" method="POST">
         <label class="field">
           <span>Sala</span>
           <select name="sala" id="reservaSala" required>
@@ -182,6 +219,9 @@
     });
     document.getElementById('panel-salas').hidden = nome !== 'salas';
     document.getElementById('panel-reservas').hidden = nome !== 'reservas';
+    // A aba de gestão só existe para PRO/Coordenador
+    var painelGerenciar = document.getElementById('panel-gerenciar');
+    if (painelGerenciar) painelGerenciar.hidden = nome !== 'gerenciar';
   }
 
   document.querySelectorAll('.rooms-tab').forEach(function (tab) {
@@ -190,9 +230,10 @@
     });
   });
 
-  // Depois de salvar/cancelar, o servidor redireciona para /rooms?tab=reservas
-  if (new URLSearchParams(window.location.search).get('tab') === 'reservas') {
-    selecionarAba('reservas');
+  // Depois de salvar/cancelar/aprovar, o servidor redireciona para rooms?tab=...
+  var abaDaUrl = new URLSearchParams(window.location.search).get('tab');
+  if (abaDaUrl === 'reservas' || (abaDaUrl === 'gerenciar' && document.getElementById('panel-gerenciar'))) {
+    selecionarAba(abaDaUrl);
   }
 
   // ===== Modal: Nova Reserva de Sala =====

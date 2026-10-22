@@ -129,17 +129,23 @@ class Reservations extends Model {
       throw new Error('Só é possível rejeitar uma reserva PENDING.');
     }
     this.status = 'CANCELLED';
+    this.isDeleted = true; // cancelada = excluída logicamente (flag)
     this.answeredById = answeredById;
     return await this.save();
   }
 
 
-    async cancel({ transaction } = {}) {
+  // Cancelar grava o status CANCELLED e também liga a flag isDeleted
+  // (exclusão lógica: a linha continua no banco, só some da lista do usuário comum).
+  // Se quem cancelou foi PRO/Coordenador, answeredById guarda quem foi.
+  async cancel(answeredById = null) {
     if (this.status === 'FINISHED') {
       throw new Error('Não é possível cancelar uma reserva já finalizada.');
     }
     this.status = 'CANCELLED';
-    return await this.save({ transaction });
+    this.isDeleted = true;
+    if (answeredById) this.answeredById = answeredById;
+    return await this.save();
   }
 
 
@@ -216,6 +222,13 @@ Reservations.init(
     notes: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    // Flag de exclusão lógica: reserva com isDeleted = true foi cancelada.
+    // Continua no banco (histórico), mas só PRO/Coordenador a enxergam.
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     pickup: {
       type: DataTypes.DATE,
