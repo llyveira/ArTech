@@ -9,6 +9,7 @@ const sequelize = require('../config/database');
 const Event = require('../models/events');
 const Users = require('../models/users');
 const { Reservations, Classrooms } = require('../models/rooms');
+const { requireLogin } = require('../middlewares/authorize');
 const { Op } = require('sequelize');
 
 /*
@@ -252,7 +253,7 @@ router.get('/', wrap(async function(req, res, next) {
  * Cria primeiro uma Reservation (já com o status correspondente) e depois
  * vincula essa reserva ao Event. O status do evento vem do botão clicado.
  */
-router.post('/', wrap(async function(req, res, next) {
+router.post('/', requireLogin, wrap(async function(req, res, next) {
   const { error, values } = parseEventForm(req.body);
   if (error) return res.status(400).send(error);
 
@@ -328,7 +329,7 @@ router.get('/:id', wrap(async function(req, res, next) {
  *   "Salvar"       -> continua Rascunho
  *   "Criar Evento" -> passa para Solicitado
  */
-router.post('/:id/edit', wrap(async function(req, res, next) {
+router.post('/:id/edit', requireLogin, wrap(async function(req, res, next) {
   const { error, values } = parseEventForm(req.body);
   if (error) return res.status(400).send(error);
 
@@ -390,7 +391,7 @@ router.post('/:id/edit', wrap(async function(req, res, next) {
  * Botão "Criar Evento" da página de detalhes:
  * Rascunho -> Solicitado (a reserva passa de EDITING para PENDING).
  */
-router.post('/:id/solicitar', wrap(async function(req, res, next) {
+router.post('/:id/solicitar', requireLogin, wrap(async function(req, res, next) {
   const transaction = await sequelize.transaction();
 
   try {
@@ -427,7 +428,7 @@ router.post('/:id/solicitar', wrap(async function(req, res, next) {
 }));
 
 /* POST /events/:id/delete - exclusão lógica: marca como Excluído e cancela a reserva. */
-router.post('/:id/delete', wrap(async function(req, res, next) {
+router.post('/:id/delete', requireLogin, wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
   const transaction = await sequelize.transaction();
 

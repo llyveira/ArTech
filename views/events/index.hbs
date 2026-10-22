@@ -14,8 +14,9 @@
     <section class="filters-section">
 
         <!-- Botão de Novo Evento -->
-<button class="btn-novo-evento" type="button" onclick="abrirModalEvento('modalNovoEvento')">+ Novo Evento</button>
-
+{{#if currentUser}}
+  <button class="btn-novo-evento" type="button" onclick="abrirModalEvento('modalNovoEvento')">+ Novo Evento</button>
+{{/if}}
     <select name="categoria">
         <option value="" disabled selected>Categoria</option>
         <option value="oficinas-artisticas">Oficinas artísticas</option>
