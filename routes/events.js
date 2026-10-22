@@ -9,6 +9,7 @@ const sequelize = require('../config/database');
 const Event = require('../models/events');
 const Users = require('../models/users');
 const { Reservations, Classrooms } = require('../models/rooms');
+const { Op } = require('sequelize');
 
 /*
  * Fluxo de status do evento (e da reserva vinculada):
@@ -133,6 +134,11 @@ function formatEvent(event, user = null) {
     podeInscrever: data.status === 'Aprovado',
     podeEditar: data.status === 'Rascunho',
     podeSolicitar: data.status === 'Rascunho',
+    // Só o criador exclui, e só enquanto for rascunho.
+    // (evento sem dono, criado sem login, qualquer um pode excluir)
+    podeExcluir: data.status === 'Rascunho' &&
+      (!data.createdById || (!!user && user.id === data.createdById)),
+    deleteAction: `/events/${data.id}/delete`,
     editAction: `/events/${data.id}/edit`,
     // Valores para preencher o formulário de edição
     form: {
@@ -228,6 +234,7 @@ router.get('/', wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
 
   const eventos = await Event.findAll({
+    where: { status: { [Op.ne]: 'Excluído' } }, 
     include: eventIncludes,
     order: [['date', 'ASC'], ['time', 'ASC']]
   });
@@ -303,7 +310,7 @@ router.get('/:id', wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
   const eventoBanco = await Event.findByPk(req.params.id, { include: eventIncludes });
 
-  if (!eventoBanco) {
+    if (!eventoBanco || eventoBanco.status === 'Excluído') {
     return res.status(404).send('Evento não encontrado');
   }
 
@@ -413,6 +420,51 @@ router.post('/:id/solicitar', wrap(async function(req, res, next) {
 
     await transaction.commit();
     return res.redirect(`/events/${event.id}`);
+  } catch (err) {
+    await transaction.rollback();
+    next(err);
+  }
+}));
+
+/* POST /events/:id/delete - exclusão lógica: marca como Excluído e cancela a reserva. */
+router.post('/:id/delete', wrap(async function(req, res, next) {
+  const user = res.locals.currentUser;
+  const transaction = await sequelize.transaction();
+
+  try {
+    const event = await Event.findByPk(req.params.id, {
+      include: [{ model: Reservations, as: 'reservation' }],
+      transaction
+    });
+
+    if (!event || event.status === 'Excluído') {
+      await transaction.rollback();
+      return res.status(404).send('Evento não encontrado');
+    }
+
+    // Só rascunho pode ser excluído.
+    if (event.status !== 'Rascunho') {
+      await transaction.rollback();
+      return res.status(403).send('Só é possível excluir eventos em rascunho.');
+    }
+
+    // Se o evento tem dono, só ele pode excluir.
+    if (event.createdById && (!user || user.id !== event.createdById)) {
+      await transaction.rollback();
+      return res.status(403).send('Você não pode excluir este evento.');
+    }
+
+    // O evento não é apagado do banco: só recebe o status Excluído.
+    event.status = 'Excluído';
+    await event.save({ transaction });
+
+    // Chama a função de cancelar do modelo de reservas.
+    if (event.reservation) {
+      await event.reservation.cancel({ transaction });
+    }
+
+    await transaction.commit();
+    return res.redirect('/events');
   } catch (err) {
     await transaction.rollback();
     next(err);

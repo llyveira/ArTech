@@ -23,9 +23,10 @@ router.get('/', async (req, res) => {
     : userLevel.EXTERNAL;
 
   try {
-    // Eventos: qualquer status
+    // Eventos: todos, menos os excluídos
     const events = await Event.findAll({
       where: {
+        status: { [Op.ne]: 'Excluído' },
         [Op.or]: [
           { name: { [Op.like]: `%${q}%` } },
           { location: { [Op.like]: `%${q}%` } },

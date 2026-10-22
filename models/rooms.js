@@ -134,12 +134,12 @@ class Reservations extends Model {
   }
 
 
-  async cancel() {
+    async cancel({ transaction } = {}) {
     if (this.status === 'FINISHED') {
       throw new Error('Não é possível cancelar uma reserva já finalizada.');
     }
     this.status = 'CANCELLED';
-    return await this.save();
+    return await this.save({ transaction });
   }
 
 

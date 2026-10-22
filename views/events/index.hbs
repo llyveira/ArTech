@@ -101,10 +101,13 @@
               data-classroom-id="{{form.classroomId}}"
               onclick="abrirModalEditarEvento(this)"
             ><i class="fa-solid fa-pen-to-square"></i>Editar</button>
-          {{else}}
-            <button class="btn-outline" type="button" disabled><i class="fa-solid fa-pen-to-square"></i>Editar</button>
           {{/if}}
-                  <button class="btn-danger" type="button" aria-label="Excluir" disabled><i class="fa-regular fa-trash-can"></i></button>
+          {{#if podeExcluir}}
+            <form action="{{deleteAction}}" method="POST" style="display: contents"
+                  onsubmit="return confirm('Excluir este evento?')">
+              <button class="btn-danger" type="submit" aria-label="Excluir"><i class="fa-regular fa-trash-can"></i></button>
+            </form>
+          {{/if}}
                 </div>
               </div>
             </article>
