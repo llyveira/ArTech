@@ -98,6 +98,17 @@ const eventIncludes = [
   { model: Users, as: 'creator', attributes: ['id', 'name'] }
 ];
 
+// Caminho da imagem do evento, sem "/" no início (o <base href> do layout
+// completa o caminho). URLs http(s) ficam como estão; caminhos antigos que
+// começavam com "/" (ex.: /uploads/foto.jpg) perdem só a barra inicial;
+// qualquer outro valor cai na imagem padrão.
+function eventImagePath(image) {
+  const stored = image || '';
+  if (/^https?:/.test(stored)) return stored;
+  if (stored.startsWith('/')) return stored.replace(/^\/+/, '');
+  return 'images/event-placeholder.svg';
+}
+
 // `user` é o usuário logado (res.locals.currentUser) ou null.
 function formatEvent(event, user = null) {
   const data = event.toJSON ? event.toJSON() : event;
@@ -106,9 +117,7 @@ function formatEvent(event, user = null) {
   return {
     ...data,
     titulo: data.name,
-    // Só usa a imagem se for um caminho válido (/uploads/... ou http...);
-    // valores antigos (só o nome do arquivo) caem na imagem padrão.
-    imagem: /^(\/|https?:)/.test(data.image || '') ? data.image : '/images/event-placeholder.svg',
+    imagem: eventImagePath(data.image),
     imagemUrl: data.image || '', // para preencher o campo de URL no editar
     descricao: data.description || '',
     data: formatDate(data.date),
@@ -139,8 +148,9 @@ function formatEvent(event, user = null) {
     // (evento sem dono, criado sem login, qualquer um pode excluir)
     podeExcluir: data.status === 'Rascunho' &&
       (!data.createdById || (!!user && user.id === data.createdById)),
-    deleteAction: `/events/${data.id}/delete`,
-    editAction: `/events/${data.id}/edit`,
+    // Sem "/" no início: o <base href> do layout completa o caminho.
+    deleteAction: `events/${data.id}/delete`,
+    editAction: `events/${data.id}/edit`,
     // Valores para preencher o formulário de edição
     form: {
       startDate: data.date,
@@ -299,7 +309,8 @@ router.post('/', requireLogin, wrap(async function(req, res, next) {
     }, { transaction });
 
     await transaction.commit();
-    return res.redirect(`/events/${event.id}`);
+    // Redirect relativo: a rota é /events, então "events/ID" fica na mesma pasta do sistema.
+    return res.redirect(`events/${event.id}`);
   } catch (err) {
     await transaction.rollback();
     next(err);
@@ -379,7 +390,8 @@ router.post('/:id/edit', requireLogin, wrap(async function(req, res, next) {
     await event.save({ transaction });
 
     await transaction.commit();
-    return res.redirect(`/events/${event.id}`);
+    // Redirect relativo: a rota é /events/ID/edit, então "../ID" volta para /events/ID.
+    return res.redirect(`../${event.id}`);
   } catch (err) {
     await transaction.rollback();
     next(err);
@@ -420,7 +432,8 @@ router.post('/:id/solicitar', requireLogin, wrap(async function(req, res, next) 
     await event.save({ transaction });
 
     await transaction.commit();
-    return res.redirect(`/events/${event.id}`);
+    // Redirect relativo: a rota é /events/ID/solicitar, então "../ID" volta para /events/ID.
+    return res.redirect(`../${event.id}`);
   } catch (err) {
     await transaction.rollback();
     next(err);
@@ -465,7 +478,8 @@ router.post('/:id/delete', requireLogin, wrap(async function(req, res, next) {
     }
 
     await transaction.commit();
-    return res.redirect('/events');
+    // Redirect relativo: a rota é /events/ID/delete, então "../../events" volta para /events.
+    return res.redirect('../../events');
   } catch (err) {
     await transaction.rollback();
     next(err);

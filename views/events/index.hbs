@@ -82,7 +82,7 @@
                   <li><i class="fa-solid fa-users"></i> Vagas: {{vagas}}</li>
                 </ul>
                 <div class="card-actions">
-                  <button class="btn-outline" type="button" onclick="location.href='/events/{{id}}'"><i class="fa-regular fa-eye"></i>Visualizar</button>
+                  <button class="btn-outline" type="button" onclick="location.href='events/{{id}}'"><i class="fa-regular fa-eye"></i>Visualizar</button>
           {{!-- Editar só fica ativo para eventos em Rascunho --}}
           {{#if podeEditar}}
             <button
@@ -127,8 +127,8 @@
       </nav>
     </section>
 
-    {{> event-modal modalId="modalNovoEvento" modalTitle="Novo Evento" formAction="/events"}}
+    {{> event-modal modalId="modalNovoEvento" modalTitle="Novo Evento" formAction="events"}}
 
     {{!-- Modal de edição dos cards (o endereço de envio é definido pelo JS) --}}
-    {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction="/events"}}
+    {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction="events"}}
     <script src="javascripts/events.js" defer></script>

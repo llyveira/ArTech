@@ -1,22 +1,22 @@
 // Busca global: filtra enquanto a pessoa digita (com atraso de 250 ms).
 //
 // Contrato com routes/search.js:
-//   GET /search?q=texto  ->  { events: [], rooms: [], materials: [], users: [] }
+//   GET search?q=texto  ->  { events: [], rooms: [], materials: [], users: [] }
 //   cada item: { title, subtitle?, url? }
 
 (function () {
   var INPUT_ID = 'globalSearchInput';
   var RESULTS_ID = 'globalSearchResults';
-  var ENDPOINT = '/search';
+  var ENDPOINT = 'search';
   var MIN_CHARS = 2;
   var DELAY_MS = 250;
 
   // Ordem dos grupos + link padrão quando o item não traz url
   var GROUPS = {
-    events: { label: 'Eventos', path: '/events' },
-    rooms: { label: 'Salas', path: '/rooms' },
-    materials: { label: 'Materiais', path: '/materials' },
-    users: { label: 'Usuários', path: '/users' }
+    events: { label: 'Eventos', path: 'events' },
+    rooms: { label: 'Salas', path: 'rooms' },
+    materials: { label: 'Materiais', path: 'materials' },
+    users: { label: 'Usuários', path: 'users' }
   };
 
   var input = document.getElementById(INPUT_ID);
@@ -47,9 +47,12 @@
     showBox();
   }
 
-  // Só aceita links internos ("/..." ou "#"), nunca endereços externos
+  // Só aceita links internos (relativos ou "#"), nunca endereços externos:
+  // recusa esquemas (http:, javascript:...), "//host" e barra invertida
   function safeUrl(url, fallback) {
-    return typeof url === 'string' && /^(\/(?!\/)|#)/.test(url) ? url : fallback;
+    return typeof url === 'string' && url !== '' && !/^([a-z][a-z0-9+.-]*:|\/\/|\\)/i.test(url)
+      ? url
+      : fallback;
   }
 
   function renderResults(data) {

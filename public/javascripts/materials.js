@@ -77,7 +77,7 @@ function openViewMaterialModal(data) {
     photoImg.src = data.photo;
     if (photoContainer) photoContainer.style.display = '';
   } else {
-    photoImg.src = '/images/sem-foto.jpg';
+    photoImg.src = 'images/sem-foto.jpg';
   }
 
   modal.classList.remove('hidden');
@@ -191,7 +191,7 @@ async function fetchUserRequests() {
   if (!tbody) return;
 
   try {
-    const response = await fetch('/requests/my-requests');
+    const response = await fetch('requests/my-requests');
     if (!response.ok) throw new Error('HTTP ' + response.status);
     const requests = await response.json();
 
@@ -227,7 +227,7 @@ async function cancelRequest(requestId) {
   if (!confirm("Tem certeza que deseja cancelar esta reserva?")) return;
 
   try {
-    const response = await fetch(`/requests/${requestId}/cancel`, {
+    const response = await fetch(`requests/${requestId}/cancel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" }
     });
@@ -251,7 +251,7 @@ async function deleteMaterial(materialId, materialName) {
   if (!confirm(`Excluir o material "${materialName}"? Ele deixará de aparecer na lista.`)) return;
 
   try {
-    const response = await fetch(`/materials/${materialId}/delete`, {
+    const response = await fetch(`materials/${materialId}/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -283,7 +283,7 @@ async function fetchAllRequests() {
   if (!tbody) return;
 
   try {
-    const response = await fetch('/requests/all');
+    const response = await fetch('requests/all');
 
     if (response.status === 403) {
       tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Você não tem permissão para ver todas as reservas.</td></tr>`;
@@ -331,7 +331,7 @@ async function runRequestAction(requestId, action) {
   if (!config || !confirm(config.confirm)) return;
 
   try {
-    const response = await fetch(`/requests/${requestId}/${action}`, {
+    const response = await fetch(`requests/${requestId}/${action}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => {
       const materialId = button.getAttribute('data-id');
       if (materialId) {
-        window.location.href = `/materials/${materialId}`;
+        window.location.href = `materials/${materialId}`;
       }
     });
   });
@@ -479,11 +479,11 @@ document.addEventListener('DOMContentLoaded', () => {
   logoutButton?.addEventListener('click', async (event) => {
     event.preventDefault();
     try {
-      await fetch('/users/logout', { method: 'POST' });
+      await fetch('users/logout', { method: 'POST' });
     } catch (err) {
       console.error('Erro ao sair:', err);
     }
-    window.location.href = '/';
+    window.location.href = './';
   });
 
   const params = new URLSearchParams(window.location.search);
@@ -557,8 +557,8 @@ function closeEditMaterialModal() {
 // Filtra a listagem pela categoria escolhida no select
 function filterByCategory(category) {
   window.location.href = category
-    ? `/materials?category=${encodeURIComponent(category)}`
-    : '/materials';
+    ? `materials?category=${encodeURIComponent(category)}`
+    : 'materials';
 }
 
 // Função global para limpar os filtros de pesquisa e categoria
@@ -570,5 +570,5 @@ function clearFilters() {
   }
 
   // 2. Redireciona para a rota base dos materiais, limpando automaticamente quaisquer query parameters (como ?category=... ou ?search=...)
-  window.location.href = '/materials';
+  window.location.href = 'materials';
 }

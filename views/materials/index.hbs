@@ -304,6 +304,16 @@
       </label>
 
       <label class="field">
+        <span>Categoria</span>
+        <select name="category" required>
+          <option value="" disabled selected>Selecione uma categoria</option>
+          {{#each categorias}}
+            <option value="{{this}}">{{categoryLabel this}}</option>
+          {{/each}}
+        </select>
+      </label>
+
+      <label class="field">
         <span>Quantidade em estoque</span>
         <input type="number" name="qty" min="0" placeholder="0" required />
       </label>

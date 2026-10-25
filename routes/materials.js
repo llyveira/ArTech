@@ -73,7 +73,7 @@ router.post("/", async (req, res) => {
       photo: form.photo || null,
       category: form.category,
     });
-    res.redirect("/materials");
+    res.redirect("materials");
   } catch (err) {
     res.status(400).send(err.message);
   }
@@ -108,7 +108,7 @@ router.post("/update", async (req, res) => {
       status: await material.computeStatus(Number(form.qty)),
     });
 
-    res.redirect("/materials");
+    res.redirect("../materials");
   } catch (err) {
     res.status(400).send(err.message);
   }

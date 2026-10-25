@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
       id: e.id,
       title: e.name,
       subtitle: e.location,
-      url: '/events',
+      url: 'events',
     }));
 
     // Salas
@@ -55,7 +55,7 @@ router.get('/', async (req, res) => {
       id: r.id,
       title: r.name,
       subtitle: `Sala ${r.number}`,
-      url: '/rooms',
+      url: 'rooms',
     }));
 
     // Materiais: sem restrição de nível
@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
       id: m.id,
       title: m.name,
       subtitle: m.description,
-      url: `/materials?search=${encodeURIComponent(m.name)}`,
+      url: `materials?search=${encodeURIComponent(m.name)}`,
     }));
 
     // Usuários: mantive só COORDINATOR (veja a observação abaixo)

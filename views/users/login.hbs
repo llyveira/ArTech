@@ -52,7 +52,7 @@
               <input type="checkbox" name="remember" />
               <span>Lembrar de mim</span>
             </label>
-            <a href="#" class="forgot">Esqueci a senha</a>
+            <a href="javascript:void(0)" class="forgot" id="forgotPasswordLink">Esqueci a senha</a>
           </div>
 
           <button type="submit" class="btn-primary" id="submitBtn">
@@ -63,13 +63,16 @@
 
         <p class="register">
           Não tem uma conta?
-          <a href="cadastro-interno.html">Cadastre-se</a>
+          <a
+            href="javascript:void(0)"
+            onclick="closeLoginModal(); openRegisterModal();"
+          >Cadastre-se</a>
         </p>
 
         <div class="legal-links">
-          <a href="#">Termos de uso</a>
+          <a href="javascript:void(0)">Termos de uso</a>
           <span>•</span>
-          <a href="#">Política de privacidade</a>
+          <a href="javascript:void(0)">Política de privacidade</a>
         </div>
       </div>
     </section>

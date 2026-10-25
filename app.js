@@ -150,6 +150,16 @@ app.use(async (req, res, next) => {
   next();
 });
 
+// NOVO: calcula o <base href> relativo à página atual. Com ele, os caminhos
+// sem "/" no início (href, src, action, fetch) funcionam em qualquer
+// profundidade de URL (ex.: /materials/5) e em qualquer pasta do servidor.
+app.use((req, res, next) => {
+  const parts = req.path.split('/').filter(Boolean).length;
+  const dirDepth = req.path.endsWith('/') ? parts : Math.max(parts - 1, 0);
+  res.locals.baseHref = dirDepth > 0 ? '../'.repeat(dirDepth) : './';
+  next();
+});
+
 // Rotas
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -35,10 +35,12 @@ router.post('/login', async (req, res) => {
     req.session.userId = user.id;
 
     // Se o usuário foi barrado numa página restrita (ex.: /rooms), volta pra ela.
-    const destino = req.session.returnTo || '/';
+    // Caminho relativo: "../" sobe de /users/login para a raiz do sistema,
+    // então funciona na raiz do servidor ou dentro de uma pasta (ex.: /artech/).
+    const destino = (req.session.returnTo || '').replace(/^\//, '');
     delete req.session.returnTo;
 
-    res.redirect(destino);
+    res.redirect('../' + destino);
 
   } catch (err) {
     console.error('Erro ao realizar login:', err);
@@ -77,7 +79,7 @@ router.post('/register', async (req, res) => {
     // Redireciona para a home com um sinalizador na URL, que o auth.js
     // usa para abrir o modal de login automaticamente (em vez de mandar
     // para a página separada /users/login).
-    res.redirect('/?login=1');
+    res.redirect('../?login=1');
 
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
@@ -89,8 +91,8 @@ router.post('/register', async (req, res) => {
 /* POST logout */
 router.post('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.redirect('../');
   });
 });
 
-module.exports = router;
+module.exports = router;

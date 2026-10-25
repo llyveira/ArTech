@@ -79,7 +79,7 @@ router.post('/', async (req, res) => {
       dueDate: devolucao,
     });
 
-    res.redirect('/materials');
+    res.redirect('materials');
   } catch (err) {
     console.error('Erro ao criar solicitação:', err);
     res.status(400).send(err.message);

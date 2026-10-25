@@ -1,5 +1,5 @@
 <section class="event-view">
-  <a href="/events" class="back-link">← Voltar para Eventos</a>
+  <a href="events" class="back-link">← Voltar para Eventos</a>
 
   <div class="event-view-card">
     <div class="event-view-media">
@@ -67,7 +67,7 @@
         {{/if}}
 
         {{#if evento.podeSolicitar}}
-          <form action="/events/{{evento.id}}/solicitar" method="POST">
+          <form action="events/{{evento.id}}/solicitar" method="POST">
             <button type="submit" class="btn-primary">Criar Evento</button>
           </form>
         {{/if}}
@@ -80,4 +80,4 @@
   {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction=evento.editAction}}
 {{/if}}
 
-<script src="/javascripts/events.js" defer></script>
+<script src="javascripts/events.js" defer></script>

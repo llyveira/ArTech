@@ -227,12 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
 
     try {
-      await fetch('/users/logout', { method: 'POST' });
+      await fetch('users/logout', { method: 'POST' });
     } catch (err) {
       console.error('Erro ao sair:', err);
     }
 
-    window.location.href = '/';
+    window.location.href = './';
   });
 
   // Abre o modal de login automaticamente quando a página carrega com
