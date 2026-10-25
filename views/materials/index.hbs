@@ -78,7 +78,7 @@
             <img src="{{this.photo}}" alt="{{this.name}}" loading="lazy" />
           {{else}}
             <img
-              src="/images/sem-foto.jpg"
+              src="images/sem-foto.jpg"
               alt="{{this.name}}"
               loading="lazy"
             />
@@ -292,7 +292,7 @@
       >✕</button>
     </div>
 
-    <form class="modal-form" action="/materials" method="POST">
+    <form class="modal-form" action="materials" method="POST">
       <label class="field">
         <span>Nome</span>
         <input
@@ -301,20 +301,6 @@
           placeholder="Ex: Vestido de noiva"
           required
         />
-      </label>
-
-      <label class="field">
-        <span>Categoria</span>
-        <select name="category" required>
-          <option value="" disabled selected>Selecione uma categoria</option>
-          <option value="figurino">Figurino</option>
-          <option value="adereços">Adereços</option>
-          <option value="tecidos">Tecidos</option>
-          <option value="material_cenografico">Material Cenográfico</option>
-          <option value="livros">Livros</option>
-          <option value="sala_de_instrumentos">Sala de Instrumentos</option>
-          <option value="laboratorio_de_musica">Laboratório de Música</option>
-        </select>
       </label>
 
       <label class="field">
