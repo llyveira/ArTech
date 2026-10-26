@@ -745,3 +745,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Cards de eventos: mesmo espaçamento e alinhamento dos cards de materiais */
+.event-card .card-body {
+  gap: 0;
+}
+
+.event-card .card-info {
+  margin-top: 12px;
+}
+
+.event-card .card-actions {
+  margin-top: auto;
+  padding-top: 20px;
+}
