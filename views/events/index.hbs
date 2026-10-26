@@ -14,7 +14,7 @@
     <section class="filters-section">
 
         <!-- Botão de Novo Evento -->
-{{#if currentUser}}
+{{#if podeCriarEvento}}
   <button class="btn-novo-evento" type="button" onclick="abrirModalEvento('modalNovoEvento')">+ Novo Evento</button>
 {{/if}}
     <select name="categoria">
@@ -69,7 +69,7 @@
         {{#if eventos.length}}
           {{#each eventos}}
             <article class="card">
-              <div class="card-media">
+            <div class="card-media" style="--bg: url('{{imagem}}')">
                 <img src="{{imagem}}" alt="{{titulo}}" loading="lazy" />
                 <span class="tag tag-{{statusClass}}">{{status}}</span>
               </div>
@@ -116,6 +116,18 @@
         {{else}}
           <p>Nenhum evento cadastrado.</p>
         {{/if}}
+
+          {{#if podeValidar}}
+            <form action="{{approveAction}}" method="POST" style="display: contents"
+                  onsubmit="return confirm('Aprovar este evento?')">
+              <button class="btn-outline" type="submit"><i class="fa-solid fa-check"></i>Aprovar</button>
+            </form>
+            <form action="{{rejectAction}}" method="POST" style="display: contents"
+                  onsubmit="return confirm('Rejeitar este evento?')">
+              <button class="btn-danger" type="submit" aria-label="Rejeitar"><i class="fa-solid fa-xmark"></i></button>
+            </form>
+          {{/if}}
+
       </div>
 
       <!-- Paginação -->

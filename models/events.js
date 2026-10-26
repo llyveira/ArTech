@@ -84,9 +84,9 @@ Event.init(
       allowNull: false,
       defaultValue: 'Rascunho',
       validate: {
-        isIn: {
-          args: [['Rascunho', 'Solicitado', 'Aprovado', 'Excluído']],
-          msg: 'O status deve ser Rascunho, Solicitado, Aprovado ou Excluído.'
+                isIn: {
+          args: [['Rascunho', 'Solicitado', 'Aprovado', 'Rejeitado', 'Excluído']],
+          msg: 'O status deve ser Rascunho, Solicitado, Aprovado, Rejeitado ou Excluído.'
         }
       }
     },

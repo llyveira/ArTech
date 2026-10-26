@@ -7,6 +7,7 @@ let Event = require('../models/events');
 let Users = require('../models/users');
 const { Classrooms } = require('../models/rooms');
 const userLevel = require('../models/userLevel');
+const { eventosVisiveis } = require('./events');
 
 /* GET /search?q=termo — busca global */
 router.get('/', async (req, res) => {
@@ -25,11 +26,15 @@ router.get('/', async (req, res) => {
   try {
     // Eventos: todos, menos os excluídos
     const events = await Event.findAll({
-      where: {
-        status: { [Op.ne]: 'Excluído' },
-        [Op.or]: [
-          { name: { [Op.like]: `%${q}%` } },
-          { location: { [Op.like]: `%${q}%` } },
+       where: {
+        [Op.and]: [
+          eventosVisiveis(res.locals.currentUser),
+          {
+            [Op.or]: [
+              { name: { [Op.like]: `%${q}%` } },
+              { location: { [Op.like]: `%${q}%` } },
+            ],
+          },
         ],
       },
       limit: 5,

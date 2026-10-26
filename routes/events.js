@@ -9,8 +9,36 @@ const sequelize = require('../config/database');
 const Event = require('../models/events');
 const Users = require('../models/users');
 const { Reservations, Classrooms } = require('../models/rooms');
-const { requireLogin } = require('../middlewares/authorize');
+const { requireLogin, requireLevel } = require('../middlewares/authorize');
+const userLevel = require('../models/userLevel');
 const { Op } = require('sequelize');
+
+// ---- Permissões por nível de usuário (models/userLevel.js) ----
+const ehPro = (user) => !!user && user.profile >= userLevel.PRO;
+const ehCoordenador = (user) => !!user && user.profile >= userLevel.COORDINATOR;
+const ehDono = (data, user) => !data.createdById || (!!user && user.id === data.createdById);
+
+// Quais eventos cada usuário pode ver (os excluídos nunca aparecem).
+function eventosVisiveis(user) {
+  const naoExcluido = { status: { [Op.ne]: 'Excluído' } };
+
+  // Coordenador: tudo que não é rascunho + os rascunhos que ele mesmo criou
+  if (ehCoordenador(user)) {
+    return {
+      [Op.and]: [naoExcluido, { [Op.or]: [{ status: { [Op.ne]: 'Rascunho' } }, { createdById: user.id }] }]
+    };
+  }
+
+  // Pro: os aprovados + tudo que ele criou
+  if (ehPro(user)) {
+    return {
+      [Op.and]: [naoExcluido, { [Op.or]: [{ status: 'Aprovado' }, { createdById: user.id }] }]
+    };
+  }
+
+  // Interno, externo ou sem login: só os aprovados
+  return { status: 'Aprovado' };
+}
 
 /*
  * Fluxo de status do evento (e da reserva vinculada):
@@ -142,12 +170,13 @@ function formatEvent(event, user = null) {
     statusClass: String(data.status || 'Rascunho').toLowerCase(),
     // Regras da página de detalhes
     podeInscrever: data.status === 'Aprovado',
-    podeEditar: data.status === 'Rascunho',
-    podeSolicitar: data.status === 'Rascunho',
-    // Só o criador exclui, e só enquanto for rascunho.
-    // (evento sem dono, criado sem login, qualquer um pode excluir)
-    podeExcluir: data.status === 'Rascunho' &&
-      (!data.createdById || (!!user && user.id === data.createdById)),
+    podeEditar: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
+    podeSolicitar: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
+    podeExcluir: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
+    // Só o coordenador valida, e só eventos já solicitados
+    podeValidar: data.status === 'Solicitado' && ehCoordenador(user),
+    approveAction: `events/${data.id}/aprovar`,
+    rejectAction: `events/${data.id}/rejeitar`,
     // Sem "/" no início: o <base href> do layout completa o caminho.
     deleteAction: `events/${data.id}/delete`,
     editAction: `events/${data.id}/edit`,
@@ -245,7 +274,7 @@ router.get('/', wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
 
   const eventos = await Event.findAll({
-    where: { status: { [Op.ne]: 'Excluído' } }, 
+    where: eventosVisiveis(user),
     include: eventIncludes,
     order: [['date', 'ASC'], ['time', 'ASC']]
   });
@@ -254,7 +283,8 @@ router.get('/', wrap(async function(req, res, next) {
     title: 'Eventos do NUARTE',
     subtitle: 'Gerencie os eventos realizados pelo NUARTE.',
     eventos: eventos.map((e) => formatEvent(e, user)),
-    quantidadeEventos: eventos.length
+    quantidadeEventos: eventos.length,
+    podeCriarEvento: ehPro(user)
   });
 }));
 
@@ -263,7 +293,7 @@ router.get('/', wrap(async function(req, res, next) {
  * Cria primeiro uma Reservation (já com o status correspondente) e depois
  * vincula essa reserva ao Event. O status do evento vem do botão clicado.
  */
-router.post('/', requireLogin, wrap(async function(req, res, next) {
+router.post('/', requireLogin, requireLevel(userLevel.PRO), wrap(async function(req, res, next) {
   const { error, values } = parseEventForm(req.body);
   if (error) return res.status(400).send(error);
 
@@ -318,11 +348,17 @@ router.post('/', requireLogin, wrap(async function(req, res, next) {
 }));
 
 /* GET /events/:id - mostra um evento específico e a reserva vinculada. */
+/* GET /events/:id - mostra um evento específico e a reserva vinculada. */
 router.get('/:id', wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
   const eventoBanco = await Event.findByPk(req.params.id, { include: eventIncludes });
 
-    if (!eventoBanco || eventoBanco.status === 'Excluído') {
+  // Só abre se o evento existir E o usuário tiver permissão para vê-lo
+  const podeVer = eventoBanco && (await Event.count({
+    where: { [Op.and]: [{ id: eventoBanco.id }, eventosVisiveis(user)] }
+  })) > 0;
+
+  if (!podeVer) {
     return res.status(404).send('Evento não encontrado');
   }
 
@@ -340,7 +376,7 @@ router.get('/:id', wrap(async function(req, res, next) {
  *   "Salvar"       -> continua Rascunho
  *   "Criar Evento" -> passa para Solicitado
  */
-router.post('/:id/edit', requireLogin, wrap(async function(req, res, next) {
+router.post('/:id/edit', requireLogin, requireLevel(userLevel.PRO), wrap(async function(req, res, next) {
   const { error, values } = parseEventForm(req.body);
   if (error) return res.status(400).send(error);
 
@@ -403,7 +439,7 @@ router.post('/:id/edit', requireLogin, wrap(async function(req, res, next) {
  * Botão "Criar Evento" da página de detalhes:
  * Rascunho -> Solicitado (a reserva passa de EDITING para PENDING).
  */
-router.post('/:id/solicitar', requireLogin, wrap(async function(req, res, next) {
+router.post('/:id/solicitar', requireLogin, requireLevel(userLevel.PRO), wrap(async function(req, res, next) {
   const transaction = await sequelize.transaction();
 
   try {
@@ -441,52 +477,95 @@ router.post('/:id/solicitar', requireLogin, wrap(async function(req, res, next) 
 }));
 
 /* POST /events/:id/delete - exclusão lógica: marca como Excluído e cancela a reserva. */
-router.post('/:id/delete', requireLogin, wrap(async function(req, res, next) {
+router.post('/:id/delete', requireLogin, requireLevel(userLevel.PRO), wrap(async function(req, res, next) {
   const user = res.locals.currentUser;
-  const transaction = await sequelize.transaction();
 
-  try {
-    const event = await Event.findByPk(req.params.id, {
-      include: [{ model: Reservations, as: 'reservation' }],
-      transaction
-    });
+  const event = await Event.findByPk(req.params.id, {
+    include: [{ model: Reservations, as: 'reservation' }]
+  });
 
-    if (!event || event.status === 'Excluído') {
-      await transaction.rollback();
-      return res.status(404).send('Evento não encontrado');
-    }
-
-    // Só rascunho pode ser excluído.
-    if (event.status !== 'Rascunho') {
-      await transaction.rollback();
-      return res.status(403).send('Só é possível excluir eventos em rascunho.');
-    }
-
-    // Se o evento tem dono, só ele pode excluir.
-    if (event.createdById && (!user || user.id !== event.createdById)) {
-      await transaction.rollback();
-      return res.status(403).send('Você não pode excluir este evento.');
-    }
-
-    // O evento não é apagado do banco: só recebe o status Excluído.
-    event.status = 'Excluído';
-    await event.save({ transaction });
-
-    // Chama a função de cancelar do modelo de reservas.
-    if (event.reservation) {
-      await event.reservation.cancel({ transaction });
-    }
-
-    await transaction.commit();
-    // Redirect relativo: a rota é /events/ID/delete, então "../../events" volta para /events.
-    return res.redirect('../../events');
-  } catch (err) {
-    await transaction.rollback();
-    next(err);
+  if (!event || event.status === 'Excluído') {
+    return res.status(404).send('Evento não encontrado');
   }
+
+  // Só rascunho pode ser excluído.
+  if (event.status !== 'Rascunho') {
+    return res.status(403).send('Só é possível excluir eventos em rascunho.');
+  }
+
+  // Se o evento tem dono, só ele pode excluir.
+  if (event.createdById && (!user || user.id !== event.createdById)) {
+    return res.status(403).send('Você não pode excluir este evento.');
+  }
+
+  // Chama a função de cancelar do modelo de reservas (ela grava quem cancelou).
+  if (event.reservation) {
+    await event.reservation.cancel(user.id);
+  }
+
+  // O evento não é apagado do banco: só recebe o status Excluído.
+  event.status = 'Excluído';
+  await event.save();
+
+  // Redirect relativo: a rota é /events/ID/delete, então "../../events" volta para /events.
+  return res.redirect('../../events');
+}));
+
+/* POST /events/:id/aprovar - o coordenador aprova um evento solicitado. */
+router.post('/:id/aprovar', requireLogin, requireLevel(userLevel.COORDINATOR), wrap(async function(req, res, next) {
+  const user = res.locals.currentUser;
+  const event = await Event.findByPk(req.params.id, {
+    include: [{ model: Reservations, as: 'reservation' }]
+  });
+
+  if (!event || event.status === 'Excluído') {
+    return res.status(404).send('Evento não encontrado');
+  }
+  if (event.status !== 'Solicitado') {
+    return res.status(400).send('Só é possível aprovar um evento solicitado.');
+  }
+
+  // Função de aprovar do modelo de reservas (grava quem aprovou)
+  try {
+    if (event.reservation) await event.reservation.approve(user.id);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+
+  event.status = 'Aprovado';
+  await event.save();
+  return res.redirect('../../events');
+}));
+
+/* POST /events/:id/rejeitar - o coordenador rejeita um evento solicitado. */
+router.post('/:id/rejeitar', requireLogin, requireLevel(userLevel.COORDINATOR), wrap(async function(req, res, next) {
+  const user = res.locals.currentUser;
+  const event = await Event.findByPk(req.params.id, {
+    include: [{ model: Reservations, as: 'reservation' }]
+  });
+
+  if (!event || event.status === 'Excluído') {
+    return res.status(404).send('Evento não encontrado');
+  }
+  if (event.status !== 'Solicitado') {
+    return res.status(400).send('Só é possível rejeitar um evento solicitado.');
+  }
+
+  // Função de rejeitar do modelo de reservas (cancela e grava quem rejeitou)
+  try {
+    if (event.reservation) await event.reservation.reject(user.id);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+
+  event.status = 'Rejeitado';
+  await event.save();
+  return res.redirect('../../events');
 }));
 
 // A página inicial (routes/index.js) reutiliza o formatEvent.
 router.formatEvent = formatEvent;
+
+router.eventosVisiveis = eventosVisiveis;
 
 module.exports = router;

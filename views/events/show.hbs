@@ -71,10 +71,28 @@
             <button type="submit" class="btn-primary">Criar Evento</button>
           </form>
         {{/if}}
+
+        {{!-- Aprovar e Rejeitar: só o coordenador, e só com o evento Solicitado --}}
+        {{#if evento.podeValidar}}
+          <form action="{{evento.approveAction}}" method="POST"
+                onsubmit="return confirm('Aprovar este evento?')">
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-check"></i> Aprovar
+            </button>
+          </form>
+          <form action="{{evento.rejectAction}}" method="POST"
+                onsubmit="return confirm('Rejeitar este evento?')">
+            <button type="submit" class="btn-outline btn-rejeitar">
+              <i class="fa-solid fa-xmark"></i> Rejeitar
+            </button>
+          </form>
+        {{/if}}
+
       </div>
     </div>
   </div>
 </section>
+
 
 {{#if evento.podeEditar}}
   {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction=evento.editAction}}
