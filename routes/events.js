@@ -383,8 +383,7 @@ router.get('/:id', wrap(async function(req, res, next) {
     evento,
     reserva: eventoBanco.reservation,
     // Só usuário interno informa matrícula na inscrição
-    exigeMatricula: !!user && user.profile === userLevel.INTERNAL
-  });
+    exigeMatricula: !!user && user.profile !== userLevel.EXTERNAL  });
 }));
 
 /*
@@ -594,9 +593,9 @@ router.post('/:id/inscrever', requireLogin, wrap(async function(req, res, next) 
   const email = (req.body.email || '').trim();
   const phone = (req.body.phone || '').trim();
   const registration = (req.body.registration || '').trim();
-  const ehInterno = user.profile === userLevel.INTERNAL;
+  const precisaMatricula = user.profile !== userLevel.EXTERNAL;
 
-  if (!name || !email || !phone || (ehInterno && !registration)) {
+   if (!name || !email || !phone || (precisaMatricula && !registration)) {
     return res.status(400).send('Preencha todos os campos da inscrição.');
   }
 
@@ -627,7 +626,7 @@ router.post('/:id/inscrever', requireLogin, wrap(async function(req, res, next) 
     name,
     email,
     phone,
-    registration: ehInterno ? registration : null
+        registration: precisaMatricula ? registration : null
   });
 
   return res.redirect(`../${event.id}`);
