@@ -249,4 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.history.replaceState({}, '', url);
   }
 
+  // Abre o modal de cadastro quando a página carrega com ?register=1
+  // (usado pelo botão "Inscrever-se" de quem ainda não está logado).
+  if (params.get('register') === '1') {
+    openModal(registerModalOverlay);
+
+    // Remove o "?register=1" da URL sem recarregar a página.
+    const url = new URL(window.location.href);
+    url.searchParams.delete('register');
+    window.history.replaceState({}, '', url);
+  }
+
 });

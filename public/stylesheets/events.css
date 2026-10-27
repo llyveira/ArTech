@@ -759,3 +759,31 @@
   margin-top: auto;
   padding-top: 20px;
 }
+
+/* ---------------------------------------------------------
+   Inscrição em evento
+   --------------------------------------------------------- */
+
+/* "Inscrever-se" como link (usuário sem login) com a mesma cara do botão */
+a.btn-inscrever {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* Botão "Inscrito": desativado, em verde claro */
+.event-view-actions .btn-primary.btn-inscrito {
+  background: var(--color-primary-lighter);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--color-primary-light);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Selo "Inscrito" no card, no canto esquerdo (o do status fica à direita) */
+.tag.tag-inscrito {
+  right: auto;
+  left: 12px;
+  background: var(--color-primary-dark);
+}

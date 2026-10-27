@@ -9,6 +9,7 @@ const sequelize = require('../config/database');
 const Event = require('../models/events');
 const Users = require('../models/users');
 const { Reservations, Classrooms } = require('../models/rooms');
+const EventRegistrations = require('../models/eventRegistrations');
 const { requireLogin, requireLevel } = require('../middlewares/authorize');
 const userLevel = require('../models/userLevel');
 const { Op } = require('sequelize');
@@ -137,8 +138,18 @@ function eventImagePath(image) {
   return 'images/event-placeholder.svg';
 }
 
+// Ids dos eventos em que o usuário logado já está inscrito.
+async function idsInscritos(user) {
+  if (!user) return new Set();
+  const lista = await EventRegistrations.findAll({
+    where: { userId: user.id },
+    attributes: ['eventId']
+  });
+  return new Set(lista.map((r) => r.eventId));
+}
+
 // `user` é o usuário logado (res.locals.currentUser) ou null.
-function formatEvent(event, user = null) {
+function formatEvent(event, user = null, inscritos = null) {
   const data = event.toJSON ? event.toJSON() : event;
   const reservation = data.reservation || null;
 
@@ -170,6 +181,7 @@ function formatEvent(event, user = null) {
     statusClass: String(data.status || 'Rascunho').toLowerCase(),
     // Regras da página de detalhes
     podeInscrever: data.status === 'Aprovado',
+    inscrito: !!inscritos && inscritos.has(data.id),
     podeEditar: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
     podeSolicitar: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
     podeExcluir: data.status === 'Rascunho' && ehPro(user) && ehDono(data, user),
@@ -279,15 +291,16 @@ router.get('/', wrap(async function(req, res, next) {
     order: [['date', 'ASC'], ['time', 'ASC']]
   });
 
+  const inscritos = await idsInscritos(user);
+
   res.render('events/index', {
     title: 'Eventos do NUARTE',
     subtitle: 'Gerencie os eventos realizados pelo NUARTE.',
-    eventos: eventos.map((e) => formatEvent(e, user)),
+    eventos: eventos.map((e) => formatEvent(e, user, inscritos)),
     quantidadeEventos: eventos.length,
     podeCriarEvento: ehPro(user)
   });
 }));
-
 /*
  * POST /events
  * Cria primeiro uma Reservation (já com o status correspondente) e depois
@@ -362,11 +375,15 @@ router.get('/:id', wrap(async function(req, res, next) {
     return res.status(404).send('Evento não encontrado');
   }
 
-  const evento = formatEvent(eventoBanco, user);
+  const inscritos = await idsInscritos(user);
+  const evento = formatEvent(eventoBanco, user, inscritos);
+
   res.render('events/show', {
     title: evento.titulo,
     evento,
-    reserva: eventoBanco.reservation
+    reserva: eventoBanco.reservation,
+    // Só usuário interno informa matrícula na inscrição
+    exigeMatricula: !!user && user.profile === userLevel.INTERNAL
   });
 }));
 
@@ -561,6 +578,59 @@ router.post('/:id/rejeitar', requireLogin, requireLevel(userLevel.COORDINATOR), 
   event.status = 'Rejeitado';
   await event.save();
   return res.redirect('../../events');
+}));
+
+/* POST /events/:id/inscrever - inscreve o usuário logado em um evento aprovado. */
+router.post('/:id/inscrever', requireLogin, wrap(async function(req, res, next) {
+  const user = res.locals.currentUser;
+  const event = await Event.findByPk(req.params.id);
+
+  // Só dá para se inscrever em evento aprovado
+  if (!event || event.status !== 'Aprovado') {
+    return res.status(404).send('Evento não encontrado');
+  }
+
+  const name = (req.body.name || '').trim();
+  const email = (req.body.email || '').trim();
+  const phone = (req.body.phone || '').trim();
+  const registration = (req.body.registration || '').trim();
+  const ehInterno = user.profile === userLevel.INTERNAL;
+
+  if (!name || !email || !phone || (ehInterno && !registration)) {
+    return res.status(400).send('Preencha todos os campos da inscrição.');
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).send('Informe um e-mail válido.');
+  }
+
+  // Já inscrito: só volta para a página do evento
+  const jaInscrito = await EventRegistrations.findOne({
+    where: { eventId: event.id, userId: user.id }
+  });
+  if (jaInscrito) {
+    return res.redirect(`../${event.id}`);
+  }
+
+  // Vagas: se for um número, confere se ainda há vaga ("Livre" não tem limite)
+  const limite = Number.parseInt(event.vacancies, 10);
+  if (Number.isInteger(limite)) {
+    const total = await EventRegistrations.count({ where: { eventId: event.id } });
+    if (total >= limite) {
+      return res.status(400).send('Não há mais vagas para este evento.');
+    }
+  }
+
+  await EventRegistrations.create({
+    eventId: event.id,
+    userId: user.id,
+    name,
+    email,
+    phone,
+    registration: ehInterno ? registration : null
+  });
+
+  return res.redirect(`../${event.id}`);
 }));
 
 // A página inicial (routes/index.js) reutiliza o formatEvent.

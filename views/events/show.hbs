@@ -41,9 +41,17 @@
       <p class="event-view-description">{{evento.descricao}}</p>
 
       <div class="event-view-actions">
-        {{!-- "Se inscrever" só aparece quando o status é Aprovado --}}
+               {{!-- Inscrição: só em evento Aprovado --}}
         {{#if evento.podeInscrever}}
-          <button type="button" class="btn-primary btn-inscrever">Inscrever-se</button>
+          {{#if evento.inscrito}}
+            <button type="button" class="btn-primary btn-inscrever btn-inscrito" disabled>
+              <i class="fa-solid fa-circle-check"></i> Inscrito
+            </button>
+          {{else if currentUser}}
+            <button type="button" class="btn-primary btn-inscrever" onclick="abrirModalEvento('modalInscricao')">Inscrever-se</button>
+          {{else}}
+            <a href="events/{{evento.id}}?register=1" class="btn-primary btn-inscrever">Inscrever-se</a>
+          {{/if}}
         {{/if}}
 
         {{!-- Editar e "Criar Evento" só aparecem quando o status é Rascunho --}}
@@ -96,6 +104,53 @@
 
 {{#if evento.podeEditar}}
   {{> event-modal modalId="modalEditarEvento" modalTitle="Editar Evento" formAction=evento.editAction}}
+{{/if}}
+
+{{!-- Pop-up de inscrição: só para quem está logado e ainda não se inscreveu --}}
+{{#if evento.podeInscrever}}
+  {{#if currentUser}}
+    {{#unless evento.inscrito}}
+      <div class="modal-overlay hidden" id="modalInscricao" onclick="fecharModalEvento('modalInscricao')">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalInscricaoTitle" onclick="event.stopPropagation()">
+          <div class="modal-head">
+            <h2 id="modalInscricaoTitle">Inscrição no evento</h2>
+            <button class="modal-close" type="button" aria-label="Fechar" onclick="fecharModalEvento('modalInscricao')">✕</button>
+          </div>
+
+          <form class="modal-form" action="events/{{evento.id}}/inscrever" method="POST">
+            <p>Você está se inscrevendo em <strong>{{evento.titulo}}</strong>.</p>
+
+            {{#if exigeMatricula}}
+              <label class="field">
+                <span>Matrícula</span>
+                <input type="text" name="registration" value="{{currentUser.ifrn_registration}}" required />
+              </label>
+            {{/if}}
+
+            <label class="field">
+              <span>E-mail</span>
+              <input type="email" name="email" value="{{currentUser.email}}" required />
+            </label>
+
+            <label class="field">
+              <span>Nome completo</span>
+              <input type="text" name="name" value="{{currentUser.name}}" required />
+            </label>
+
+            <label class="field">
+              <span>Telefone</span>
+              <input type="tel" name="phone" value="{{currentUser.phone}}" placeholder="(84) 99999-9999" required />
+            </label>
+
+            <div class="modal-actions">
+              <button type="button" class="btn-outline" onclick="fecharModalEvento('modalInscricao')">Cancelar</button>
+              <button type="submit" class="btn-primary">Confirmar inscrição</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    {{/unless}}
+  {{/if}}
 {{/if}}
 
 <script src="javascripts/events.js" defer></script>
