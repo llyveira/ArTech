@@ -1,155 +1,139 @@
 <link rel="stylesheet" href="stylesheets/rooms.css" />
 
-<div class="rooms-page">
+<div class="rooms-page main">
 
-  <div class="rooms-main">
-    
   <!-- Toolbar -->
-  <section class="rooms-toolbar">
-    <div class="rooms-toolbar-left">
-      <button type="button" class="btn-primary" onclick="openRoomModal()">+ Nova Reserva</button>
-      <div class="rooms-tabs">
-        <button type="button" class="rooms-tab active" data-tab="salas">Salas disponíveis</button>
-        <button type="button" class="rooms-tab" data-tab="reservas">Minhas reservas</button>
-        {{#if podeGerenciar}}
-        <button type="button" class="rooms-tab" data-tab="gerenciar">Gerenciar reservas</button>
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="rooms-search-filters">
-      <button type="button" class="rooms-filter">Tipo de sala <span class="arrow">▼</span></button>
-      <button type="button" class="rooms-filter">Capacidade <span class="arrow">▼</span></button>
-    </div>
+  <section class="panel controls">
+    <button type="button" class="btn-primary" onclick="openRoomModal()">+ Nova Reserva</button>
+    {{#if podeGerenciar}}
+    <button type="button" class="rooms-tab" data-tab="gerenciar">Gerenciar reservas</button>
+    {{/if}}
+    <button type="button" class="rooms-tab" data-tab="reservas">Minhas reservas</button>
+    <button type="button" class="rooms-tab active" data-tab="salas">Salas disponíveis</button>
+    <select class="select">
+      <option>Tipo de sala</option>
+    </select>
+    <select class="select">
+      <option>Capacidade</option>
+    </select>
+    <button type="button" class="btn-muted">Limpar Filtro</button>
   </section>
 
   <!-- Painel: Salas disponíveis -->
-  <section class="rooms-panel" id="panel-salas">
-    <div class="rooms-section">
-      <div class="rooms-section-head">
-        <h2>Salas do NUARTE</h2>
-        <span class="rooms-section-count">2 salas encontradas</span>
-      </div>
+  <section class="panel rooms-panel" id="panel-salas">
+    <div class="panel-head">
+      <h2>Lista de Salas <span class="badge">2 salas encontradas</span></h2>
+    </div>
 
-      <div class="rooms-grid">
+    <div class="grid rooms-grid">
 
-        <!-- Card 1 -->
-        <article class="room-card">
-          <div class="room-media">
-            {{#if salas.[0].image}}<img src="{{salas.[0].image}}" alt="Lab. de Cenografia" />{{/if}}
-            <span class="room-badge livre">Livre agora</span>
+      <!-- Card 1 -->
+      <article class="card">
+        <div class="card-media" {{#if salas.[0].image}}style="--bg:url('{{salas.[0].image}}')"{{/if}}>
+          {{#if salas.[0].image}}<img src="{{salas.[0].image}}" alt="Lab. de Cenografia" />{{/if}}
+          <span class="tag tag-disponivel">Livre agora</span>
+        </div>
+        <div class="card-body">
+          <h3>Lab. de Cenografia</h3>
+          <ul class="card-info">
+            <li><i class="fa-solid fa-location-dot"></i> Bloco NUARTE</li>
+            <li><i class="fa-solid fa-users"></i> Até 10 pessoas</li>
+          </ul>
+          <div class="room-hours">
+            <div class="room-hours-title">Horário de funcionamento</div>
+            <div class="room-hours-row"><span>Manhã</span><strong>08h às 12h</strong></div>
+            <div class="room-hours-row"><span>Tarde</span><strong>13h às 17h</strong></div>
           </div>
-          <div class="room-body">
-            <div>
-              <div class="room-title">Lab. de Cenografia</div>
-              <div class="room-meta"> Bloco NUARTE</div>
-              <div class="room-meta"> Até 10 pessoas</div>
-            </div>
-            <div class="room-hours">
-              <div class="room-hours-title">Horário de funcionamento</div>
-              <div class="room-hours-row"><span>Manhã</span><strong>08h às 12h</strong></div>
-              <div class="room-hours-row"><span>Tarde</span><strong>13h às 17h</strong></div>
-            </div>
-            <div class="room-card-actions">
-              <a href="#" class="btn-outline">Ver detalhes</a>
-              <button type="button" class="btn-primary" onclick="openRoomModal('Lab. de Cenografia')">Solicitar reserva</button>
-            </div>
+          <div class="card-actions">
+            <button type="button" class="btn-outline">Ver detalhes</button>
+            <button type="button" class="btn-primary" onclick="openRoomModal('Lab. de Cenografia')">Solicitar reserva</button>
           </div>
-        </article>
+        </div>
+      </article>
 
-        <!-- Card 2 -->
-        <article class="room-card">
-          <div class="room-media">
-            {{#if salas.[1].image}}<img src="{{salas.[1].image}}" alt="Lab. de Música" />{{/if}}
-            <span class="room-badge livre">Livre agora</span>
+      <!-- Card 2 -->
+      <article class="card">
+        <div class="card-media" {{#if salas.[1].image}}style="--bg:url('{{salas.[1].image}}')"{{/if}}>
+          {{#if salas.[1].image}}<img src="{{salas.[1].image}}" alt="Lab. de Música" />{{/if}}
+          <span class="tag tag-disponivel">Livre agora</span>
+        </div>
+        <div class="card-body">
+          <h3>Lab. de Música</h3>
+          <ul class="card-info">
+            <li><i class="fa-solid fa-location-dot"></i> Bloco NUARTE</li>
+            <li><i class="fa-solid fa-users"></i> Até 10 pessoas</li>
+          </ul>
+          <div class="room-hours">
+            <div class="room-hours-title">Horário de funcionamento</div>
+            <div class="room-hours-row"><span>Manhã</span><strong>08h às 12h</strong></div>
+            <div class="room-hours-row"><span>Tarde</span><strong>13h às 17h</strong></div>
           </div>
-          <div class="room-body">
-            <div>
-              <div class="room-title">Lab. de Música</div>
-              <div class="room-meta"> Bloco NUARTE</div>
-              <div class="room-meta"> Até 10 pessoas</div>
-            </div>
-            <div class="room-hours">
-              <div class="room-hours-title">Horário de funcionamento</div>
-              <div class="room-hours-row"><span>Manhã</span><strong>08h às 12h</strong></div>
-              <div class="room-hours-row"><span>Tarde</span><strong>13h às 17h</strong></div>
-            </div>
-            <div class="room-card-actions">
-              <a href="#" class="btn-outline">Ver detalhes</a>
-              <button type="button" class="btn-primary" onclick="openRoomModal('Lab. de Música')">Solicitar reserva</button>
-            </div>
+          <div class="card-actions">
+            <button type="button" class="btn-outline">Ver detalhes</button>
+            <button type="button" class="btn-primary" onclick="openRoomModal('Lab. de Música')">Solicitar reserva</button>
           </div>
-        </article>
+        </div>
+      </article>
 
-      </div>
     </div>
   </section>
 
   <!-- Painel: Minhas reservas -->
-  <section class="rooms-panel" id="panel-reservas" hidden>
-    <div class="rooms-section">
-      <div class="rooms-section-head">
-        <h2>Minhas reservas</h2>
-        <span class="rooms-section-count">{{totalReservas}}</span>
-      </div>
+  <section class="panel rooms-panel" id="panel-reservas" hidden>
+    <div class="panel-head">
+      <h2>Minhas reservas <span class="badge">{{totalReservas}}</span></h2>
+    </div>
 
-      <div class="reservations-list" id="reservationsList">
-        {{#each reservas}}
-        <div class="reservation-row">
-          <div class="reservation-info">
-            <div class="reservation-room">{{sala}}</div>
-            <div class="reservation-time">{{horario}}</div>
-          </div>
-          <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
-          {{#if podeCancelar}}
-          <form action="rooms/{{id}}/cancel" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
-            <button type="submit" class="reservation-cancel">Cancelar</button>
-          </form>
-          {{/if}}
+    <div class="reservations-list" id="reservationsList">
+      {{#each reservas}}
+      <div class="reservation-row">
+        <div class="reservation-info">
+          <div class="reservation-room">{{sala}}</div>
+          <div class="reservation-time">{{horario}}</div>
         </div>
-        {{else}}
-        <div class="reservation-empty">Você ainda não tem reservas.</div>
-        {{/each}}
+        <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
+        {{#if podeCancelar}}
+        <form action="rooms/{{id}}/cancel" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
+          <button type="submit" class="reservation-cancel">Cancelar</button>
+        </form>
+        {{/if}}
       </div>
+      {{else}}
+      <div class="reservation-empty">Você ainda não tem reservas.</div>
+      {{/each}}
     </div>
   </section>
 
   {{#if podeGerenciar}}
   <!-- Painel: Gerenciar reservas (só PRO/Coordenador) -->
-  <section class="rooms-panel" id="panel-gerenciar" hidden>
-    <div class="rooms-section">
-      <div class="rooms-section-head">
-        <h2>Gerenciar reservas</h2>
-        <span class="rooms-section-count">{{totalGerenciar}}</span>
-      </div>
+  <section class="panel rooms-panel" id="panel-gerenciar" hidden>
+    <div class="panel-head">
+      <h2>Gerenciar reservas <span class="badge">{{totalGerenciar}}</span></h2>
+    </div>
 
-      <div class="reservations-list">
-        {{#each gerenciar}}
-        <div class="reservation-row">
-          <div class="reservation-info">
-            <div class="reservation-room">{{sala}}</div>
-            <div class="reservation-time">{{horario}} · {{solicitante}}</div>
-          </div>
-          <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
-          {{#if podeDecidir}}
-          <form action="rooms/{{id}}/approve" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Aprovar esta reserva?')">
-            <button type="submit" class="reservation-approve">Aprovar</button>
-          </form>
-          <form action="rooms/{{id}}/cancel?tab=gerenciar" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
-            <button type="submit" class="reservation-cancel">Cancelar</button>
-          </form>
-          {{/if}}
+    <div class="reservations-list">
+      {{#each gerenciar}}
+      <div class="reservation-row">
+        <div class="reservation-info">
+          <div class="reservation-room">{{sala}}</div>
+          <div class="reservation-time">{{horario}} · {{solicitante}}</div>
         </div>
-        {{else}}
-        <div class="reservation-empty">Nenhuma reserva para gerenciar.</div>
-        {{/each}}
+        <span class="reservation-status {{statusClass}}">{{statusTexto}}</span>
+        {{#if podeDecidir}}
+        <form action="rooms/{{id}}/approve" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Aprovar esta reserva?')">
+          <button type="submit" class="reservation-approve">Aprovar</button>
+        </form>
+        <form action="rooms/{{id}}/cancel?tab=gerenciar" method="POST" class="reservation-cancel-form" onsubmit="return confirm('Cancelar esta reserva?')">
+          <button type="submit" class="reservation-cancel">Cancelar</button>
+        </form>
+        {{/if}}
       </div>
+      {{else}}
+      <div class="reservation-empty">Nenhuma reserva para gerenciar.</div>
+      {{/each}}
     </div>
   </section>
   {{/if}}
-
-  </div>
-  <!-- /rooms-main -->
 
   <!-- ===== Modal: Nova Reserva de Sala ===== -->
   <div class="modal-overlay hidden" id="roomModalOverlay" onclick="closeRoomModal()">
@@ -212,7 +196,7 @@
 <!-- /rooms-page -->
 
 <script>
-  // Alternância entre abas "Salas disponíveis" / "Minhas reservas"
+  // Alternância entre abas "Gerenciar reservas" / "Minhas reservas" / "Salas disponíveis"
   function selecionarAba(nome) {
     document.querySelectorAll('.rooms-tab').forEach(function (t) {
       t.classList.toggle('active', t.getAttribute('data-tab') === nome);

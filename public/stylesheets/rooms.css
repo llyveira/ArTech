@@ -1,196 +1,75 @@
-/*s Reserva de Salas — estilos exclusivos desta tela.*/
+/* Reserva de Salas — estilos exclusivos desta tela.
+   O restante (panel, controls, grid, card, tag, badge, btn-*) vem do style.css. */
 
-/* Hero */
-.rooms-hero {
-  margin: 0 0 24px;
-  border-radius: var(--radius);
-  padding: 40px 44px;
-  background: linear-gradient(160deg, #023a2b 0%, var(--primary) 60%, var(--primary-dark) 100%);
-  color: #fff;
-  position: relative;
-  overflow: hidden;
+/* Toolbar numa linha só */
+.rooms-page .controls {
+  flex-wrap: nowrap;
+  gap: 12px;
 }
 
-.rooms-hero::after {
-  content: '';
-  position: absolute;
-  right: -60px;
-  top: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.07);
+.rooms-page .controls > * {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.rooms-hero-text { position: relative; z-index: 1; max-width: 520px; }
+/* Em telas estreitas a toolbar volta a quebrar linha */
+@media (max-width: 1280px) {
+  .rooms-page .controls {
+    flex-wrap: wrap;
+  }
 
-.rooms-hero-eyebrow {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #bfe9da;
-  margin-bottom: 10px;
+  .rooms-page .controls > * {
+    flex: 1 1 180px;
+  }
 }
 
-.rooms-hero h1 {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 12px;
-}
-
-.rooms-hero p {
-  font-size: 14.5px;
-  color: #d7f0e6;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* Toolbar / tabs */
-.rooms-toolbar {
-  margin: 0 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.rooms-toolbar-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.rooms-tabs {
-  display: inline-flex;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 4px;
-}
-
+/* Abas: botões individuais, verdes como os filtros de materiais */
 .rooms-tab {
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--muted-foreground);
-  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border: 1px solid var(--border);
   border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+}
+
+.rooms-tab:hover {
+  border-color: rgba(47, 125, 93, 0.4);
 }
 
 .rooms-tab.active {
-  background: var(--primary);
-  color: #fff;
-}
-
-.rooms-search-filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.rooms-search input {
-  border: none;
-  outline: none;
-  font-family: inherit;
-  font-size: 13.5px;
-  width: 100%;
-  color: var(--foreground);
-  background: transparent;
-}
-
-.rooms-filter {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-family: inherit;
+  background: #b9dcc9;
+  border-color: #b9dcc9;
+  color: var(--accent-foreground);
   font-weight: 600;
-  font-size: 13.5px;
-  color: var(--foreground);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
 }
 
-.rooms-filter .arrow { color: var(--muted-foreground); font-size: 10px; }
-
-/* Section */
-.rooms-section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.rooms-section-head h2 { font-size: 19px; font-weight: 700; margin: 0; }
-
-.rooms-section-count {
-  font-size: 13px;
-  color: var(--muted-foreground);
-  font-weight: 500;
-}
-
-/* Grid de salas — reaproveita .card/.card-body de style.css no espírito,
-   mas a sala precisa de um layout de conteúdo próprio (badge + meta +
-   faixa semanal), então mantém sua própria classe de cartão. */
+/* Grid: auto-fill no lugar das 4 colunas fixas do .grid,
+   para os cards com o box de horário não ficarem apertados */
 .rooms-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-.room-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.room-card:hover {
-  box-shadow: 0 12px 28px rgba(30, 70, 55, 0.14);
-  transform: translateY(-2px);
-}
-
-/* Área da imagem da sala (mesma altura do .card-media de materiais).
-   Enquanto não há imagem, mostra um fundo neutro como espaço reservado. */
-.room-media {
-  position: relative;
-  height: 176px;
-  background: var(--muted);
-  border-bottom: 1px solid var(--border);
-}
-
-.room-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.room-media .room-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-}
-
-.room-body {
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* Ações do card */
+.card-actions > .btn-outline,
+.card-actions > .btn-primary {
   flex: 1;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
 }
 
 /* Horário de funcionamento */
@@ -198,6 +77,7 @@
   background: var(--muted);
   border-radius: 8px;
   padding: 12px 14px;
+  margin-top: 16px;
 }
 
 .room-hours-title {
@@ -216,37 +96,26 @@
   color: var(--muted-foreground);
 }
 
-.room-hours-row + .room-hours-row { margin-top: 4px; }
-.room-hours-row strong { color: var(--foreground); font-weight: 600; }
-
-/* Status da sala reaproveita os mesmos pares cor/fundo dos badges
-   de materiais e eventos: verde = disponível, vermelho = ocupado. */
-.room-badge {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-
-.room-badge.livre { background: var(--accent); color: var(--accent-foreground); }
-.room-badge.ocupada { background: var(--destructive-bg); color: var(--destructive); }
-
-.room-title { font-size: 16.5px; font-weight: 700; margin-top: 2px; }
-
-.room-meta {
-  font-size: 12.5px;
-  color: var(--muted-foreground);
+.room-hours-row + .room-hours-row {
   margin-top: 4px;
 }
 
-/* Faixa de disponibilidade semanal (mini calendário) */
+.room-hours-row strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+/* Faixa de disponibilidade semanal (mini calendário) — para uso futuro */
 .room-week {
   display: flex;
   justify-content: space-between;
   gap: 4px;
 }
 
-.room-day { flex: 1; text-align: center; }
+.room-day {
+  flex: 1;
+  text-align: center;
+}
 
 .room-day-label {
   font-size: 9.5px;
@@ -267,19 +136,9 @@
 .room-day-dot.ocupado { background: var(--destructive); }
 .room-day-dot.fechado { background: var(--muted); }
 
-.room-card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: auto;
-}
-
-.room-card-actions > .btn-outline { flex: 1; text-align: center; text-decoration: none; }
-.room-card-actions > .btn-primary { flex: 1.3; }
-
-/* Minhas reservas */
+/* Minhas reservas / Gerenciar reservas */
 .reservations-list {
-  background: var(--card);
-  border: 1px solid var(--border);
+  border: 0;
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -291,11 +150,18 @@
   padding: 18px 22px;
 }
 
-.reservation-row + .reservation-row { border-top: 1px solid var(--border); }
+.reservation-row + .reservation-row {
+  border-top: 1px solid var(--border);
+}
 
-.reservation-info { flex: 1; }
+.reservation-info {
+  flex: 1;
+}
 
-.reservation-room { font-size: 14.5px; font-weight: 700; }
+.reservation-room {
+  font-size: 14.5px;
+  font-weight: 700;
+}
 
 .reservation-time {
   font-size: 12.5px;
@@ -328,7 +194,9 @@
   cursor: pointer;
 }
 
-.reservation-cancel:hover { background: rgba(217, 83, 79, 0.1); }
+.reservation-cancel:hover {
+  background: rgba(217, 83, 79, 0.1);
+}
 
 .reservation-approve {
   background: transparent;
@@ -342,9 +210,14 @@
   cursor: pointer;
 }
 
-.reservation-approve:hover { background: var(--accent); color: var(--accent-foreground); }
+.reservation-approve:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
 
-.reservation-cancel-form { margin: 0; }
+.reservation-cancel-form {
+  margin: 0;
+}
 
 .reservation-empty {
   padding: 28px 22px;
@@ -354,15 +227,6 @@
 }
 
 /* Visibilidade dos painéis (alternância de aba, só front-end) */
-.rooms-panel[hidden] { display: none; }
-
-/* Responsividade */
-@media (max-width: 1080px) {
-  .rooms-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 640px) {
-  .rooms-grid { grid-template-columns: 1fr; }
-  .rooms-toolbar { flex-direction: column; align-items: stretch; }
-  .rooms-toolbar-left { flex-direction: column; align-items: stretch; }
+.rooms-panel[hidden] {
+  display: none;
 }
